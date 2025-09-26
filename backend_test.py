@@ -549,7 +549,7 @@ class VelesDriveAPITester:
 
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all test suites"""
-        print("🚀 Starting VELES DRIVE Backend API Tests")
+        print("🚀 Starting VELES DRIVE Backend API Tests - ERP Edition")
         print(f"📍 Testing against: {self.base_url}")
         print("=" * 60)
         
@@ -561,6 +561,12 @@ class VelesDriveAPITester:
         all_results["dealer_endpoints"] = self.test_dealers_endpoints()
         all_results["authentication"] = self.test_auth_endpoints()
         all_results["authenticated_operations"] = self.test_authenticated_vehicle_creation()
+        
+        # NEW ERP TESTS
+        all_results["erp_dealer_workflow"] = self.test_erp_dealer_workflow()
+        all_results["erp_access_control"] = self.test_erp_access_control()
+        all_results["erp_integration"] = self.test_erp_integration()
+        
         all_results["additional_scenarios"] = self.test_additional_scenarios()
         
         return all_results
