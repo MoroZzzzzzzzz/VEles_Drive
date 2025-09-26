@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
-from ..models import Vehicle, User, Favorite
-from ..auth import get_current_active_user
-from ..database import db
+from models import Vehicle, User, Favorite
+from auth import get_current_active_user
+from database import db
 
 router = APIRouter(prefix="/favorites", tags=["Favorites"])
 
