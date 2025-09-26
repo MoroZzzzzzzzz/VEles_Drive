@@ -186,7 +186,7 @@ async def get_messages_with_user(
             })
         
         # Отмечаем сообщения как прочитанные
-        await db.messages.update_many(
+        await db.db.messages.update_many(
             {
                 "sender_id": user_id,
                 "recipient_id": current_user_id,
