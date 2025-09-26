@@ -49,13 +49,13 @@ async def create_review(
             raise HTTPException(status_code=404, detail="Дилер не найден")
         
         # Проверяем что пользователь не может оставить отзыв себе
-        if current_user["role"] == "dealer" and dealer["user_id"] == current_user["id"]:
+        if current_user.role == "dealer" and dealer["user_id"] == current_user.id:
             raise HTTPException(status_code=400, detail="Нельзя оставить отзыв себе")
         
         # Проверяем что пользователь еще не оставлял отзыв этому дилеру
         existing_review = await db.db.reviews.find_one({
             "dealer_id": review.dealer_id,
-            "user_id": current_user["id"]
+            "user_id": current_user.id
         })
         if existing_review:
             raise HTTPException(status_code=400, detail="Вы уже оставили отзыв этому дилеру")
