@@ -126,6 +126,15 @@ function AppRoutes() {
           </DealerRoute>
         } 
       />
+      {/* Admin Routes */}
+      <Route 
+        path="/admin/dashboard" 
+        element={
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+        } 
+      />
     </Routes>
   );
 }
