@@ -207,7 +207,7 @@ async def mark_message_as_read(
 ):
     """Отметить сообщение как прочитанное"""
     try:
-        result = await db.messages.update_one(
+        result = await db.db.messages.update_one(
             {
                 "id": message_id,
                 "recipient_id": current_user["id"]
