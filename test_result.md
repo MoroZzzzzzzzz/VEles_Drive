@@ -213,6 +213,78 @@ backend:
           agent: "testing"
           comment: "✅ Fixed auth.py to properly fetch user from database. GET /api/auth/profile returns correct user data with valid JWT token."
 
+  - task: "ERP Dealer Profile Creation API"
+    implemented: true
+    working: true
+    file: "backend/routes/dealers.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/dealers/ working correctly. Dealers can create profiles with company info, specialization, address, etc. Proper validation and authentication required."
+
+  - task: "ERP Dealer Vehicles API"
+    implemented: true
+    working: true
+    file: "backend/routes/dealers.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/dealers/{dealer_id}/vehicles working correctly. Uses new get_vehicles_by_dealer method with proper pagination. Returns dealer info and vehicle list."
+
+  - task: "ERP Vehicle Creation by Dealers"
+    implemented: true
+    working: true
+    file: "backend/routes/vehicles.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/vehicles/ working correctly for dealers with profiles. Requires dealer authentication and existing dealer profile. Proper error handling for missing profiles."
+
+  - task: "ERP Access Control and Permissions"
+    implemented: true
+    working: true
+    file: "backend/routes/dealers.py, backend/routes/vehicles.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Access control working correctly. Only dealers can create dealer profiles and vehicles. Buyers get 403 errors. Unauthenticated requests properly rejected."
+
+  - task: "ERP Integration and Data Relationships"
+    implemented: true
+    working: true
+    file: "backend/database.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Data relationships working correctly. Vehicles properly linked to dealers via dealer_id. get_vehicles_by_dealer method functioning with pagination. Dealer profile retrieval working."
+
+  - task: "ERP Complete Dealer Workflow"
+    implemented: true
+    working: true
+    file: "backend/routes/dealers.py, backend/routes/vehicles.py, backend/routes/auth.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Complete dealer workflow tested successfully: 1) User registration as dealer, 2) Dealer login, 3) Dealer profile creation, 4) Vehicle creation, 5) Vehicle listing retrieval. All steps working correctly."
+
   - task: "Vehicle Creation API (Authenticated)"
     implemented: true
     working: true
