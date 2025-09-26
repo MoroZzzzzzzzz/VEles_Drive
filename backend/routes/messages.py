@@ -228,7 +228,7 @@ async def get_unread_count(current_user: dict = Depends(get_current_user)):
     """Получить количество непрочитанных сообщений"""
     try:
         count = await db.db.messages.count_documents({
-            "recipient_id": current_user["id"],
+            "recipient_id": current_user.id,
             "is_read": False
         })
         
