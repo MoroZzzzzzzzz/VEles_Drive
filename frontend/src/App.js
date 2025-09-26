@@ -18,6 +18,7 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { DealerDashboard } from "./pages/DealerDashboard";
 import { CreateVehiclePage } from "./pages/CreateVehiclePage";
+import { AdminDashboard } from "./pages/AdminDashboard";
 
 const Home = () => {
   return (
