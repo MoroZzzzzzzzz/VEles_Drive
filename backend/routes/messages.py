@@ -120,7 +120,7 @@ async def get_conversations(current_user: dict = Depends(get_current_user)):
                 continue
             
             # Считаем непрочитанные сообщения
-            unread_count = await db.messages.count_documents({
+            unread_count = await db.db.messages.count_documents({
                 "sender_id": other_user_id,
                 "recipient_id": user_id,
                 "is_read": False
