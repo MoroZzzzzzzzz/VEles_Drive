@@ -225,4 +225,37 @@ export const reviewsAPI = {
   }
 };
 
+// Compare API
+export const compareAPI = {
+  createComparison: async (vehicleIds) => {
+    const response = await api.post('/compare/', vehicleIds);
+    return response.data;
+  },
+
+  getComparison: async () => {
+    const response = await api.get('/compare/');
+    return response.data;
+  },
+
+  updateComparison: async (vehicleIds) => {
+    const response = await api.put('/compare/', vehicleIds);
+    return response.data;
+  },
+
+  removeFromComparison: async (vehicleId) => {
+    const response = await api.delete(`/compare/${vehicleId}`);
+    return response.data;
+  },
+
+  clearComparison: async () => {
+    const response = await api.delete('/compare/');
+    return response.data;
+  },
+
+  getFeatures: async () => {
+    const response = await api.get('/compare/features');
+    return response.data;
+  }
+};
+
 export default api;
