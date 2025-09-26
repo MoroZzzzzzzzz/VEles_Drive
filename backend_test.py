@@ -246,6 +246,40 @@ class VelesDriveAPITester:
         }
         
         return results
+    def test_authenticated_vehicle_creation(self) -> Dict[str, Any]:
+        """Test vehicle creation with dealer authentication"""
+        results = {}
+        
+        print("🚗 Testing Authenticated Vehicle Operations...")
+        
+        # First login as dealer
+        print("  Logging in as dealer...")
+        dealer_login_data = {
+            "email": self.test_dealer_data["email"],
+            "password": self.test_dealer_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
+        
+        if result.get("status_code") == 200:
+            self.auth_token = result.get("data", {}).get("access_token")
+            
+            # Test vehicle creation (should fail - no dealer profile)
+            print("  Testing POST /api/vehicles/ (without dealer profile)")
+            result = self.make_request("POST", "/vehicles/", data=self.test_vehicle_data)
+            results["vehicle_creation_no_profile"] = {
+                "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error"),
+                "expected": "Should fail with 400 - no dealer profile"
+            }
+        else:
+            results["dealer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as dealer for vehicle creation test"
+            }
+        
+        return results
 
     def test_additional_scenarios(self) -> Dict[str, Any]:
         """Test additional scenarios and edge cases"""
