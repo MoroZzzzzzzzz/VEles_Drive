@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown, Filter } from 'lucide-react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Input } from './ui/input';
-import { carMakes, bodyTypes, years } from './mock';
+import { vehiclesAPI } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 export const HeroSection = () => {
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState(null);
   const [searchParams, setSearchParams] = useState({
     make: '',
     bodyType: '',
@@ -14,9 +17,31 @@ export const HeroSection = () => {
     year: ''
   });
 
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const data = await vehiclesAPI.getCategories();
+      setCategories(data);
+    } catch (error) {
+      console.error('Error loading categories:', error);
+    }
+  };
+
   const handleSearch = () => {
     console.log('Поиск автомобилей с параметрами:', searchParams);
-    // Здесь будет логика поиска
+    
+    // Convert to URL params and navigate to catalog
+    const params = new URLSearchParams();
+    if (searchParams.make) params.set('make', searchParams.make);
+    if (searchParams.bodyType) params.set('body_type', searchParams.bodyType);
+    if (searchParams.priceFrom) params.set('price_from', searchParams.priceFrom);
+    if (searchParams.priceTo) params.set('price_to', searchParams.priceTo);
+    if (searchParams.year) params.set('year_from', searchParams.year);
+    
+    navigate(`/catalog?${params.toString()}`);
   };
 
   return (
@@ -54,35 +79,31 @@ export const HeroSection = () => {
             {/* Марка автомобиля */}
             <div className="space-y-2">
               <label className="text-white text-sm font-medium">Марка автомобиля</label>
-              <Select value={searchParams.make} onValueChange={(value) => 
-                setSearchParams(prev => ({ ...prev, make: value }))
-              }>
-                <SelectTrigger className="bg-white/90 border-0 h-12 text-gray-900">
-                  <SelectValue placeholder="Выберите марку" />
-                </SelectTrigger>
-                <SelectContent>
-                  {carMakes.map(make => (
-                    <SelectItem key={make} value={make}>{make}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                placeholder="Введите марку"
+                value={searchParams.make}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, make: e.target.value }))}
+                className="bg-white/90 border-0 h-12 text-gray-900 placeholder:text-gray-500"
+              />
             </div>
 
             {/* Кузов */}
             <div className="space-y-2">
               <label className="text-white text-sm font-medium">Кузов</label>
-              <Select value={searchParams.bodyType} onValueChange={(value) => 
-                setSearchParams(prev => ({ ...prev, bodyType: value }))
-              }>
-                <SelectTrigger className="bg-white/90 border-0 h-12 text-gray-900">
-                  <SelectValue placeholder="Тип кузова" />
-                </SelectTrigger>
-                <SelectContent>
-                  {bodyTypes.map(type => (
-                    <SelectItem key={type} value={type}>{type}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {categories && (
+                <Select value={searchParams.bodyType} onValueChange={(value) => 
+                  setSearchParams(prev => ({ ...prev, bodyType: value }))
+                }>
+                  <SelectTrigger className="bg-white/90 border-0 h-12 text-gray-900">
+                    <SelectValue placeholder="Тип кузова" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.body_types?.map(type => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
 
             {/* Цена от */}
@@ -112,18 +133,13 @@ export const HeroSection = () => {
             {/* Год выпуска */}
             <div className="space-y-2">
               <label className="text-white text-sm font-medium">Год выпуска</label>
-              <Select value={searchParams.year} onValueChange={(value) => 
-                setSearchParams(prev => ({ ...prev, year: value }))
-              }>
-                <SelectTrigger className="bg-white/90 border-0 h-12 text-gray-900">
-                  <SelectValue placeholder="Год" />
-                </SelectTrigger>
-                <SelectContent>
-                  {years.map(year => (
-                    <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input 
+                type="number"
+                placeholder="Год"
+                value={searchParams.year}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, year: e.target.value }))}
+                className="bg-white/90 border-0 h-12 text-gray-900 placeholder:text-gray-500"
+              />
             </div>
           </div>
 
@@ -139,6 +155,7 @@ export const HeroSection = () => {
             
             <Button 
               variant="outline"
+              onClick={() => navigate('/catalog')}
               className="bg-white/10 border-white/30 text-white hover:bg-white/20 px-8 py-4 text-lg h-auto rounded-xl backdrop-blur-sm"
             >
               <Filter className="mr-2 h-5 w-5" />
