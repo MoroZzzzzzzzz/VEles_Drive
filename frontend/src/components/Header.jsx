@@ -114,6 +114,16 @@ export const Header = () => {
                   >
                     <User className="h-4 w-4 text-white" />
                   </button>
+                  {user?.role === 'dealer' && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => navigate('/dealer/dashboard')}
+                      className="text-gray-300 hover:text-white"
+                    >
+                      ERP
+                    </Button>
+                  )}
                   <Button 
                     variant="ghost" 
                     size="sm" 
