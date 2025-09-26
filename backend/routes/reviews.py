@@ -69,7 +69,7 @@ async def create_review(
         review_doc = {
             "id": review_id,
             "dealer_id": review.dealer_id,
-            "user_id": current_user["id"],
+            "user_id": current_user.id,
             "rating": review.rating,
             "title": review.title,
             "comment": review.comment,
