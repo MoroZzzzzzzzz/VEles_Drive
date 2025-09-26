@@ -63,7 +63,7 @@ async def send_message(
             "updated_at": datetime.utcnow()
         }
         
-        await db.messages.insert_one(message_doc)
+        await db.db.messages.insert_one(message_doc)
         
         return {
             "success": True,
