@@ -169,4 +169,32 @@ export const favoritesAPI = {
   }
 };
 
+// Messages API
+export const messagesAPI = {
+  getConversations: async () => {
+    const response = await api.get('/messages/conversations');
+    return response.data;
+  },
+
+  getMessages: async (userId) => {
+    const response = await api.get(`/messages/${userId}`);
+    return response.data;
+  },
+
+  sendMessage: async (messageData) => {
+    const response = await api.post('/messages/', messageData);
+    return response.data;
+  },
+
+  markAsRead: async (messageId) => {
+    const response = await api.put(`/messages/${messageId}/read`);
+    return response.data;
+  },
+
+  getUnreadCount: async () => {
+    const response = await api.get('/messages/unread/count');
+    return response.data;
+  }
+};
+
 export default api;
