@@ -6,12 +6,11 @@ import logging
 from pathlib import Path
 
 # Import routes
-from .routes.auth import router as auth_router
-from .routes.vehicles import router as vehicles_router
-from .routes.dealers import router as dealers_router
-from .routes.favorites import router as favorites_router
-from .database import db
-from .auth import get_current_user
+from routes.auth import router as auth_router
+from routes.vehicles import router as vehicles_router
+from routes.dealers import router as dealers_router
+from routes.favorites import router as favorites_router
+from database import db
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
