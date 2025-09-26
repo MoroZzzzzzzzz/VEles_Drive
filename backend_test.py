@@ -311,7 +311,7 @@ class VelesDriveAPITester:
         dealer_profile_data = {
             "company_name": "Премиум Авто Москва",
             "description": "Официальный дилер премиум автомобилей в Москве",
-            "specialization": ["BMW", "Mercedes-Benz", "Audi"],
+            "specialization": "BMW, Mercedes-Benz, Audi",
             "address": "ул. Тверская, 15",
             "city": "Москва",
             "phone": "+7-495-123-4567",
