@@ -150,7 +150,7 @@ async def get_dealer_rating_stats(dealer_id: str):
         total_reviews = 0
         total_rating = 0
         
-        async for item in db.reviews.aggregate(pipeline):
+        async for item in db.db.reviews.aggregate(pipeline):
             rating = item["_id"]
             count = item["count"]
             rating_distribution[rating] = count
