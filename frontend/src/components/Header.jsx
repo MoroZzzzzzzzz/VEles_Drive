@@ -23,6 +23,24 @@ export const Header = () => {
     { name: 'Контакты', href: '/contacts', icon: Phone }
   ];
 
+  // Load unread messages count
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadUnreadCount();
+      const interval = setInterval(loadUnreadCount, 30000); // Check every 30 seconds
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated]);
+
+  const loadUnreadCount = async () => {
+    try {
+      const data = await messagesAPI.getUnreadCount();
+      setUnreadCount(data.unread_count);
+    } catch (error) {
+      console.error('Error loading unread count:', error);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
