@@ -119,20 +119,12 @@ async def get_dealer_vehicles(
             detail="Dealer not found"
         )
     
-    # Search for dealer's vehicles
-    from models import VehicleSearch
-    search_params = VehicleSearch(page=page, limit=limit)
-    
-    # Modify the search to filter by dealer_id
-    # We'll need to modify the database method to support dealer filtering
-    vehicles, total_count = await db.get_vehicles(search_params)
-    
-    # Filter by dealer_id (this should be done in the database query)
-    dealer_vehicles = [v for v in vehicles if v.dealer_id == dealer_id]
+    # Get dealer's vehicles using new method
+    vehicles, total_count = await db.get_vehicles_by_dealer(dealer_id, page, limit)
     
     return {
-        "vehicles": dealer_vehicles,
-        "total": len(dealer_vehicles),
+        "vehicles": vehicles,
+        "total": total_count,
         "page": page,
         "limit": limit,
         "dealer": {
