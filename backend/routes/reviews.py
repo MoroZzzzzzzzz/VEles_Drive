@@ -205,7 +205,7 @@ async def delete_review(
 ):
     """Удалить отзыв (только свой)"""
     try:
-        review = await db.reviews.find_one({"id": review_id})
+        review = await db.db.reviews.find_one({"id": review_id})
         if not review:
             raise HTTPException(status_code=404, detail="Отзыв не найден")
         
