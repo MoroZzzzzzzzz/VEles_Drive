@@ -53,7 +53,7 @@ async def send_message(
         message_id = str(uuid.uuid4())
         message_doc = {
             "id": message_id,
-            "sender_id": current_user["id"],
+            "sender_id": current_user.id,
             "recipient_id": message.recipient_id,
             "vehicle_id": message.vehicle_id,
             "content": message.content,
