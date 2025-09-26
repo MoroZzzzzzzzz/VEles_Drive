@@ -507,10 +507,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "ERP Dealer Profile Creation API"
-    - "ERP Dealer Vehicles API"
-    - "ERP Vehicle Creation by Dealers"
-    - "ERP Complete Dealer Workflow"
+    - "Messages API - Send Messages"
+    - "Messages API - Unread Count"
+    - "Reviews API - Create Reviews"
+    - "Reviews API - User Reviews"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
