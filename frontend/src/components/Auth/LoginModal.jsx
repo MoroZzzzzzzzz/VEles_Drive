@@ -41,9 +41,15 @@ export const LoginModal = ({ open, onOpenChange }) => {
       setTimeout(() => {
         onOpenChange(false);
         setSuccess('');
+        resetForms();
       }, 1000);
     } catch (error) {
-      setError(error.response?.data?.detail || 'Ошибка входа');
+      console.error('Login error:', error);
+      const errorMessage = error.response?.data?.detail || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          'Ошибка входа в систему';
+      setError(errorMessage);
     }
   };
 
@@ -61,6 +67,11 @@ export const LoginModal = ({ open, onOpenChange }) => {
       return;
     }
 
+    if (!registerForm.first_name || !registerForm.last_name) {
+      setError('Заполните имя и фамилию');
+      return;
+    }
+
     try {
       const { confirmPassword, ...userData } = registerForm;
       await register(userData);
@@ -68,20 +79,30 @@ export const LoginModal = ({ open, onOpenChange }) => {
       setTimeout(() => {
         onOpenChange(false);
         setSuccess('');
+        resetForms();
       }, 1000);
     } catch (error) {
-      setError(error.response?.data?.detail || 'Ошибка регистрации');
+      console.error('Registration error:', error);
+      const errorMessage = error.response?.data?.detail || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          'Ошибка регистрации';
+      setError(errorMessage);
     }
   };
 
-  const handleClose = () => {
-    setError('');
-    setSuccess('');
+  const resetForms = () => {
     setLoginForm({ email: '', password: '' });
     setRegisterForm({
       email: '', password: '', confirmPassword: '',
       first_name: '', last_name: '', phone: '', role: 'buyer'
     });
+  };
+
+  const handleClose = () => {
+    setError('');
+    setSuccess('');
+    resetForms();
     onOpenChange(false);
   };
 
