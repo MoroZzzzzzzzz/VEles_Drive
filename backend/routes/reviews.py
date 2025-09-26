@@ -105,7 +105,7 @@ async def get_dealer_reviews(
     """Получить отзывы о дилере"""
     try:
         reviews = []
-        async for review in db.reviews.find({"dealer_id": dealer_id}).sort("created_at", -1).skip(skip).limit(limit):
+        async for review in db.db.reviews.find({"dealer_id": dealer_id}).sort("created_at", -1).skip(skip).limit(limit):
             # Получаем данные пользователя
             user = await db.users.find_one({"id": review["user_id"]})
             user_name = "Анонимный пользователь"
