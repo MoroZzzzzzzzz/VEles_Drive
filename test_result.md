@@ -417,19 +417,19 @@ frontend:
 
 metadata:
   created_by: "testing_agent"
-  version: "1.0"
-  test_sequence: 1
+  version: "1.1"
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Mobile Responsiveness and UX"
-    - "Error Handling and Validation"
-  stuck_tasks:
-    - "Mobile Responsiveness and UX"
-    - "Error Handling and Validation"
+    - "ERP Dealer Profile Creation API"
+    - "ERP Dealer Vehicles API"
+    - "ERP Vehicle Creation by Dealers"
+    - "ERP Complete Dealer Workflow"
+  stuck_tasks: []
   test_all: false
-  test_priority: "stuck_first"
+  test_priority: "high_first"
 
 agent_communication:
     - agent: "testing"
