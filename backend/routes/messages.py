@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime
@@ -6,6 +6,7 @@ import uuid
 
 from auth import get_current_user
 from database import db
+from services.email_service import email_service
 
 router = APIRouter(prefix="/messages", tags=["messages"])
 
