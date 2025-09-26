@@ -30,7 +30,7 @@ class VelesDriveAPITester:
             "phone": "+7-999-123-4567",
             "first_name": "Александр",
             "last_name": "Петров",
-            "password": "SecurePass123!",
+            "password": "SecurePass123",
             "role": "buyer"
         }
         
@@ -39,7 +39,7 @@ class VelesDriveAPITester:
             "phone": "+7-999-987-6543",
             "first_name": "Михаил",
             "last_name": "Дилеров",
-            "password": "DealerPass123!",
+            "password": "DealerPass123",
             "role": "dealer"
         }
         
