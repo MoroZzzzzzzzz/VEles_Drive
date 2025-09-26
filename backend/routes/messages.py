@@ -115,7 +115,7 @@ async def get_conversations(current_user: dict = Depends(get_current_user)):
             other_user_id = conv["_id"]
             
             # Получаем данные собеседника
-            other_user = await db.users.find_one({"id": other_user_id})
+            other_user = await db.db.users.find_one({"id": other_user_id})
             if not other_user:
                 continue
             
