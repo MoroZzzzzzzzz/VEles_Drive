@@ -350,6 +350,7 @@ class VelesDriveAPITester:
         all_results["dealer_endpoints"] = self.test_dealers_endpoints()
         all_results["authentication"] = self.test_auth_endpoints()
         all_results["authenticated_operations"] = self.test_authenticated_vehicle_creation()
+        all_results["additional_scenarios"] = self.test_additional_scenarios()
         
         return all_results
 
