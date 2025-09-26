@@ -281,6 +281,216 @@ class VelesDriveAPITester:
         
         return results
 
+    def test_erp_dealer_workflow(self) -> Dict[str, Any]:
+        """Test complete ERP dealer workflow"""
+        results = {}
+        
+        print("🏢 Testing ERP Dealer Workflow...")
+        
+        # Step 1: Login as dealer
+        print("  Step 1: Logging in as dealer...")
+        dealer_login_data = {
+            "email": self.test_dealer_data["email"],
+            "password": self.test_dealer_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
+        results["dealer_login"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        if result.get("status_code") != 200:
+            return results
+            
+        self.auth_token = result.get("data", {}).get("access_token")
+        
+        # Step 2: Create dealer profile
+        print("  Step 2: Creating dealer profile...")
+        dealer_profile_data = {
+            "company_name": "Премиум Авто Москва",
+            "description": "Официальный дилер премиум автомобилей в Москве",
+            "specialization": ["BMW", "Mercedes-Benz", "Audi"],
+            "address": "ул. Тверская, 15",
+            "city": "Москва",
+            "phone": "+7-495-123-4567",
+            "email": "info@premiumauto.ru",
+            "website": "https://premiumauto.ru",
+            "working_hours": "Пн-Пт: 9:00-20:00, Сб-Вс: 10:00-18:00",
+            "established_year": 2015
+        }
+        
+        result = self.make_request("POST", "/dealers/", data=dealer_profile_data)
+        results["dealer_profile_creation"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        if result.get("status_code") == 200:
+            self.test_dealer_id = result.get("data", {}).get("id")
+        
+        # Step 3: Create vehicle (should work now)
+        print("  Step 3: Creating vehicle with dealer profile...")
+        result = self.make_request("POST", "/vehicles/", data=self.test_vehicle_data)
+        results["vehicle_creation_with_profile"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        if result.get("status_code") == 200:
+            self.test_vehicle_id = result.get("data", {}).get("id")
+        
+        # Step 4: Get dealer's vehicles
+        if self.test_dealer_id:
+            print("  Step 4: Getting dealer's vehicles...")
+            result = self.make_request("GET", f"/dealers/{self.test_dealer_id}/vehicles")
+            results["dealer_vehicles_list"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            # Verify vehicle appears in dealer's list
+            if result.get("status_code") == 200:
+                vehicles = result.get("data", {}).get("vehicles", [])
+                vehicle_found = any(v.get("id") == self.test_vehicle_id for v in vehicles)
+                results["vehicle_in_dealer_list"] = {
+                    "status": "✅ PASS" if vehicle_found else "❌ FAIL",
+                    "found": vehicle_found,
+                    "total_vehicles": len(vehicles)
+                }
+        
+        # Step 5: Test pagination on dealer vehicles
+        if self.test_dealer_id:
+            print("  Step 5: Testing dealer vehicles pagination...")
+            result = self.make_request("GET", f"/dealers/{self.test_dealer_id}/vehicles", params={"page": 1, "limit": 5})
+            results["dealer_vehicles_pagination"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+        
+        return results
+
+    def test_erp_access_control(self) -> Dict[str, Any]:
+        """Test ERP access control and permissions"""
+        results = {}
+        
+        print("🔐 Testing ERP Access Control...")
+        
+        # Test 1: Buyer trying to create dealer profile
+        print("  Test 1: Buyer attempting to create dealer profile...")
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") == 200:
+            self.auth_token = result.get("data", {}).get("access_token")
+            
+            dealer_profile_data = {
+                "company_name": "Тест Компания",
+                "description": "Тестовое описание",
+                "specialization": ["BMW"],
+                "address": "Тестовый адрес",
+                "city": "Москва",
+                "phone": "+7-999-999-9999",
+                "email": "test@test.com"
+            }
+            
+            result = self.make_request("POST", "/dealers/", data=dealer_profile_data)
+            results["buyer_create_dealer_profile"] = {
+                "status": "✅ PASS" if result.get("status_code") == 403 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error"),
+                "expected": "Should return 403 - buyers cannot create dealer profiles"
+            }
+        
+        # Test 2: Buyer trying to create vehicle
+        print("  Test 2: Buyer attempting to create vehicle...")
+        result = self.make_request("POST", "/vehicles/", data=self.test_vehicle_data)
+        results["buyer_create_vehicle"] = {
+            "status": "✅ PASS" if result.get("status_code") == 403 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 403 - buyers cannot create vehicles"
+        }
+        
+        # Test 3: Unauthenticated access to dealer creation
+        print("  Test 3: Unauthenticated dealer profile creation...")
+        result = self.make_request("POST", "/dealers/", data={}, headers={})
+        results["unauth_create_dealer"] = {
+            "status": "✅ PASS" if result.get("status_code") == 403 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 403 without authentication"
+        }
+        
+        return results
+
+    def test_erp_integration(self) -> Dict[str, Any]:
+        """Test ERP integration and data relationships"""
+        results = {}
+        
+        print("🔗 Testing ERP Integration...")
+        
+        # Test 1: Verify dealer-vehicle relationship
+        if self.test_dealer_id and self.test_vehicle_id:
+            print("  Test 1: Verifying dealer-vehicle relationship...")
+            result = self.make_request("GET", f"/vehicles/{self.test_vehicle_id}")
+            results["vehicle_dealer_relationship"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            if result.get("status_code") == 200:
+                vehicle_data = result.get("data", {})
+                dealer_id_match = vehicle_data.get("dealer_id") == self.test_dealer_id
+                results["dealer_id_match"] = {
+                    "status": "✅ PASS" if dealer_id_match else "❌ FAIL",
+                    "match": dealer_id_match,
+                    "vehicle_dealer_id": vehicle_data.get("dealer_id"),
+                    "expected_dealer_id": self.test_dealer_id
+                }
+        
+        # Test 2: Test dealer profile retrieval
+        if self.test_dealer_id:
+            print("  Test 2: Retrieving dealer profile...")
+            result = self.make_request("GET", f"/dealers/{self.test_dealer_id}")
+            results["dealer_profile_retrieval"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+        
+        # Test 3: Test non-existent dealer vehicles
+        print("  Test 3: Getting vehicles for non-existent dealer...")
+        fake_dealer_id = str(uuid.uuid4())
+        result = self.make_request("GET", f"/dealers/{fake_dealer_id}/vehicles")
+        results["nonexistent_dealer_vehicles"] = {
+            "status": "✅ PASS" if result.get("status_code") == 404 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 404 for non-existent dealer"
+        }
+        
+        return results
+
     def test_additional_scenarios(self) -> Dict[str, Any]:
         """Test additional scenarios and edge cases"""
         results = {}
@@ -334,39 +544,6 @@ class VelesDriveAPITester:
             "error": result.get("error"),
             "expected": "Should return 422 for query too short"
         }
-        
-        return results
-        """Test vehicle creation with dealer authentication"""
-        results = {}
-        
-        print("🚗 Testing Authenticated Vehicle Operations...")
-        
-        # First login as dealer
-        print("  Logging in as dealer...")
-        dealer_login_data = {
-            "email": self.test_dealer_data["email"],
-            "password": self.test_dealer_data["password"]
-        }
-        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
-        
-        if result.get("status_code") == 200:
-            self.auth_token = result.get("data", {}).get("access_token")
-            
-            # Test vehicle creation (should fail - no dealer profile)
-            print("  Testing POST /api/vehicles/ (without dealer profile)")
-            result = self.make_request("POST", "/vehicles/", data=self.test_vehicle_data)
-            results["vehicle_creation_no_profile"] = {
-                "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
-                "status_code": result.get("status_code"),
-                "response": result.get("data", {}),
-                "error": result.get("error"),
-                "expected": "Should fail with 400 - no dealer profile"
-            }
-        else:
-            results["dealer_login_failed"] = {
-                "status": "❌ FAIL",
-                "error": "Could not login as dealer for vehicle creation test"
-            }
         
         return results
 
