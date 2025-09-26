@@ -129,7 +129,7 @@ async def get_conversations(current_user: dict = Depends(get_current_user)):
             # Получаем информацию об автомобиле если есть
             vehicle_title = None
             if conv.get("vehicle_id"):
-                vehicle = await db.vehicles.find_one({"id": conv["vehicle_id"]})
+                vehicle = await db.db.vehicles.find_one({"id": conv["vehicle_id"]})
                 if vehicle:
                     vehicle_title = f"{vehicle.get('make', '')} {vehicle.get('model', '')}"
             
