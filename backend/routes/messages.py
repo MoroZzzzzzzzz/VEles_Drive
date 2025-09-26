@@ -160,7 +160,7 @@ async def get_messages_with_user(
         
         # Получаем все сообщения между пользователями
         messages = []
-        async for message in db.messages.find({
+        async for message in db.db.messages.find({
             "$or": [
                 {"sender_id": current_user_id, "recipient_id": user_id},
                 {"sender_id": user_id, "recipient_id": current_user_id}
