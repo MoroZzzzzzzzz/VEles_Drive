@@ -5,6 +5,7 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
+import hashlib
 from models import User, UserRole
 
 # Security settings
@@ -12,7 +13,15 @@ SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here-change-in-production"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Try to use bcrypt, fallback to pbkdf2_sha256 if bcrypt fails
+try:
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    # Test bcrypt
+    pwd_context.hash("test")
+except Exception:
+    # Fallback to pbkdf2_sha256 if bcrypt fails
+    pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+
 security = HTTPBearer()
 
 class AuthManager:
