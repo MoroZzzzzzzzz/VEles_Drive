@@ -57,10 +57,11 @@ class AuthManager:
 
 # Dependency to get current user from token
 async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    db=Depends(lambda: None)  # Will be replaced with actual DB dependency
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ) -> User:
     """Get current user from JWT token"""
+    from database import db  # Import here to avoid circular imports
+    
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -75,18 +76,12 @@ async def get_current_user(
     except JWTError:
         raise credentials_exception
     
-    # TODO: Get user from database
-    # For now, return mock user - will be implemented with actual DB
-    mock_user = User(
-        id=user_id,
-        email="user@example.com",
-        first_name="Test",
-        last_name="User",
-        role=UserRole.BUYER,
-        password_hash="hashed",
-        is_active=True
-    )
-    return mock_user
+    # Get user from database
+    user = await db.get_user_by_id(user_id)
+    if user is None:
+        raise credentials_exception
+    
+    return user
 
 async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
     """Get current active user"""
