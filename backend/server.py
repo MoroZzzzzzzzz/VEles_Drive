@@ -10,6 +10,7 @@ from routes.auth import router as auth_router
 from routes.vehicles import router as vehicles_router
 from routes.dealers import router as dealers_router
 from routes.favorites import router as favorites_router
+from routes.messages import router as messages_router
 from database import db
 
 ROOT_DIR = Path(__file__).parent
