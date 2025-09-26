@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Search, User, Heart, Menu, X, Car, Phone, MapPin, LogOut, MessageCircle } from 'lucide-react';
+import { Search, User, Heart, Menu, X, Car, Phone, MapPin, LogOut, MessageCircle, ArrowLeftRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { LoginModal } from './Auth/LoginModal';
 import { MessagesModal } from './Messages/MessagesModal';
+import { CompareModal, useComparison } from './Compare/CompareModal';
 import { Link, useNavigate } from 'react-router-dom';
 import { messagesAPI } from '../services/api';
 
