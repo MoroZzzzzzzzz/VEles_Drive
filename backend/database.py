@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from typing import Optional, List, Dict, Any
 import os
-from .models import *
+from models import *
 from datetime import datetime
 
 class Database:
