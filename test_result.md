@@ -367,3 +367,5 @@ agent_communication:
       message: "Comprehensive backend API testing completed. Fixed critical issues: 1) bcrypt password hashing compatibility by implementing pbkdf2_sha256 fallback, 2) MongoDB sort syntax error in dealers endpoint, 3) Auth system database integration. All core APIs working correctly with 86.7% success rate (13/15 tests passed). Minor edge cases in auth don't affect core functionality."
     - agent: "testing"
       message: "Starting comprehensive frontend testing for VELES DRIVE. Will test: 1) Main page UI components, 2) Authentication system with login/register modals, 3) Backend API integration, 4) Mobile responsiveness, 5) Error handling. Using real test data: test@velesdrive.ru, testpass123, Тест, Пользователь."
+    - agent: "testing"
+      message: "Frontend testing completed. SUCCESS: Main page UI (✅), Authentication modal (✅), User registration (✅), Profile display (✅), Backend API integration (✅). ISSUES: Mobile menu button missing (❌), Error messages for invalid login not displaying (❌). Overall: 71% success rate (5/7 tasks working). Core functionality operational but needs mobile UX and error handling improvements."
