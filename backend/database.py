@@ -249,5 +249,21 @@ class Database:
         
         return vehicles
 
+    async def get_vehicles_by_dealer(self, dealer_id: str, page: int = 1, limit: int = 20) -> tuple[List[Vehicle], int]:
+        """Get vehicles by dealer ID"""
+        filter_dict = {"dealer_id": dealer_id}
+        
+        # Count total documents
+        total_count = await self.db.vehicles.count_documents(filter_dict)
+
+        # Get paginated results
+        skip = (page - 1) * limit
+        cursor = self.db.vehicles.find(filter_dict).sort([("created_at", -1)]).skip(skip).limit(limit)
+        
+        vehicles_data = await cursor.to_list(length=limit)
+        vehicles = [Vehicle(**vehicle_data) for vehicle_data in vehicles_data]
+
+        return vehicles, total_count
+
 # Global database instance
 db = Database()
