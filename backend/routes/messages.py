@@ -111,7 +111,7 @@ async def get_conversations(current_user: dict = Depends(get_current_user)):
         ]
         
         conversations = []
-        async for conv in db.messages.aggregate(pipeline):
+        async for conv in db.db.messages.aggregate(pipeline):
             other_user_id = conv["_id"]
             
             # Получаем данные собеседника
