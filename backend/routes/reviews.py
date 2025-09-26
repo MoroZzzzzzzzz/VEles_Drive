@@ -53,7 +53,7 @@ async def create_review(
             raise HTTPException(status_code=400, detail="Нельзя оставить отзыв себе")
         
         # Проверяем что пользователь еще не оставлял отзыв этому дилеру
-        existing_review = await db.reviews.find_one({
+        existing_review = await db.db.reviews.find_one({
             "dealer_id": review.dealer_id,
             "user_id": current_user["id"]
         })
