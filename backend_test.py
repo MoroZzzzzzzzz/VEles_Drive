@@ -11,7 +11,7 @@ from typing import Dict, Any, Optional
 import uuid
 
 # Configuration
-BASE_URL = "https://luxury-cars-4.preview.emergentagent.com/api"
+BASE_URL = "https://auto-dealership-5.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 class VelesDriveAPITester:
