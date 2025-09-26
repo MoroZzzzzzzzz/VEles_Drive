@@ -69,12 +69,11 @@ class VelesDriveAPITester:
         """Make HTTP request with error handling"""
         url = f"{self.base_url}{endpoint}"
         
-        # Add auth header if token exists
+        # Add auth header if token exists and headers is None
         if self.auth_token and headers is None:
+            headers = {"Authorization": f"Bearer {self.auth_token}"}
+        elif headers is None:
             headers = {}
-        if self.auth_token:
-            headers = headers or {}
-            headers["Authorization"] = f"Bearer {self.auth_token}"
         
         try:
             if method.upper() == "GET":
