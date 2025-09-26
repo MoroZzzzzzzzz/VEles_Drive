@@ -254,7 +254,7 @@ async def update_dealer_rating(dealer_id: str):
             total_reviews = 0
         
         # Обновляем данные дилера
-        await db.dealers.update_one(
+        await db.db.dealers.update_one(
             {"id": dealer_id},
             {
                 "$set": {
