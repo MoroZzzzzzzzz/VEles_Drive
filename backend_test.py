@@ -247,7 +247,61 @@ class VelesDriveAPITester:
         
         return results
 
-    def test_authenticated_vehicle_creation(self) -> Dict[str, Any]:
+    def test_additional_scenarios(self) -> Dict[str, Any]:
+        """Test additional scenarios and edge cases"""
+        results = {}
+        
+        print("🔧 Testing Additional Scenarios...")
+        
+        # Test invalid login
+        print("  Testing invalid login credentials")
+        invalid_login = {
+            "email": "nonexistent@test.com",
+            "password": "wrongpassword"
+        }
+        result = self.make_request("POST", "/auth/login", data=invalid_login)
+        results["invalid_login"] = {
+            "status": "✅ PASS" if result.get("status_code") == 401 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 401 for invalid credentials"
+        }
+        
+        # Test profile without token
+        print("  Testing profile access without token")
+        result = self.make_request("GET", "/auth/profile", headers={})
+        results["profile_no_token"] = {
+            "status": "✅ PASS" if result.get("status_code") == 403 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 403 without token"
+        }
+        
+        # Test vehicle creation without authentication
+        print("  Testing vehicle creation without authentication")
+        result = self.make_request("POST", "/vehicles/", data=self.test_vehicle_data, headers={})
+        results["vehicle_creation_no_auth"] = {
+            "status": "✅ PASS" if result.get("status_code") == 403 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 403 without authentication"
+        }
+        
+        # Test search with empty query
+        print("  Testing search suggestions with short query")
+        result = self.make_request("GET", "/vehicles/search/suggestions", params={"q": "B"})
+        results["search_short_query"] = {
+            "status": "✅ PASS" if result.get("status_code") == 422 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 422 for query too short"
+        }
+        
+        return results
         """Test vehicle creation with dealer authentication"""
         results = {}
         
