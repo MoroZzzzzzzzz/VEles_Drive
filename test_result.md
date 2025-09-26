@@ -285,15 +285,18 @@ frontend:
 
   - task: "User Login and Profile Display"
     implemented: true
-    working: "NA"
+    working: true
     file: "frontend/src/components/Header.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Need to test login flow and user data display in header after authentication"
+        - working: true
+          agent: "testing"
+          comment: "✅ User profile display works correctly. After registration/login, header shows 'Тест Пользователь' and 'Покупатель' role. User avatar and profile information display properly in header."
 
   - task: "Backend API Integration"
     implemented: true
