@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Header } from "./components/Header";
 import { HeroSection } from "./components/HeroSection";
 import { FeaturedCars } from "./components/FeaturedCars";
@@ -13,8 +13,11 @@ import { Footer } from "./components/Footer";
 import { CatalogPage } from "./pages/CatalogPage";
 import { VehicleDetailPage } from "./pages/VehicleDetailPage";
 import { DealersPage } from "./pages/DealersPage";
+import { DealerDetailPage } from "./pages/DealerDetailPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { FavoritesPage } from "./pages/FavoritesPage";
+import { DealerDashboard } from "./pages/DealerDashboard";
+import { CreateVehiclePage } from "./pages/CreateVehiclePage";
 
 const Home = () => {
   return (
@@ -54,23 +57,66 @@ const Contacts = () => (
   </div>
 );
 
+// Protected Route for Dealers
+const DealerRoute = ({ children }) => {
+  const { user, isLoading } = useAuth();
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black pt-20 flex items-center justify-center">
+        <div className="text-white text-lg">Загрузка...</div>
+      </div>
+    );
+  }
+  
+  if (!user || user.role !== 'dealer') {
+    return <Navigate to="/" replace />;
+  }
+  
+  return children;
+};
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/catalog" element={<CatalogPage />} />
+      <Route path="/vehicles/:id" element={<VehicleDetailPage />} />
+      <Route path="/dealers" element={<DealersPage />} />
+      <Route path="/dealers/:id" element={<DealerDetailPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/favorites" element={<FavoritesPage />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contacts" element={<Contacts />} />
+      
+      {/* Dealer Routes */}
+      <Route 
+        path="/dealer/dashboard" 
+        element={
+          <DealerRoute>
+            <DealerDashboard />
+          </DealerRoute>
+        } 
+      />
+      <Route 
+        path="/dealer/vehicles/create" 
+        element={
+          <DealerRoute>
+            <CreateVehiclePage />
+          </DealerRoute>
+        } 
+      />
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
       <div className="App">
         <BrowserRouter>
           <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/catalog" element={<CatalogPage />} />
-            <Route path="/vehicles/:id" element={<VehicleDetailPage />} />
-            <Route path="/dealers" element={<DealersPage />} />
-            <Route path="/dealers/:id" element={<DealersPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contacts" element={<Contacts />} />
-          </Routes>
+          <AppRoutes />
           <Footer />
         </BrowserRouter>
       </div>
