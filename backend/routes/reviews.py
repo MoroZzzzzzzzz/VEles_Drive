@@ -40,6 +40,7 @@ class DealerRatingStats(BaseModel):
 @router.post("/", response_model=dict)
 async def create_review(
     review: ReviewCreate,
+    background_tasks: BackgroundTasks,
     current_user: dict = Depends(get_current_user)
 ):
     """Создать отзыв о дилере"""
@@ -85,6 +86,22 @@ async def create_review(
         
         # Обновляем рейтинг дилера
         await update_dealer_rating(review.dealer_id)
+        
+        # Отправляем email уведомление дилеру в фоне
+        dealer_user = await db.db.users.find_one({"id": dealer["user_id"]})
+        if dealer_user and dealer_user.get("email"):
+            reviewer_name = f"{current_user.first_name} {current_user.last_name}".strip()
+            dealer_name = dealer.get("company_name", "Дилер")
+            
+            background_tasks.add_task(
+                email_service.send_new_review_notification,
+                dealer_user["email"],
+                dealer_name,
+                reviewer_name or "Анонимный пользователь",
+                review.rating,
+                review.title,
+                review.comment
+            )
         
         return {
             "success": True,
