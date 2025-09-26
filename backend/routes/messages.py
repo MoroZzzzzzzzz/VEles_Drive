@@ -78,7 +78,7 @@ async def send_message(
 async def get_conversations(current_user: dict = Depends(get_current_user)):
     """Получить список всех разговоров пользователя"""
     try:
-        user_id = current_user["id"]
+        user_id = current_user.id
         
         # Агрегация для получения разговоров
         pipeline = [
