@@ -80,7 +80,7 @@ async def create_review(
             "updated_at": datetime.utcnow()
         }
         
-        await db.reviews.insert_one(review_doc)
+        await db.db.reviews.insert_one(review_doc)
         
         # Обновляем рейтинг дилера
         await update_dealer_rating(review.dealer_id)
