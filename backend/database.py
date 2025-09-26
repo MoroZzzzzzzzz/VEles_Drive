@@ -100,17 +100,17 @@ class Database:
             filter_dict["is_featured"] = search_params.is_featured
 
         # Sorting
-        sort_dict = {}
+        sort_dict = []
         if search_params.sort_by == "price_asc":
-            sort_dict = {"price": 1}
+            sort_dict = [("price", 1)]
         elif search_params.sort_by == "price_desc":
-            sort_dict = {"price": -1}
+            sort_dict = [("price", -1)]
         elif search_params.sort_by == "date_desc":
-            sort_dict = {"created_at": -1}
+            sort_dict = [("created_at", -1)]
         elif search_params.sort_by == "views_desc":
-            sort_dict = {"views_count": -1}
+            sort_dict = [("views_count", -1)]
         else:
-            sort_dict = {"created_at": -1}  # Default sort
+            sort_dict = [("created_at", -1)]  # Default sort
 
         # Count total documents
         total_count = await self.db.vehicles.count_documents(filter_dict)
