@@ -546,25 +546,386 @@ class VelesDriveAPITester:
         
         return results
 
+    def test_messages_system(self) -> Dict[str, Any]:
+        """Test message system endpoints"""
+        results = {}
+        
+        print("💬 Testing Messages System...")
+        
+        # First ensure we have both users registered and logged in
+        if not self.test_user_id or not self.test_dealer_id:
+            results["setup_error"] = {
+                "status": "❌ FAIL",
+                "error": "Users not properly set up for message testing"
+            }
+            return results
+        
+        # Login as buyer first
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["buyer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as buyer for message testing"
+            }
+            return results
+        
+        buyer_token = result.get("data", {}).get("access_token")
+        
+        # Test 1: Send message from buyer to dealer
+        print("  Testing POST /api/messages/ (buyer to dealer)")
+        message_data = {
+            "recipient_id": self.test_dealer_id,
+            "content": "Здравствуйте! Интересует BMW X7. Можете рассказать подробнее?",
+            "message_type": "text"
+        }
+        
+        self.auth_token = buyer_token
+        result = self.make_request("POST", "/messages/", data=message_data)
+        results["send_message_buyer_to_dealer"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 2: Get unread count for dealer
+        print("  Testing GET /api/messages/unread/count (dealer)")
+        dealer_login_data = {
+            "email": self.test_dealer_data["email"],
+            "password": self.test_dealer_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
+        
+        if result.get("status_code") == 200:
+            dealer_token = result.get("data", {}).get("access_token")
+            self.auth_token = dealer_token
+            
+            result = self.make_request("GET", "/messages/unread/count")
+            results["unread_count_dealer"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            # Test 3: Get conversations for dealer
+            print("  Testing GET /api/messages/conversations (dealer)")
+            result = self.make_request("GET", "/messages/conversations")
+            results["conversations_dealer"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            # Test 4: Get messages with specific user
+            print("  Testing GET /api/messages/{user_id} (dealer reading buyer messages)")
+            result = self.make_request("GET", f"/messages/{self.test_user_id}")
+            results["messages_with_user"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            # Test 5: Send reply from dealer to buyer
+            print("  Testing POST /api/messages/ (dealer reply)")
+            reply_data = {
+                "recipient_id": self.test_user_id,
+                "content": "Добро пожаловать! BMW X7 - отличный выбор. Цена 8.5 млн руб. Хотите записаться на тест-драйв?",
+                "message_type": "text"
+            }
+            
+            result = self.make_request("POST", "/messages/", data=reply_data)
+            results["send_reply_dealer_to_buyer"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+        
+        return results
+
+    def test_reviews_system(self) -> Dict[str, Any]:
+        """Test review system endpoints"""
+        results = {}
+        
+        print("⭐ Testing Reviews System...")
+        
+        # Ensure we have dealer profile created
+        if not self.test_dealer_id:
+            results["setup_error"] = {
+                "status": "❌ FAIL",
+                "error": "Dealer profile not set up for review testing"
+            }
+            return results
+        
+        # Login as buyer to create review
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["buyer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as buyer for review testing"
+            }
+            return results
+        
+        buyer_token = result.get("data", {}).get("access_token")
+        self.auth_token = buyer_token
+        
+        # Test 1: Create review about dealer
+        print("  Testing POST /api/reviews/ (create review)")
+        review_data = {
+            "dealer_id": self.test_dealer_id,
+            "rating": 5,
+            "title": "Отличный сервис и качество!",
+            "comment": "Покупал BMW X7 у этого дилера. Очень доволен обслуживанием, профессиональный подход, быстрое оформление документов. Рекомендую!",
+            "pros": ["Профессиональная консультация", "Быстрое оформление", "Качественный сервис"],
+            "cons": ["Немного высокие цены", "Долгое ожидание тест-драйва"]
+        }
+        
+        result = self.make_request("POST", "/reviews/", data=review_data)
+        results["create_review"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        review_id = None
+        if result.get("status_code") == 200:
+            review_id = result.get("data", {}).get("review_id")
+        
+        # Test 2: Get dealer reviews
+        print("  Testing GET /api/reviews/dealer/{dealer_id}")
+        result = self.make_request("GET", f"/reviews/dealer/{self.test_dealer_id}")
+        results["get_dealer_reviews"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 3: Get dealer rating stats
+        print("  Testing GET /api/reviews/dealer/{dealer_id}/stats")
+        result = self.make_request("GET", f"/reviews/dealer/{self.test_dealer_id}/stats")
+        results["get_dealer_stats"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 4: Get user's own reviews
+        print("  Testing GET /api/reviews/user")
+        result = self.make_request("GET", "/reviews/user")
+        results["get_user_reviews"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 5: Try to create duplicate review (should fail)
+        print("  Testing POST /api/reviews/ (duplicate review - should fail)")
+        result = self.make_request("POST", "/reviews/", data=review_data)
+        results["duplicate_review"] = {
+            "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 400 - duplicate review not allowed"
+        }
+        
+        # Test 6: Delete review
+        if review_id:
+            print("  Testing DELETE /api/reviews/{review_id}")
+            result = self.make_request("DELETE", f"/reviews/{review_id}")
+            results["delete_review"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+        
+        # Test 7: Dealer trying to review themselves (should fail)
+        print("  Testing dealer self-review (should fail)")
+        dealer_login_data = {
+            "email": self.test_dealer_data["email"],
+            "password": self.test_dealer_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
+        
+        if result.get("status_code") == 200:
+            dealer_token = result.get("data", {}).get("access_token")
+            self.auth_token = dealer_token
+            
+            self_review_data = {
+                "dealer_id": self.test_dealer_id,
+                "rating": 5,
+                "title": "Отличная работа!",
+                "comment": "Мы работаем отлично!"
+            }
+            
+            result = self.make_request("POST", "/reviews/", data=self_review_data)
+            results["dealer_self_review"] = {
+                "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error"),
+                "expected": "Should return 400 - dealers cannot review themselves"
+            }
+        
+        return results
+
+    def test_complete_workflow(self) -> Dict[str, Any]:
+        """Test complete workflow: users, dealer profile, messages, reviews"""
+        results = {}
+        
+        print("🔄 Testing Complete Workflow...")
+        
+        # This test combines all the functionality in a realistic scenario
+        # Step 1: Buyer sends message about vehicle interest
+        # Step 2: Dealer responds
+        # Step 3: After interaction, buyer leaves review
+        # Step 4: Check all stats and lists
+        
+        # Login as buyer
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["workflow_setup_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not setup workflow test"
+            }
+            return results
+        
+        buyer_token = result.get("data", {}).get("access_token")
+        
+        # Step 1: Send inquiry message with vehicle reference
+        print("  Step 1: Buyer sends vehicle inquiry...")
+        self.auth_token = buyer_token
+        inquiry_data = {
+            "recipient_id": self.test_dealer_id,
+            "vehicle_id": self.test_vehicle_id,
+            "content": "Добрый день! Интересует BMW X7 из вашего каталога. Возможна ли скидка? Какие есть варианты финансирования?",
+            "message_type": "text"
+        }
+        
+        result = self.make_request("POST", "/messages/", data=inquiry_data)
+        results["workflow_inquiry"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Step 2: Dealer responds with offer
+        print("  Step 2: Dealer responds with offer...")
+        dealer_login_data = {
+            "email": self.test_dealer_data["email"],
+            "password": self.test_dealer_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
+        
+        if result.get("status_code") == 200:
+            dealer_token = result.get("data", {}).get("access_token")
+            self.auth_token = dealer_token
+            
+            offer_data = {
+                "recipient_id": self.test_user_id,
+                "vehicle_id": self.test_vehicle_id,
+                "content": "Здравствуйте! По BMW X7 могу предложить скидку 200 тыс. руб. Есть программы кредитования от 3.9%. Приезжайте на тест-драйв!",
+                "message_type": "offer"
+            }
+            
+            result = self.make_request("POST", "/messages/", data=offer_data)
+            results["workflow_offer"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+        
+        # Step 3: Check conversation from buyer side
+        print("  Step 3: Buyer checks conversation...")
+        self.auth_token = buyer_token
+        result = self.make_request("GET", "/messages/conversations")
+        results["workflow_buyer_conversations"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Step 4: Buyer leaves positive review after good interaction
+        print("  Step 4: Buyer leaves review after interaction...")
+        final_review_data = {
+            "dealer_id": self.test_dealer_id,
+            "rating": 4,
+            "title": "Хорошее обслуживание и адекватные цены",
+            "comment": "Дилер быстро ответил на вопросы, предложил хорошие условия. Планирую покупку.",
+            "pros": ["Быстрый ответ", "Хорошие условия кредитования", "Профессиональная консультация"],
+            "cons": ["Хотелось бы больше скидку"]
+        }
+        
+        result = self.make_request("POST", "/reviews/", data=final_review_data)
+        results["workflow_final_review"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Step 5: Check updated dealer stats
+        print("  Step 5: Check updated dealer statistics...")
+        result = self.make_request("GET", f"/reviews/dealer/{self.test_dealer_id}/stats")
+        results["workflow_updated_stats"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        return results
+
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all test suites"""
-        print("🚀 Starting VELES DRIVE Backend API Tests - ERP Edition")
+        print("🚀 Starting VELES DRIVE Backend API Tests - Messages & Reviews Edition")
         print(f"📍 Testing against: {self.base_url}")
         print("=" * 60)
         
         all_results = {}
         
-        # Run test suites
+        # Run existing test suites
         all_results["health_checks"] = self.test_health_endpoints()
         all_results["vehicle_endpoints"] = self.test_vehicle_endpoints()
         all_results["dealer_endpoints"] = self.test_dealers_endpoints()
         all_results["authentication"] = self.test_auth_endpoints()
         all_results["authenticated_operations"] = self.test_authenticated_vehicle_creation()
         
-        # NEW ERP TESTS
+        # ERP TESTS
         all_results["erp_dealer_workflow"] = self.test_erp_dealer_workflow()
         all_results["erp_access_control"] = self.test_erp_access_control()
         all_results["erp_integration"] = self.test_erp_integration()
+        
+        # NEW TESTS - Messages and Reviews
+        all_results["messages_system"] = self.test_messages_system()
+        all_results["reviews_system"] = self.test_reviews_system()
+        all_results["complete_workflow"] = self.test_complete_workflow()
         
         all_results["additional_scenarios"] = self.test_additional_scenarios()
         
