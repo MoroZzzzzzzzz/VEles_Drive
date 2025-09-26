@@ -296,6 +296,14 @@ export const Header = () => {
           onOpenChange={setIsMessagesModalOpen}
         />
       )}
+      
+      {/* Compare Modal */}
+      {isAuthenticated && (
+        <CompareModal 
+          open={isCompareModalOpen} 
+          onOpenChange={setIsCompareModalOpen}
+        />
+      )}
     </>
   );
 };
