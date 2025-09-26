@@ -309,6 +309,90 @@ backend:
           agent: "testing"
           comment: "✅ Invalid login credentials properly return 401. JWT token validation working. Minor: Some edge cases with missing tokens return 200 instead of 403, but core auth flow secure."
 
+  - task: "Messages API - Send Messages"
+    implemented: true
+    working: true
+    file: "backend/routes/messages.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/messages/ working correctly. Buyer can send messages to dealer. Message creation, recipient validation, and database storage all functioning properly. Returns proper success response with message_id."
+
+  - task: "Messages API - Unread Count"
+    implemented: true
+    working: true
+    file: "backend/routes/messages.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/messages/unread/count working correctly. Properly counts unread messages for authenticated users. Tested with dealer receiving message from buyer - count incremented correctly to 1."
+
+  - task: "Messages API - Conversations"
+    implemented: true
+    working: true
+    file: "backend/routes/messages.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/messages/conversations working correctly. Returns proper conversation list with user details, last message info, and unread counts. Aggregation pipeline functioning properly."
+
+  - task: "Reviews API - Create Reviews"
+    implemented: true
+    working: true
+    file: "backend/routes/reviews.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/reviews/ working correctly. Buyer can create reviews about dealers. Proper validation: dealer existence check, self-review prevention, duplicate review prevention, rating validation (1-5). Returns success with review_id."
+
+  - task: "Reviews API - User Reviews"
+    implemented: true
+    working: true
+    file: "backend/routes/reviews.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/reviews/user working correctly. Returns authenticated user's reviews with proper data structure including dealer info. Tested with buyer's review - returned 1 review with correct details."
+
+  - task: "Reviews API - Dealer Reviews"
+    implemented: true
+    working: true
+    file: "backend/routes/reviews.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/reviews/dealer/{dealer_id} working correctly. Returns reviews for specific dealer with pagination support. Handles non-existent dealers gracefully by returning empty list."
+
+  - task: "Reviews API - Dealer Statistics"
+    implemented: true
+    working: true
+    file: "backend/routes/reviews.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/reviews/dealer/{dealer_id}/stats working correctly. Returns proper rating statistics including average_rating, total_reviews, and rating_distribution. Handles non-existent dealers with zero stats."
+
 frontend:
   - task: "Main Page Loading and UI Components"
     implemented: true
