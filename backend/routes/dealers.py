@@ -120,7 +120,7 @@ async def get_dealer_vehicles(
         )
     
     # Search for dealer's vehicles
-    from ..models import VehicleSearch
+    from models import VehicleSearch
     search_params = VehicleSearch(page=page, limit=limit)
     
     # Modify the search to filter by dealer_id
