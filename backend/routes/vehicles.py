@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, status, Depends, Query
 from typing import List, Optional
-from ..models import (
+from models import (
     Vehicle, VehicleCreate, VehicleUpdate, VehicleSearch, 
     VehicleCategory, VehicleCondition, User
 )
-from ..auth import get_current_active_user, get_dealer_user
-from ..database import db
+from auth import get_current_active_user, get_dealer_user
+from database import db
 
 router = APIRouter(prefix="/vehicles", tags=["Vehicles"])
 
