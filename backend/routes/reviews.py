@@ -174,7 +174,7 @@ async def get_user_reviews(current_user: dict = Depends(get_current_user)):
     """Получить отзывы текущего пользователя"""
     try:
         reviews = []
-        async for review in db.db.reviews.find({"user_id": current_user["id"]}).sort("created_at", -1):
+        async for review in db.db.reviews.find({"user_id": current_user.id}).sort("created_at", -1):
             # Получаем данные дилера
             dealer = await db.db.dealers.find_one({"id": review["dealer_id"]})
             dealer_name = dealer.get("company_name", "Неизвестный дилер") if dealer else "Неизвестный дилер"
