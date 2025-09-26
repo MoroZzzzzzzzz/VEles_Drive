@@ -216,7 +216,7 @@ async def delete_review(
         dealer_id = review["dealer_id"]
         
         # Удаляем отзыв
-        await db.reviews.delete_one({"id": review_id})
+        await db.db.reviews.delete_one({"id": review_id})
         
         # Обновляем рейтинг дилера
         await update_dealer_rating(dealer_id)
