@@ -399,7 +399,7 @@ class VelesDriveAPITester:
             dealer_profile_data = {
                 "company_name": "Тест Компания",
                 "description": "Тестовое описание",
-                "specialization": ["BMW"],
+                "specialization": "BMW",
                 "address": "Тестовый адрес",
                 "city": "Москва",
                 "phone": "+7-999-999-9999",
