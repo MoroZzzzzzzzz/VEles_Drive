@@ -77,6 +77,25 @@ const DealerRoute = ({ children }) => {
   return children;
 };
 
+// Protected Route for Admins
+const AdminRoute = ({ children }) => {
+  const { user, isLoading } = useAuth();
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black pt-20 flex items-center justify-center">
+        <div className="text-white text-lg">Загрузка...</div>
+      </div>
+    );
+  }
+  
+  if (!user || user.role !== 'admin') {
+    return <Navigate to="/" replace />;
+  }
+  
+  return children;
+};
+
 function AppRoutes() {
   return (
     <Routes>
