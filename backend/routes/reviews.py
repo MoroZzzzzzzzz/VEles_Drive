@@ -242,7 +242,7 @@ async def update_dealer_rating(dealer_id: str):
         ]
         
         result = None
-        async for item in db.reviews.aggregate(pipeline):
+        async for item in db.db.reviews.aggregate(pipeline):
             result = item
             break
         
