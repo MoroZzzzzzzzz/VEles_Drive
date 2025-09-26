@@ -344,3 +344,5 @@ test_plan:
 agent_communication:
     - agent: "testing"
       message: "Comprehensive backend API testing completed. Fixed critical issues: 1) bcrypt password hashing compatibility by implementing pbkdf2_sha256 fallback, 2) MongoDB sort syntax error in dealers endpoint, 3) Auth system database integration. All core APIs working correctly with 86.7% success rate (13/15 tests passed). Minor edge cases in auth don't affect core functionality."
+    - agent: "testing"
+      message: "Starting comprehensive frontend testing for VELES DRIVE. Will test: 1) Main page UI components, 2) Authentication system with login/register modals, 3) Backend API integration, 4) Mobile responsiveness, 5) Error handling. Using real test data: test@velesdrive.ru, testpass123, Тест, Пользователь."
