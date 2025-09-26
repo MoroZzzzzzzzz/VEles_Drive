@@ -56,6 +56,59 @@ async def get_vehicles(
         "total_pages": (total_count + limit - 1) // limit
     }
 
+@router.get("/categories", response_model=dict)
+async def get_categories():
+    """Get vehicle categories and their options"""
+    return {
+        "categories": [
+            {"value": "car", "label": "Автомобили"},
+            {"value": "motorcycle", "label": "Мотоциклы"},
+            {"value": "boat", "label": "Лодки"},
+            {"value": "helicopter", "label": "Вертолеты"},
+            {"value": "plane", "label": "Самолеты"}
+        ],
+        "body_types": [
+            "Седан", "Купе", "Кабриолет", "Хэтчбек", 
+            "Универсал", "Кроссовер", "Внедорожник"
+        ],
+        "fuel_types": [
+            "Бензин", "Дизель", "Гибрид", "Электро", "Газ"
+        ],
+        "transmissions": [
+            "Механическая", "Автоматическая", "Робот", "Вариатор"
+        ],
+        "conditions": [
+            {"value": "new", "label": "Новый"},
+            {"value": "used", "label": "С пробегом"}
+        ]
+    }
+
+@router.get("/search/suggestions")
+async def get_search_suggestions(q: str = Query(..., min_length=2)):
+    """Get search suggestions for makes and models"""
+    # This could be enhanced with proper text search indexes
+    # For now, return some basic suggestions
+    suggestions = {
+        "makes": [
+            "Aston Martin", "Audi", "Bentley", "BMW", "Bugatti", 
+            "Ferrari", "Jaguar", "Lamborghini", "McLaren", 
+            "Mercedes-Benz", "Porsche", "Rolls-Royce", "Tesla"
+        ],
+        "models": []
+    }
+    
+    # Filter makes by query
+    query_lower = q.lower()
+    filtered_makes = [
+        make for make in suggestions["makes"] 
+        if query_lower in make.lower()
+    ]
+    
+    return {
+        "makes": filtered_makes[:10],
+        "models": []
+    }
+
 @router.get("/{vehicle_id}", response_model=Vehicle)
 async def get_vehicle(vehicle_id: str):
     """Get vehicle by ID"""
