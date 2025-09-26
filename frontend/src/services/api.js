@@ -197,4 +197,32 @@ export const messagesAPI = {
   }
 };
 
+// Reviews API
+export const reviewsAPI = {
+  createReview: async (reviewData) => {
+    const response = await api.post('/reviews/', reviewData);
+    return response.data;
+  },
+
+  getDealerReviews: async (dealerId) => {
+    const response = await api.get(`/reviews/dealer/${dealerId}`);
+    return response.data;
+  },
+
+  getDealerStats: async (dealerId) => {
+    const response = await api.get(`/reviews/dealer/${dealerId}/stats`);
+    return response.data;
+  },
+
+  getUserReviews: async () => {
+    const response = await api.get('/reviews/user');
+    return response.data;
+  },
+
+  deleteReview: async (reviewId) => {
+    const response = await api.delete(`/reviews/${reviewId}`);
+    return response.data;
+  }
+};
+
 export default api;
