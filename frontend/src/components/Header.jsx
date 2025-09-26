@@ -270,6 +270,14 @@ export const Header = () => {
         open={isLoginModalOpen} 
         onOpenChange={setIsLoginModalOpen} 
       />
+      
+      {/* Messages Modal */}
+      {isAuthenticated && (
+        <MessagesModal 
+          open={isMessagesModalOpen} 
+          onOpenChange={setIsMessagesModalOpen}
+        />
+      )}
     </>
   );
 };
