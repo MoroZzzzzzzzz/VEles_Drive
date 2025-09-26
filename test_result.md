@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Протестируй frontend VELES DRIVE со следующими сценариями: базовая функциональность UI, система аутентификации, интеграция с Backend API, адаптивность и UX, обработка ошибок"
+user_problem_statement: "Протестируй обновленный backend API VELES DRIVE со следующими новыми функциями: ERP функции (POST /api/dealers/, GET /api/dealers/{dealer_id}/vehicles, POST /api/vehicles/), полный workflow дилера, интеграционные тесты, обновленные API endpoints"
 
 backend:
   - task: "Health Check API"
