@@ -135,6 +135,21 @@ export const Header = () => {
                       </span>
                     )}
                   </Button>
+                  
+                  {/* Compare */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setIsCompareModalOpen(true)}
+                    className="text-gray-300 hover:text-white relative"
+                  >
+                    <ArrowLeftRight className="h-5 w-5" />
+                    {comparisonCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {comparisonCount}
+                      </span>
+                    )}
+                  </Button>
                 </>
               )}
 
