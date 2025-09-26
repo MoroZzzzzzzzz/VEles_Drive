@@ -44,7 +44,7 @@ async def create_review(
     """Создать отзыв о дилере"""
     try:
         # Проверяем что дилер существует
-        dealer = await db.dealers.find_one({"id": review.dealer_id})
+        dealer = await db.db.dealers.find_one({"id": review.dealer_id})
         if not dealer:
             raise HTTPException(status_code=404, detail="Дилер не найден")
         
