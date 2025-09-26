@@ -210,7 +210,7 @@ async def delete_review(
             raise HTTPException(status_code=404, detail="Отзыв не найден")
         
         # Проверяем права доступа
-        if review["user_id"] != current_user["id"] and current_user["role"] != "admin":
+        if review["user_id"] != current_user.id and current_user.role != "admin":
             raise HTTPException(status_code=403, detail="Недостаточно прав")
         
         dealer_id = review["dealer_id"]
