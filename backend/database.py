@@ -164,7 +164,7 @@ class Database:
         total_count = await self.db.dealers.count_documents({"verification_status": "verified"})
         
         skip = (page - 1) * limit
-        cursor = self.db.dealers.find({"verification_status": "verified"}).sort({"rating": -1}).skip(skip).limit(limit)
+        cursor = self.db.dealers.find({"verification_status": "verified"}).sort([("rating", -1)]).skip(skip).limit(limit)
         
         dealers_data = await cursor.to_list(length=limit)
         dealers = [Dealer(**dealer_data) for dealer_data in dealers_data]
