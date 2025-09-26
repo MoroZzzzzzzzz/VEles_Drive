@@ -156,7 +156,7 @@ async def get_messages_with_user(
 ):
     """Получить все сообщения с конкретным пользователем"""
     try:
-        current_user_id = current_user["id"]
+        current_user_id = current_user.id
         
         # Получаем все сообщения между пользователями
         messages = []
