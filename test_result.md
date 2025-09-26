@@ -351,16 +351,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Main Page Loading and UI Components"
-    - "Authentication System - Login Modal"
-    - "User Registration Flow"
-    - "User Login and Profile Display"
-    - "Backend API Integration"
     - "Mobile Responsiveness and UX"
     - "Error Handling and Validation"
-  stuck_tasks: []
-  test_all: true
-  test_priority: "high_first"
+  stuck_tasks:
+    - "Mobile Responsiveness and UX"
+    - "Error Handling and Validation"
+  test_all: false
+  test_priority: "stuck_first"
 
 agent_communication:
     - agent: "testing"
