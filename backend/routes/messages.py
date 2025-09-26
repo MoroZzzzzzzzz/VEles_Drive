@@ -45,7 +45,7 @@ async def send_message(
     """Отправить сообщение"""
     try:
         # Проверяем, что получатель существует
-        recipient = await db.users.find_one({"id": message.recipient_id})
+        recipient = await db.db.users.find_one({"id": message.recipient_id})
         if not recipient:
             raise HTTPException(status_code=404, detail="Получатель не найден")
         
