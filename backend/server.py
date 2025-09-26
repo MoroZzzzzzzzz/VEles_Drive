@@ -33,6 +33,7 @@ api_router.include_router(vehicles_router)
 api_router.include_router(dealers_router)
 api_router.include_router(favorites_router)
 api_router.include_router(messages_router)
+api_router.include_router(reviews_router)
 
 # Health check endpoint
 @api_router.get("/")
