@@ -41,6 +41,7 @@ class ConversationResponse(BaseModel):
 @router.post("/", response_model=dict)
 async def send_message(
     message: MessageCreate,
+    background_tasks: BackgroundTasks,
     current_user: dict = Depends(get_current_user)
 ):
     """Отправить сообщение"""
@@ -66,6 +67,32 @@ async def send_message(
         
         await db.db.messages.insert_one(message_doc)
         
+        # Отправляем email уведомление в фоне
+        sender_name = f"{current_user.first_name} {current_user.last_name}".strip()
+        recipient_name = f"{recipient.get('first_name', '')} {recipient.get('last_name', '')}".strip()
+        
+        # Получаем информацию об автомобиле если есть
+        vehicle_info = None
+        if message.vehicle_id:
+            vehicle = await db.db.vehicles.find_one({"id": message.vehicle_id})
+            if vehicle:
+                vehicle_info = {
+                    "make": vehicle.get("make", ""),
+                    "model": vehicle.get("model", ""),
+                    "year": vehicle.get("year", ""),
+                    "price_formatted": f"{vehicle.get('price', 0):,} ₽"
+                }
+        
+        # Добавляем email уведомление в фоновые задачи
+        background_tasks.add_task(
+            email_service.send_new_message_notification,
+            recipient.get("email"),
+            recipient_name or "Пользователь",
+            sender_name or "Анонимный пользователь",
+            message.content[:100],  # Превью сообщения
+            vehicle_info
+        )
+        
         return {
             "success": True,
             "message_id": message_id,
@@ -73,6 +100,8 @@ async def send_message(
         }
         
     except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
         raise HTTPException(status_code=500, detail=f"Ошибка отправки сообщения: {str(e)}")
 
 @router.get("/conversations", response_model=List[ConversationResponse])
