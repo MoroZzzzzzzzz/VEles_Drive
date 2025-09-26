@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { Search, User, Heart, Menu, X, Car, Phone, MapPin, LogOut } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, User, Heart, Menu, X, Car, Phone, MapPin, LogOut, MessageCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { LoginModal } from './Auth/LoginModal';
+import { MessagesModal } from './Messages/MessagesModal';
 import { Link, useNavigate } from 'react-router-dom';
+import { messagesAPI } from '../services/api';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
