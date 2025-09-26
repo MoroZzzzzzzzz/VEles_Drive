@@ -168,7 +168,7 @@ async def get_messages_with_user(
         }).sort("created_at", 1):
             
             # Получаем данные отправителя
-            sender = await db.users.find_one({"id": message["sender_id"]})
+            sender = await db.db.users.find_one({"id": message["sender_id"]})
             sender_name = f"{sender.get('first_name', '')} {sender.get('last_name', '')}".strip() if sender else "Unknown"
             sender_role = sender.get("role", "buyer") if sender else "buyer"
             
