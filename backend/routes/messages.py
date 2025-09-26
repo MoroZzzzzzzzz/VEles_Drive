@@ -210,7 +210,7 @@ async def mark_message_as_read(
         result = await db.db.messages.update_one(
             {
                 "id": message_id,
-                "recipient_id": current_user["id"]
+                "recipient_id": current_user.id
             },
             {"$set": {"is_read": True}}
         )
