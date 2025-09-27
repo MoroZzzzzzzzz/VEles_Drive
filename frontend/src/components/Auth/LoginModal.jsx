@@ -300,8 +300,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     placeholder="Минимум 6 символов"
                     value={registerValidation.values.password}
                     onChange={(e) => registerValidation.setValue('password', e.target.value)}
+                    onBlur={() => registerValidation.setFieldTouched('password')}
                     className="pl-10 pr-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
-                    required
                   />
                   <button
                     type="button"
