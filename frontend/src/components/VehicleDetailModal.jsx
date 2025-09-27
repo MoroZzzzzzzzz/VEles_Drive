@@ -380,6 +380,29 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
           </div>
         </div>
       </DialogContent>
+
+      {/* VIN Scanner Modal */}
+      <VinScanner
+        isOpen={showVinScanner}
+        onClose={() => setShowVinScanner(false)}
+        onVinDecoded={(vin, history) => {
+          console.log('VIN decoded:', vin, history);
+          setShowVinScanner(false);
+        }}
+      />
+
+      {/* Chat Window */}
+      {showChat && (
+        <ChatWindow
+          conversation={{
+            id: `chat_${vehicle.id}`,
+            participant: { name: vehicle.dealer },
+            vehicle: vehicle
+          }}
+          isOpen={showChat}
+          onClose={() => setShowChat(false)}
+        />
+      )}
     </Dialog>
   );
 };
