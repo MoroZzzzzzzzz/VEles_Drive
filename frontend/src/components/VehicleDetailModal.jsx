@@ -86,7 +86,7 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-full bg-gray-900 border-gray-800 p-0 max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-4xl w-full bg-gray-900 border-gray-800 p-0 max-h-[95vh] overflow-y-auto">
         {/* Close button */}
         <button 
           onClick={() => onOpenChange(false)}
