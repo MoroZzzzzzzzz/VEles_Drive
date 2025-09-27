@@ -131,37 +131,37 @@ export const HeroSection = () => {
 
             {/* Цена от */}
             <div className="space-y-2">
-              <label className="text-white text-sm font-medium">Цена от</label>
+              <label className="text-orange-200 text-sm font-medium">Цена от</label>
               <Input 
                 type="number"
                 placeholder="от"
                 value={searchParams.priceFrom}
                 onChange={(e) => setSearchParams(prev => ({ ...prev, priceFrom: e.target.value }))}
-                className="bg-white/90 border-0 h-12 text-gray-900 placeholder:text-gray-500"
+                className="bg-white/95 border border-orange-300/20 h-12 text-gray-900 placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400/20"
               />
             </div>
 
             {/* Цена до */}
             <div className="space-y-2">
-              <label className="text-white text-sm font-medium">до</label>
+              <label className="text-orange-200 text-sm font-medium">до</label>
               <Input 
                 type="number"
                 placeholder="до"
                 value={searchParams.priceTo}
                 onChange={(e) => setSearchParams(prev => ({ ...prev, priceTo: e.target.value }))}
-                className="bg-white/90 border-0 h-12 text-gray-900 placeholder:text-gray-500"
+                className="bg-white/95 border border-orange-300/20 h-12 text-gray-900 placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400/20"
               />
             </div>
 
             {/* Год выпуска */}
             <div className="space-y-2">
-              <label className="text-white text-sm font-medium">Год выпуска</label>
+              <label className="text-orange-200 text-sm font-medium">Год выпуска</label>
               <Input 
                 type="number"
                 placeholder="Год"
                 value={searchParams.year}
                 onChange={(e) => setSearchParams(prev => ({ ...prev, year: e.target.value }))}
-                className="bg-white/90 border-0 h-12 text-gray-900 placeholder:text-gray-500"
+                className="bg-white/95 border border-orange-300/20 h-12 text-gray-900 placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400/20"
               />
             </div>
           </div>
