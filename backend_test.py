@@ -1701,6 +1701,97 @@ class VelesDriveAPITester:
         
         return results
 
+    def test_smoke_endpoints_post_logo_changes(self) -> Dict[str, Any]:
+        """Quick smoke test of main API endpoints after logo and UI changes"""
+        results = {}
+        
+        print("🔥 SMOKE TEST: Post-Logo Changes System Verification")
+        print("Testing core endpoints to ensure backend functionality after design updates...")
+        print("=" * 80)
+        
+        # Test 1: Health Check - GET /api/health
+        print("🔍 Test 1: Health Check Endpoint")
+        result = self.make_request("GET", "/health")
+        results["health_check"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        print(f"   GET /api/health: {results['health_check']['status']} ({result.get('status_code')})")
+        
+        # Test 2: Vehicle Categories - GET /api/vehicles/categories
+        print("\n🚗 Test 2: Vehicle Categories API")
+        result = self.make_request("GET", "/vehicles/categories")
+        results["vehicle_categories"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        print(f"   GET /api/vehicles/categories: {results['vehicle_categories']['status']} ({result.get('status_code')})")
+        
+        # Test 3: Authentication - POST /api/auth/login with test@velesdrive.ru / testpass123
+        print("\n🔐 Test 3: Authentication with test@velesdrive.ru")
+        
+        # First ensure test user exists
+        veles_test_user = {
+            "email": "test@velesdrive.ru",
+            "password": "testpass123",
+            "first_name": "Тест",
+            "last_name": "Пользователь",
+            "role": "buyer"
+        }
+        
+        # Try to register (will fail if user exists, which is fine)
+        register_result = self.make_request("POST", "/auth/register", data=veles_test_user)
+        
+        # Now test login
+        login_data = {
+            "email": "test@velesdrive.ru",
+            "password": "testpass123"
+        }
+        result = self.make_request("POST", "/auth/login", data=login_data)
+        results["authentication"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "has_token": "access_token" in result.get("data", {}) if result.get("status_code") == 200 else False
+        }
+        print(f"   POST /api/auth/login: {results['authentication']['status']} ({result.get('status_code')})")
+        if results["authentication"]["has_token"]:
+            print("   ✅ JWT token received successfully")
+        
+        # Test 4: Dealers List - GET /api/dealers/
+        print("\n🏢 Test 4: Dealers List API")
+        result = self.make_request("GET", "/dealers/")
+        results["dealers_list"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        print(f"   GET /api/dealers/: {results['dealers_list']['status']} ({result.get('status_code')})")
+        
+        # Summary
+        print("\n" + "="*80)
+        print("📊 SMOKE TEST SUMMARY:")
+        passed_tests = sum(1 for r in results.values() if r.get("status") == "✅ PASS")
+        total_tests = len(results)
+        print(f"   ✅ Passed: {passed_tests}/{total_tests} tests")
+        
+        if passed_tests == total_tests:
+            print("   🎉 ALL SMOKE TESTS PASSED - Backend functionality intact after logo changes!")
+        else:
+            print("   ⚠️  Some tests failed - Backend may have issues after changes")
+            
+        for test_name, test_result in results.items():
+            status_icon = "✅" if test_result.get("status") == "✅ PASS" else "❌"
+            print(f"   {status_icon} {test_name.replace('_', ' ').title()}: {test_result.get('status_code')}")
+        
+        return results
+
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all test suites"""
         print("🚀 Starting VELES DRIVE Backend API Tests - Payments & Leads Edition")
