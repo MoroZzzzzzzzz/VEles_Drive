@@ -181,7 +181,7 @@ export const FeaturedCars = () => {
                     size="sm"
                     variant="ghost"
                     disabled={loadingActions[`favorite_${car.id}`]}
-                    className="h-10 w-10 rounded-full bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 hover:text-red-400 transition-colors disabled:opacity-50"
+                    className="h-10 w-10 rounded-full bg-black/70 backdrop-blur-md border border-orange-500/30 text-orange-300 hover:bg-orange-500 hover:text-white transition-all duration-300 disabled:opacity-50 shadow-lg"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleFavorite(car.id);
