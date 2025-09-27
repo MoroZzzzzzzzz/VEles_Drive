@@ -8,6 +8,7 @@ import { FeaturedCars } from "./components/FeaturedCars";
 import { TopDealers } from "./components/TopDealers";
 import { Features } from "./components/Features";
 import { Footer } from "./components/Footer";
+import { Toaster } from "./components/ui/toaster";
 
 // Import pages
 import { CatalogPage } from "./pages/CatalogPage";
