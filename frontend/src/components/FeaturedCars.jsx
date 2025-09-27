@@ -268,7 +268,7 @@ export const FeaturedCars = () => {
                       e.stopPropagation();
                       handleCarClick(car);
                     }}
-                    className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white border-0"
+                    className="flex-1 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 hover:from-orange-600 hover:via-amber-600 hover:to-yellow-600 text-black font-bold border-0 shadow-lg hover:shadow-orange-500/30 transition-all duration-300"
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     Подробнее
