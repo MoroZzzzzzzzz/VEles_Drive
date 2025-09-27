@@ -375,7 +375,6 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
                   </div>
                 </div>
               )}
-            </div>
           </div>
         </div>
       </DialogContent>
