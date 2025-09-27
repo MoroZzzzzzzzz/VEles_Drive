@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calculator, DollarSign, Percent, Calendar, TrendingUp, Info, Bank } from 'lucide-react';
+import { Calculator, DollarSign, Percent, Calendar, TrendingUp, Info, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
