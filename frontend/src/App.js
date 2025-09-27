@@ -24,6 +24,10 @@ import { DealerDashboard } from "./pages/DealerDashboard";
 import { CreateVehiclePage } from "./pages/CreateVehiclePage";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { SearchPage } from "./pages/SearchPage";
+import { AboutPage } from "./pages/AboutPage";
+import { LeasingPage } from "./pages/LeasingPage";
+import { InsurancePage } from "./pages/InsurancePage";
+import { TradeInPage } from "./pages/TradeInPage";
 
 const Home = () => {
   return (
