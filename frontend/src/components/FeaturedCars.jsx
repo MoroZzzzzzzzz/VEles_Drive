@@ -10,14 +10,130 @@ import { favoritesAPI, messagesAPI, compareAPI } from '../services/api';
 import { useToast } from '../hooks/use-toast';
 
 export const FeaturedCars = () => {
-  const featuredCars = mockCars.filter(car => car.isFeatured).slice(0, 6);
+  const { isAuthenticated, user } = useAuth();
+  const { toast } = useToast();
+  const [featuredCars, setFeaturedCars] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [loadingActions, setLoadingActions] = useState({});
 
-  const handleCarClick = (carId) => {
-    console.log('Открыть автомобиль:', carId);
+  useEffect(() => {
+    // Enhance mock cars with dealer info
+    const enhancedCars = mockCars.filter(car => car.isFeatured).slice(0, 6).map(car => ({
+      ...car,
+      dealerInfo: {
+        name: car.dealer,
+        rating: Math.floor(Math.random() * 2) + 4, // 4-5 stars
+        reviewCount: Math.floor(Math.random() * 50) + 10,
+        address: car.location + ", улица Автомобильная, 123",
+        phone: "+7 (495) 123-45-67",
+        email: "info@dealer.ru",
+        workingHours: "Пн-Пт: 9:00-20:00, Сб-Вс: 10:00-18:00"
+      }
+    }));
+    setFeaturedCars(enhancedCars);
+  }, []);
+
+  const handleCarClick = (car) => {
+    setSelectedVehicle(car);
+    setIsDetailModalOpen(true);
   };
 
-  const handleFavorite = (carId) => {
-    console.log('Добавить в избранное:', carId);
+  const handleFavorite = async (carId) => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Требуется авторизация",
+        description: "Войдите в аккаунт для добавления в избранное",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoadingActions(prev => ({ ...prev, [`favorite_${carId}`]: true }));
+    
+    try {
+      await favoritesAPI.addToFavorites(carId);
+      toast({
+        title: "Добавлено в избранное",
+        description: "Автомобиль успешно добавлен в избранное",
+      });
+    } catch (error) {
+      console.error('Add to favorites error:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось добавить в избранное",
+        variant: "destructive"
+      });
+    } finally {
+      setLoadingActions(prev => ({ ...prev, [`favorite_${carId}`]: false }));
+    }
+  };
+
+  const handleCompare = async (carId) => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Требуется авторизация", 
+        description: "Войдите в аккаунт для добавления к сравнению",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoadingActions(prev => ({ ...prev, [`compare_${carId}`]: true }));
+    
+    try {
+      await compareAPI.addToCompare([carId]);
+      toast({
+        title: "Добавлено к сравнению",
+        description: "Автомобиль добавлен к списку сравнения",
+      });
+    } catch (error) {
+      console.error('Add to compare error:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось добавить к сравнению",
+        variant: "destructive"
+      });
+    } finally {
+      setLoadingActions(prev => ({ ...prev, [`compare_${carId}`]: false }));
+    }
+  };
+
+  const handleContact = async (vehicle) => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Требуется авторизация",
+        description: "Войдите в аккаунт для связи с продавцом",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoadingActions(prev => ({ ...prev, [`contact_${vehicle.id}`]: true }));
+    
+    try {
+      const message = `Здравствуйте! Интересует автомобиль ${vehicle.make} ${vehicle.model} ${vehicle.year} года. Можно узнать подробности?`;
+      await messagesAPI.sendMessage({
+        recipient_id: "dealer-id", // This should be the actual dealer ID
+        message: message,
+        vehicle_id: vehicle.id
+      });
+      
+      toast({
+        title: "Сообщение отправлено",
+        description: "Ваше сообщение отправлено продавцу",
+      });
+      setIsDetailModalOpen(false);
+    } catch (error) {
+      console.error('Send message error:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось отправить сообщение",
+        variant: "destructive"
+      });
+    } finally {
+      setLoadingActions(prev => ({ ...prev, [`contact_${vehicle.id}`]: false }));
+    }
   };
 
   return (
