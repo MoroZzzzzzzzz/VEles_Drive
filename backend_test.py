@@ -1714,6 +1714,10 @@ class VelesDriveAPITester:
         all_results["vehicle_endpoints"] = self.test_vehicle_endpoints()
         all_results["dealer_endpoints"] = self.test_dealers_endpoints()
         all_results["authentication"] = self.test_auth_endpoints()
+        
+        # DETAILED VELES DRIVE AUTH TEST (as requested)
+        all_results["veles_drive_auth_detailed"] = self.test_veles_drive_auth_detailed()
+        
         all_results["authenticated_operations"] = self.test_authenticated_vehicle_creation()
         
         # ERP TESTS
