@@ -1,4 +1,7 @@
 from fastapi import FastAPI, APIRouter
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+import httpx
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 import os
