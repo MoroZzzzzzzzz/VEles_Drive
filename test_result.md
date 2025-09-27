@@ -801,10 +801,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Vehicle Detail Modal UI"
-    - "Improved Form Validation"
-    - "Loading States and UX"
-    - "Mobile Responsiveness Check"
+    - "Modal Overlay Issues Resolution"
+    - "Vehicle Data Integration Testing"
+    - "Dealer Authentication Flow"
+    - "Complete End-to-End Testing"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
