@@ -39,6 +39,8 @@ const Home = () => {
         <FadeInUp delay={600}>
           <Features />
         </FadeInUp>
+        <StatsSection />
+        <CTASection />
       </main>
     </div>
   );
