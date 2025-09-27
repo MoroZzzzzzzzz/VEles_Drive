@@ -69,49 +69,27 @@ async def health_check():
 # Include the router in the main app
 app.include_router(api_router)
 
-# Proxy frontend requests
-@app.get("/")
-async def proxy_frontend_root():
-    """Proxy root requests to the frontend server"""
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get("http://localhost:3000/")
-            return HTMLResponse(content=response.text)
-    except Exception as e:
+# Serve React static files with SPA routing support
+frontend_build_path = os.path.join(os.path.dirname(__file__), "../frontend/build")
+if os.path.exists(frontend_build_path):
+    # Mount static files for built React app
+    app.mount("/static", StaticFiles(directory=f"{frontend_build_path}/static"), name="static")
+    
+    # Mount the React app with SPA routing support (must be last)
+    app.mount("/", SPAStaticFiles(directory=frontend_build_path, html=True), name="frontend")
+else:
+    # Fallback if build doesn't exist
+    @app.get("/")
+    async def frontend_fallback():
         return HTMLResponse(content="""
             <html>
                 <head><title>VELES DRIVE</title></head>
                 <body>
                     <h1>VELES DRIVE</h1>
-                    <p>Frontend service is starting...</p>
-                    <script>setTimeout(() => location.reload(), 2000);</script>
+                    <p>Frontend build not found. Run 'yarn build' in frontend directory.</p>
                 </body>
             </html>
         """)
-
-@app.get("/static/{path:path}")
-async def proxy_static(path: str):
-    """Proxy static file requests to the frontend server"""
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"http://localhost:3000/static/{path}")
-            
-            # Determine content type
-            if path.endswith('.js'):
-                content_type = "application/javascript"
-            elif path.endswith('.css'):
-                content_type = "text/css"
-            elif path.endswith('.png'):
-                content_type = "image/png"
-            elif path.endswith('.jpg') or path.endswith('.jpeg'):
-                content_type = "image/jpeg"
-            else:
-                content_type = "application/octet-stream"
-            
-            from fastapi import Response
-            return Response(content=response.content, media_type=content_type)
-    except Exception as e:
-        return {"error": "Static file not found"}
 
 # CORS middleware
 app.add_middleware(
