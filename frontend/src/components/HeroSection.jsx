@@ -113,7 +113,7 @@ export const HeroSection = () => {
                 <Select value={searchParams.bodyType} onValueChange={(value) => 
                   setSearchParams(prev => ({ ...prev, bodyType: value }))
                 }>
-                  <SelectTrigger className="bg-white/90 border-0 h-12 text-gray-900">
+                  <SelectTrigger className="bg-white/95 border border-orange-300/20 h-12 text-gray-900 focus:border-orange-400 focus:ring-orange-400/20">
                     <SelectValue placeholder="Тип кузова" />
                   </SelectTrigger>
                   <SelectContent>
