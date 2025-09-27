@@ -1009,14 +1009,14 @@ class VelesDriveAPITester:
         
         # Test 6: Create package payment
         print("  Testing POST /api/payments/packages/checkout")
-        package_data = {
+        package_params = {
             "package_id": "test_small",
             "success_url": "https://auto-dealership-5.preview.emergentagent.com/payment/success",
             "cancel_url": "https://auto-dealership-5.preview.emergentagent.com/payment/cancel",
             "metadata": {"test": "package_payment"}
         }
         
-        result = self.make_request("POST", "/payments/packages/checkout", data=package_data)
+        result = self.make_request("POST", "/payments/packages/checkout", params=package_params)
         results["create_package_payment"] = {
             "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
             "status_code": result.get("status_code"),
