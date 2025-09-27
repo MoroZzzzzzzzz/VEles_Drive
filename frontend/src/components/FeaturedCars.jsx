@@ -180,20 +180,34 @@ export const FeaturedCars = () => {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-10 w-10 rounded-full bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 hover:text-red-400 transition-colors"
+                    disabled={loadingActions[`favorite_${car.id}`]}
+                    className="h-10 w-10 rounded-full bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 hover:text-red-400 transition-colors disabled:opacity-50"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleFavorite(car.id);
                     }}
                   >
-                    <Heart className="h-4 w-4" />
+                    {loadingActions[`favorite_${car.id}`] ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Heart className="h-4 w-4" />
+                    )}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-10 w-10 rounded-full bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 transition-colors"
+                    disabled={loadingActions[`compare_${car.id}`]}
+                    className="h-10 w-10 rounded-full bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 transition-colors disabled:opacity-50"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCompare(car.id);
+                    }}
                   >
-                    <Eye className="h-4 w-4" />
+                    {loadingActions[`compare_${car.id}`] ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <ArrowLeftRight className="h-4 w-4" />
+                    )}
                   </Button>
                 </div>
               </div>
