@@ -229,8 +229,9 @@ export const searchAPI = {
   }
 };
 
-// Leads API
+// Enhanced Leads API
 export const leadsAPI = {
+  // New dealer management functions
   getDealerLeads: async (dealerId, filters = {}) => {
     const params = new URLSearchParams(filters);
     const response = await api.get(`/dealers/${dealerId}/leads?${params.toString()}`);
@@ -249,6 +250,27 @@ export const leadsAPI = {
 
   createLead: async (data) => {
     const response = await api.post('/leads/', data);
+    return response.data;
+  },
+
+  // Existing lead request functions
+  requestTestDrive: async (requestData) => {
+    const response = await api.post('/leads/test-drive', requestData);
+    return response.data;
+  },
+
+  requestPriceInquiry: async (requestData) => {
+    const response = await api.post('/leads/price-inquiry', requestData);
+    return response.data;
+  },
+
+  requestCallback: async (requestData) => {
+    const response = await api.post('/leads/callback', requestData);
+    return response.data;
+  },
+
+  getUserLeads: async () => {
+    const response = await api.get('/leads/user');
     return response.data;
   }
 };
