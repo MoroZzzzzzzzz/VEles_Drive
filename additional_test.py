@@ -7,7 +7,7 @@ import requests
 import json
 import uuid
 
-BASE_URL = "https://vehicle-exchange-13.preview.emergentagent.com/api"
+BASE_URL = "https://racecar-style.preview.emergentagent.com/api"
 
 class AdditionalTester:
     def __init__(self):

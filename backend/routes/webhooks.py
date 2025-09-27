@@ -34,7 +34,7 @@ async def stripe_webhook(request: Request):
             raise HTTPException(status_code=400, detail="Missing Stripe signature")
         
         # Initialize Stripe checkout
-        webhook_url = f"https://vehicle-exchange-13.preview.emergentagent.com/api/webhook/stripe"
+        webhook_url = f"https://racecar-style.preview.emergentagent.com/api/webhook/stripe"
         stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url=webhook_url)
         
         # Handle webhook

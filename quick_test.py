@@ -7,7 +7,7 @@ import requests
 import json
 import sys
 
-BASE_URL = "https://vehicle-exchange-13.preview.emergentagent.com/api"
+BASE_URL = "https://racecar-style.preview.emergentagent.com/api"
 TIMEOUT = 10
 
 def test_health_and_basic_apis():
@@ -138,7 +138,7 @@ def test_frontend_backend_integration():
     try:
         # Test 1: Check if backend serves frontend properly
         print("  Testing frontend static files serving...")
-        frontend_url = "https://vehicle-exchange-13.preview.emergentagent.com/"
+        frontend_url = "https://racecar-style.preview.emergentagent.com/"
         response = requests.get(frontend_url, timeout=TIMEOUT)
         results["frontend_serving"] = {
             "status": "✅ PASS" if response.status_code == 200 else "❌ FAIL",
@@ -149,7 +149,7 @@ def test_frontend_backend_integration():
         # Test 2: Check CORS configuration
         print("  Testing CORS configuration...")
         headers = {
-            "Origin": "https://vehicle-exchange-13.preview.emergentagent.com",
+            "Origin": "https://racecar-style.preview.emergentagent.com",
             "Access-Control-Request-Method": "GET"
         }
         response = requests.options(f"{BASE_URL}/health", headers=headers, timeout=TIMEOUT)

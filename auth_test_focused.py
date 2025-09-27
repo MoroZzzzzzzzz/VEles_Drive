@@ -9,7 +9,7 @@ import json
 import sys
 
 # Configuration
-BASE_URL = "https://vehicle-exchange-13.preview.emergentagent.com/api"
+BASE_URL = "https://racecar-style.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 def test_veles_auth():

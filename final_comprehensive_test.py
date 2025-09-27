@@ -11,7 +11,7 @@ from typing import Dict, Any, Optional
 import uuid
 
 # Configuration
-BASE_URL = "https://vehicle-exchange-13.preview.emergentagent.com/api"
+BASE_URL = "https://racecar-style.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 class VelesDriveFinalTester:
