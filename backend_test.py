@@ -902,9 +902,354 @@ class VelesDriveAPITester:
         
         return results
 
+    def test_payments_system(self) -> Dict[str, Any]:
+        """Test payment system endpoints"""
+        results = {}
+        
+        print("💳 Testing Payments System...")
+        
+        # Ensure we have a vehicle and dealer set up for payment testing
+        if not self.test_vehicle_id or not self.test_dealer_id:
+            results["setup_error"] = {
+                "status": "❌ FAIL",
+                "error": "Vehicle and dealer not properly set up for payment testing"
+            }
+            return results
+        
+        # Login as buyer for payment testing
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["buyer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as buyer for payment testing"
+            }
+            return results
+        
+        buyer_token = result.get("data", {}).get("access_token")
+        self.auth_token = buyer_token
+        
+        # Test 1: Get payment packages
+        print("  Testing GET /api/payments/packages")
+        result = self.make_request("GET", "/payments/packages")
+        results["get_payment_packages"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 2: Create vehicle payment session (full payment)
+        print("  Testing POST /api/payments/vehicle/checkout (full payment)")
+        payment_data = {
+            "vehicle_id": self.test_vehicle_id,
+            "payment_type": "full",
+            "success_url": "https://auto-dealership-5.preview.emergentagent.com/payment/success",
+            "cancel_url": "https://auto-dealership-5.preview.emergentagent.com/payment/cancel",
+            "metadata": {"test": "full_payment"}
+        }
+        
+        result = self.make_request("POST", "/payments/vehicle/checkout", data=payment_data)
+        results["create_vehicle_payment_full"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        session_id_full = None
+        if result.get("status_code") == 200:
+            session_id_full = result.get("data", {}).get("session_id")
+        
+        # Test 3: Create booking payment session
+        print("  Testing POST /api/payments/booking/checkout")
+        booking_data = {
+            "vehicle_id": self.test_vehicle_id,
+            "success_url": "https://auto-dealership-5.preview.emergentagent.com/payment/success",
+            "cancel_url": "https://auto-dealership-5.preview.emergentagent.com/payment/cancel",
+            "metadata": {"test": "booking_payment"}
+        }
+        
+        result = self.make_request("POST", "/payments/booking/checkout", data=booking_data)
+        results["create_booking_payment"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        session_id_booking = None
+        if result.get("status_code") == 200:
+            session_id_booking = result.get("data", {}).get("session_id")
+        
+        # Test 4: Get payment status
+        if session_id_full:
+            print("  Testing GET /api/payments/status/{session_id}")
+            result = self.make_request("GET", f"/payments/status/{session_id_full}")
+            results["get_payment_status"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+        
+        # Test 5: Get user transactions
+        print("  Testing GET /api/payments/transactions")
+        result = self.make_request("GET", "/payments/transactions")
+        results["get_user_transactions"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 6: Create package payment
+        print("  Testing POST /api/payments/packages/checkout")
+        package_data = {
+            "package_id": "test_small",
+            "success_url": "https://auto-dealership-5.preview.emergentagent.com/payment/success",
+            "cancel_url": "https://auto-dealership-5.preview.emergentagent.com/payment/cancel",
+            "metadata": {"test": "package_payment"}
+        }
+        
+        result = self.make_request("POST", "/payments/packages/checkout", data=package_data)
+        results["create_package_payment"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 7: Test invalid vehicle payment
+        print("  Testing POST /api/payments/vehicle/checkout (invalid vehicle)")
+        invalid_payment_data = {
+            "vehicle_id": str(uuid.uuid4()),
+            "payment_type": "full",
+            "success_url": "https://auto-dealership-5.preview.emergentagent.com/payment/success",
+            "cancel_url": "https://auto-dealership-5.preview.emergentagent.com/payment/cancel"
+        }
+        
+        result = self.make_request("POST", "/payments/vehicle/checkout", data=invalid_payment_data)
+        results["invalid_vehicle_payment"] = {
+            "status": "✅ PASS" if result.get("status_code") == 404 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 404 for non-existent vehicle"
+        }
+        
+        return results
+
+    def test_leads_system(self) -> Dict[str, Any]:
+        """Test leads system endpoints"""
+        results = {}
+        
+        print("📋 Testing Leads System...")
+        
+        # Ensure we have a vehicle and dealer set up for leads testing
+        if not self.test_vehicle_id or not self.test_dealer_id:
+            results["setup_error"] = {
+                "status": "❌ FAIL",
+                "error": "Vehicle and dealer not properly set up for leads testing"
+            }
+            return results
+        
+        # Login as buyer for leads testing
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["buyer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as buyer for leads testing"
+            }
+            return results
+        
+        buyer_token = result.get("data", {}).get("access_token")
+        self.auth_token = buyer_token
+        
+        # Test 1: Create test drive request
+        print("  Testing POST /api/leads/test-drive")
+        test_drive_data = {
+            "vehicle_id": self.test_vehicle_id,
+            "preferred_date": "2024-02-15",
+            "preferred_time": "14:00",
+            "message": "Хочу протестировать BMW X7. Интересует полная комплектация.",
+            "phone": "+7-999-123-4567"
+        }
+        
+        result = self.make_request("POST", "/leads/test-drive", data=test_drive_data)
+        results["create_test_drive_request"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 2: Create price inquiry
+        print("  Testing POST /api/leads/price-inquiry")
+        price_inquiry_data = {
+            "vehicle_id": self.test_vehicle_id,
+            "message": "Интересует финальная цена с учетом всех скидок и программ кредитования.",
+            "phone": "+7-999-123-4567"
+        }
+        
+        result = self.make_request("POST", "/leads/price-inquiry", data=price_inquiry_data)
+        results["create_price_inquiry"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 3: Create callback request
+        print("  Testing POST /api/leads/callback")
+        callback_data = {
+            "dealer_id": self.test_dealer_id,
+            "vehicle_id": self.test_vehicle_id,
+            "message": "Прошу перезвонить для обсуждения условий покупки BMW X7.",
+            "phone": "+7-999-123-4567",
+            "preferred_time": "10:00-18:00"
+        }
+        
+        result = self.make_request("POST", "/leads/callback", data=callback_data)
+        results["create_callback_request"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 4: Get user leads
+        print("  Testing GET /api/leads/user")
+        result = self.make_request("GET", "/leads/user")
+        results["get_user_leads"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Switch to dealer for dealer-specific tests
+        dealer_login_data = {
+            "email": self.test_dealer_data["email"],
+            "password": self.test_dealer_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
+        
+        if result.get("status_code") == 200:
+            dealer_token = result.get("data", {}).get("access_token")
+            self.auth_token = dealer_token
+            
+            # Test 5: Get dealer leads
+            print("  Testing GET /api/leads/dealer/{dealer_id}")
+            result = self.make_request("GET", f"/leads/dealer/{self.test_dealer_id}")
+            results["get_dealer_leads"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            # Test 6: Get dealer lead statistics
+            print("  Testing GET /api/leads/stats/{dealer_id}")
+            result = self.make_request("GET", f"/leads/stats/{self.test_dealer_id}")
+            results["get_dealer_lead_stats"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            # Test 7: Update lead status (if we have leads)
+            leads_response = results.get("get_dealer_leads", {}).get("response", [])
+            if leads_response and len(leads_response) > 0:
+                lead_id = leads_response[0].get("id")
+                if lead_id:
+                    print("  Testing PUT /api/leads/{lead_id}/status")
+                    result = self.make_request("PUT", f"/leads/{lead_id}/status", data={"status": "contacted"})
+                    results["update_lead_status"] = {
+                        "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                        "status_code": result.get("status_code"),
+                        "response": result.get("data", {}),
+                        "error": result.get("error")
+                    }
+        
+        # Test 8: Test invalid vehicle lead request
+        print("  Testing POST /api/leads/test-drive (invalid vehicle)")
+        self.auth_token = buyer_token  # Switch back to buyer
+        invalid_test_drive_data = {
+            "vehicle_id": str(uuid.uuid4()),
+            "preferred_date": "2024-02-15",
+            "preferred_time": "14:00",
+            "message": "Test with invalid vehicle",
+            "phone": "+7-999-123-4567"
+        }
+        
+        result = self.make_request("POST", "/leads/test-drive", data=invalid_test_drive_data)
+        results["invalid_vehicle_lead"] = {
+            "status": "✅ PASS" if result.get("status_code") == 404 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 404 for non-existent vehicle"
+        }
+        
+        return results
+
+    def test_webhook_system(self) -> Dict[str, Any]:
+        """Test webhook system endpoints"""
+        results = {}
+        
+        print("🔗 Testing Webhook System...")
+        
+        # Test 1: Test Stripe webhook endpoint (without signature - should fail)
+        print("  Testing POST /api/webhook/stripe (no signature)")
+        webhook_data = {
+            "id": "evt_test_webhook",
+            "object": "event",
+            "type": "checkout.session.completed",
+            "data": {
+                "object": {
+                    "id": "cs_test_session",
+                    "payment_status": "paid"
+                }
+            }
+        }
+        
+        result = self.make_request("POST", "/webhook/stripe", data=webhook_data, headers={})
+        results["webhook_no_signature"] = {
+            "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 400 - missing Stripe signature"
+        }
+        
+        # Test 2: Test webhook with invalid signature
+        print("  Testing POST /api/webhook/stripe (invalid signature)")
+        result = self.make_request("POST", "/webhook/stripe", data=webhook_data, 
+                                 headers={"Stripe-Signature": "invalid_signature"})
+        results["webhook_invalid_signature"] = {
+            "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 400 - invalid Stripe signature"
+        }
+        
+        return results
+
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all test suites"""
-        print("🚀 Starting VELES DRIVE Backend API Tests - Messages & Reviews Edition")
+        print("🚀 Starting VELES DRIVE Backend API Tests - Payments & Leads Edition")
         print(f"📍 Testing against: {self.base_url}")
         print("=" * 60)
         
@@ -922,10 +1267,15 @@ class VelesDriveAPITester:
         all_results["erp_access_control"] = self.test_erp_access_control()
         all_results["erp_integration"] = self.test_erp_integration()
         
-        # NEW TESTS - Messages and Reviews
+        # EXISTING TESTS - Messages and Reviews
         all_results["messages_system"] = self.test_messages_system()
         all_results["reviews_system"] = self.test_reviews_system()
         all_results["complete_workflow"] = self.test_complete_workflow()
+        
+        # NEW TESTS - Payments, Leads, and Webhooks
+        all_results["payments_system"] = self.test_payments_system()
+        all_results["leads_system"] = self.test_leads_system()
+        all_results["webhook_system"] = self.test_webhook_system()
         
         all_results["additional_scenarios"] = self.test_additional_scenarios()
         
