@@ -799,6 +799,30 @@ metadata:
           agent: "testing"
           comment: "✅ MOBILE RESPONSIVENESS EXCELLENT: ✅ Mobile layout adapts correctly (390x844 viewport), ✅ Mobile search page fully functional, ✅ Mobile filters accessible via dedicated button, ✅ Touch-friendly interface, ✅ Calculator button visible on mobile, ✅ Proper responsive design throughout platform. All new architecture components work seamlessly on mobile devices."
 
+  - task: "Critical Issues - Authentication and Overlay Problems"
+    implemented: true
+    working: false
+    file: "frontend/src/components/Auth/LoginModal.jsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "🚨 КРИТИЧЕСКИЕ ПРОБЛЕМЫ ОБНАРУЖЕНЫ: 1) АВТОРИЗАЦИЯ НЕ РАБОТАЕТ - ошибка 502 при попытке входа (backend static files error), 2) OVERLAY БЛОКИРУЕТ КЛИКИ - header overlay блокирует взаимодействие с кнопками, 3) МОБИЛЬНОЕ МЕНЮ НЕ НАЙДЕНО - hamburger кнопка не отображается на мобильных устройствах, 4) МОДАЛЬНЫЕ ОКНА АВТОМОБИЛЕЙ - не удалось протестировать из-за отсутствия данных. Backend логи показывают: 'RuntimeError: Directory /app/backend/../frontend/build/static does not exist'. Требуется исправление backend конфигурации и frontend overlay issues."
+
+  - task: "Vehicle Modal Scrolling Issue"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/VehicleDetailModal.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "❓ НЕ УДАЛОСЬ ПРОТЕСТИРОВАТЬ: Модальные окна автомобилей не открываются из-за отсутствия данных автомобилей в тестовой среде. Карточки автомобилей отображаются (Bugatti Chiron, Lamborghini Huracán EVO, Ferrari SF90 Stradale), но клики по ним не открывают модальные окна. Требуется проверка с реальными данными автомобилей или исправление mock данных."
+
 test_plan:
   current_focus:
     - "Modal Overlay Issues Resolution"
