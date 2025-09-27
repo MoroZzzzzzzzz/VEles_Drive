@@ -707,6 +707,18 @@ test_plan:
   test_all: false
   test_priority: "high_first"
 
+  - task: "VELES DRIVE Authentication Process - Detailed Testing"
+    implemented: true
+    working: true
+    file: "backend/routes/auth.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ DETAILED AUTHENTICATION TESTING COMPLETED: Tested specific authentication flow with test@velesdrive.ru / testpass123 credentials. ✅ User registration working (creates user or handles existing user properly), ✅ Login returns proper JWT token with 7-day expiration, ✅ Response format correct with access_token, token_type, expires_in, and user data, ✅ Profile endpoint works with Bearer token authentication, ✅ User data format includes all required fields (id, email, first_name, last_name, role, is_active, created_at). Authentication system fully operational for frontend integration."
+
   - task: "Complete System Integration - Payments & Leads Edition"
     implemented: true
     working: true
