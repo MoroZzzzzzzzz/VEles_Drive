@@ -228,7 +228,7 @@ export const LoginModal = ({ open, onOpenChange }) => {
                       id="first-name"
                       placeholder="Имя"
                       value={registerValidation.values.first_name}
-                      onChange={(e) => registerValidation.setFieldValue('first_name', e.target.value)}
+                      onChange={(e) => registerValidation.setValue('first_name', e.target.value)}
                       className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                       required
                     />
