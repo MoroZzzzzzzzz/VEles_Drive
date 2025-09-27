@@ -62,10 +62,10 @@ export const HeroSection = () => {
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50 z-10" />
         <img 
-          src="https://images.unsplash.com/photo-1617098884364-77acd3bf9944?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=1920&h=1080&fit=crop"
-          alt="Premium VELES DRIVE Cars"
+          src="https://images.unsplash.com/photo-1485291571150-772bcfc10da5?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=1920&h=1080&fit=crop"
+          alt="Premium VELES DRIVE Luxury Sports Car"
           className="w-full h-full object-cover"
         />
       </div>
