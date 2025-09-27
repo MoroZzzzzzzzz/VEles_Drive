@@ -256,7 +256,7 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     type="email"
                     placeholder="Введите ваш email"
                     value={registerValidation.values.email}
-                    onChange={(e) => registerValidation.setFieldValue('email', e.target.value)}
+                    onChange={(e) => registerValidation.setValue('email', e.target.value)}
                     className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                     required
                   />
