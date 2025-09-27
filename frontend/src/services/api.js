@@ -258,4 +258,42 @@ export const compareAPI = {
   }
 };
 
+// Payments API
+export const paymentsAPI = {
+  createVehiclePayment: async (paymentData) => {
+    const response = await api.post('/payments/vehicle/checkout', paymentData);
+    return response.data;
+  },
+
+  createBookingPayment: async (bookingData) => {
+    const response = await api.post('/payments/booking/checkout', bookingData);
+    return response.data;
+  },
+
+  createPackagePayment: async (packageId, successUrl, cancelUrl, metadata = {}) => {
+    const response = await api.post('/payments/packages/checkout', {
+      package_id: packageId,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      metadata
+    });
+    return response.data;
+  },
+
+  getPaymentStatus: async (sessionId) => {
+    const response = await api.get(`/payments/status/${sessionId}`);
+    return response.data;
+  },
+
+  getUserTransactions: async () => {
+    const response = await api.get('/payments/transactions');
+    return response.data;
+  },
+
+  getPaymentPackages: async () => {
+    const response = await api.get('/payments/packages');
+    return response.data;
+  }
+};
+
 export default api;
