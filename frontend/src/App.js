@@ -102,6 +102,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/search" element={<SearchPage />} />
       <Route path="/catalog" element={<CatalogPage />} />
       <Route path="/vehicles/:id" element={<VehicleDetailPage />} />
       <Route path="/dealers" element={<DealersPage />} />
