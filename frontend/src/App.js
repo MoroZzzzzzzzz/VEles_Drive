@@ -124,7 +124,10 @@ function AppRoutes() {
       <Route path="/dealers/:id" element={<DealerDetailPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/favorites" element={<FavoritesPage />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/leasing" element={<LeasingPage />} />
+      <Route path="/insurance" element={<InsurancePage />} />
+      <Route path="/trade-in" element={<TradeInPage />} />
       <Route path="/contacts" element={<Contacts />} />
       
       {/* Dealer Routes */}
