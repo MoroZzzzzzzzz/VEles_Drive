@@ -48,7 +48,7 @@ class VelesDriveAPITester:
             "make": "BMW",
             "model": "X7",
             "year": 2023,
-            "price": 8500000.0,
+            "price": 850000.0,  # Reduced price to stay within Stripe limits
             "condition": "new",
             "mileage": 0,
             "color": "Черный",
