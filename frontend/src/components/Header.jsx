@@ -206,7 +206,7 @@ export const Header = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden text-gray-300 hover:text-white"
+                className="lg:hidden text-gray-300 hover:text-white z-50 relative"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
