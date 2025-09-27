@@ -15,22 +15,47 @@ export const LoginModal = ({ open, onOpenChange }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Login form state
-  const [loginForm, setLoginForm] = useState({
-    email: '',
-    password: ''
-  });
+  // Login form validation
+  const loginValidation = useFormValidation(
+    { email: '', password: '' },
+    {
+      email: [validationRules.required, validationRules.email],
+      password: [validationRules.required]
+    }
+  );
 
-  // Register form state
-  const [registerForm, setRegisterForm] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    first_name: '',
-    last_name: '',
-    phone: '',
-    role: 'buyer'
-  });
+  // Register form validation
+  const registerValidation = useFormValidation(
+    {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      first_name: '',
+      last_name: '',
+      phone: '',
+      role: 'buyer'
+    },
+    {
+      email: [validationRules.required, validationRules.email],
+      password: [validationRules.required, validationRules.minLength(6)],
+      confirmPassword: [validationRules.required],
+      first_name: [validationRules.required, validationRules.minLength(2)],
+      last_name: [validationRules.required, validationRules.minLength(2)],
+      phone: [validationRules.phone]
+    }
+  );
+
+  // Update confirmPassword validation based on password
+  React.useEffect(() => {
+    if (registerValidation.values.password) {
+      const error = validationRules.confirmPassword(registerValidation.values.password)(
+        registerValidation.values.confirmPassword
+      );
+      if (error && registerValidation.touched.confirmPassword) {
+        registerValidation.setFieldTouched('confirmPassword');
+      }
+    }
+  }, [registerValidation.values.password, registerValidation.values.confirmPassword]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
