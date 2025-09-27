@@ -182,16 +182,19 @@ export const DealerDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <Tabs defaultValue="vehicles" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-gray-900 mb-8">
-            <TabsTrigger value="vehicles" className="text-white data-[state=active]:bg-amber-600">
-              Автомобили
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-5 bg-gray-900 mb-8">
+            <TabsTrigger value="overview" className="text-white data-[state=active]:bg-amber-600">
+              Обзор
+            </TabsTrigger>
+            <TabsTrigger value="inventory" className="text-white data-[state=active]:bg-amber-600">
+              Инвентарь
+            </TabsTrigger>
+            <TabsTrigger value="leads" className="text-white data-[state=active]:bg-amber-600">
+              Лиды
             </TabsTrigger>
             <TabsTrigger value="analytics" className="text-white data-[state=active]:bg-amber-600">
               Аналитика
-            </TabsTrigger>
-            <TabsTrigger value="customers" className="text-white data-[state=active]:bg-amber-600">
-              Клиенты
             </TabsTrigger>
             <TabsTrigger value="settings" className="text-white data-[state=active]:bg-amber-600">
               Настройки
