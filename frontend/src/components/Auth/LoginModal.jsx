@@ -61,8 +61,13 @@ export const LoginModal = ({ open, onOpenChange }) => {
     e.preventDefault();
     setError('');
     
+    if (!loginValidation.validateAll()) {
+      setError('Пожалуйста, исправьте ошибки в форме');
+      return;
+    }
+    
     try {
-      await login(loginForm);
+      await login(loginValidation.values);
       setSuccess('Вход выполнен успешно!');
       setTimeout(() => {
         onOpenChange(false);
@@ -74,7 +79,7 @@ export const LoginModal = ({ open, onOpenChange }) => {
       const errorMessage = error.response?.data?.detail || 
                           error.response?.data?.message || 
                           error.message || 
-                          'Ошибка входа в систему';
+                          'Неверный email или пароль';
       setError(errorMessage);
     }
   };
@@ -83,23 +88,23 @@ export const LoginModal = ({ open, onOpenChange }) => {
     e.preventDefault();
     setError('');
 
-    if (registerForm.password !== registerForm.confirmPassword) {
-      setError('Пароли не совпадают');
+    // Validate confirm password
+    const confirmPasswordError = validationRules.confirmPassword(
+      registerValidation.values.password
+    )(registerValidation.values.confirmPassword);
+    
+    if (confirmPasswordError) {
+      setError(confirmPasswordError);
       return;
     }
 
-    if (registerForm.password.length < 6) {
-      setError('Пароль должен содержать минимум 6 символов');
-      return;
-    }
-
-    if (!registerForm.first_name || !registerForm.last_name) {
-      setError('Заполните имя и фамилию');
+    if (!registerValidation.validateAll()) {
+      setError('Пожалуйста, исправьте ошибки в форме');
       return;
     }
 
     try {
-      const { confirmPassword, ...userData } = registerForm;
+      const { confirmPassword, ...userData } = registerValidation.values;
       await register(userData);
       setSuccess('Регистрация прошла успешно!');
       setTimeout(() => {
@@ -112,7 +117,7 @@ export const LoginModal = ({ open, onOpenChange }) => {
       const errorMessage = error.response?.data?.detail || 
                           error.response?.data?.message || 
                           error.message || 
-                          'Ошибка регистрации';
+                          'Ошибка регистрации. Проверьте данные';
       setError(errorMessage);
     }
   };
