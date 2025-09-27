@@ -67,12 +67,12 @@ export const Footer = () => {
             <div>
               <h4 className="text-lg font-semibold text-white mb-6">Услуги</h4>
               <ul className="space-y-4">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Лизинг</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Страхование</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Кредитование</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Трейд-ин</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Сервисное обслуживание</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Консультации</a></li>
+                <li><Link to="/leasing" className="text-gray-400 hover:text-white transition-colors duration-200">Лизинг</Link></li>
+                <li><Link to="/insurance" className="text-gray-400 hover:text-white transition-colors duration-200">Страхование</Link></li>
+                <li><Link to="/leasing" className="text-gray-400 hover:text-white transition-colors duration-200">Кредитование</Link></li>
+                <li><Link to="/trade-in" className="text-gray-400 hover:text-white transition-colors duration-200">Трейд-ин</Link></li>
+                <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors duration-200">Сервисное обслуживание</Link></li>
+                <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors duration-200">Консультации</Link></li>
               </ul>
             </div>
 
