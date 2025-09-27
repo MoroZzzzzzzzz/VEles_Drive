@@ -191,8 +191,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     id="login-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Введите пароль"
-                    value={loginForm.password}
-                    onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
+                    value={loginValidation.values.password}
+                    onChange={(e) => loginValidation.setFieldValue('password', e.target.value)}
                     className="pl-10 pr-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                     required
                   />
