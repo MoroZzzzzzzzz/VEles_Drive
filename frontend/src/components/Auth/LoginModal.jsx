@@ -240,7 +240,7 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     id="last-name"
                     placeholder="Фамилия"
                     value={registerValidation.values.last_name}
-                    onChange={(e) => registerValidation.setFieldValue('last_name', e.target.value)}
+                    onChange={(e) => registerValidation.setValue('last_name', e.target.value)}
                     className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                     required
                   />
