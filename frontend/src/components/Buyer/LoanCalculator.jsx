@@ -170,7 +170,7 @@ export const LoanCalculator = ({ vehiclePrice, onLoanCalculated }) => {
     <Card className="bg-gray-800/50 border-gray-700">
       <CardHeader>
         <CardTitle className="text-white flex items-center">
-          <Bank className="h-5 w-5 mr-2" />
+          <Building2 className="h-5 w-5 mr-2" />
           Предложения банков
         </CardTitle>
       </CardHeader>
