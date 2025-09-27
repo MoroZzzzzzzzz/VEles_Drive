@@ -1173,7 +1173,8 @@ class VelesDriveAPITester:
                 lead_id = leads_response[0].get("id")
                 if lead_id:
                     print("  Testing PUT /api/leads/{lead_id}/status")
-                    result = self.make_request("PUT", f"/leads/{lead_id}/status", data={"status": "contacted"})
+                    result = self.make_request("PUT", f"/leads/{lead_id}/status", 
+                                             params={"status": "contacted"})
                     results["update_lead_status"] = {
                         "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
                         "status_code": result.get("status_code"),
