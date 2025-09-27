@@ -308,7 +308,7 @@ export const LoginModal = ({ open, onOpenChange }) => {
                   type="password"
                   placeholder="Повторите пароль"
                   value={registerValidation.values.confirmPassword}
-                  onChange={(e) => registerValidation.setFieldValue('confirmPassword', e.target.value)}
+                  onChange={(e) => registerValidation.setValue('confirmPassword', e.target.value)}
                   className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                   required
                 />
