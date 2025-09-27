@@ -17,6 +17,9 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
   const { isAuthenticated, user } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [showVinScanner, setShowVinScanner] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
 
   // Reset image index when vehicle changes
   useEffect(() => {
