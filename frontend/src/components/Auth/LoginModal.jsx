@@ -317,8 +317,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
               <div className="space-y-2">
                 <Label className="text-white">Тип аккаунта</Label>
                 <select
-                  value={registerForm.role}
-                  onChange={(e) => setRegisterForm(prev => ({ ...prev, role: e.target.value }))}
+                  value={registerValidation.values.role}
+                  onChange={(e) => registerValidation.setFieldValue('role', e.target.value)}
                   className="w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white"
                 >
                   <option value="buyer">Покупатель</option>
