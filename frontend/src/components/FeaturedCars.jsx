@@ -306,6 +306,16 @@ export const FeaturedCars = () => {
           </Button>
         </div>
       </div>
+      
+      {/* Vehicle Detail Modal */}
+      <VehicleDetailModal
+        vehicle={selectedVehicle}
+        open={isDetailModalOpen}
+        onOpenChange={setIsDetailModalOpen}
+        onContact={handleContact}
+        onFavorite={handleFavorite}
+        onCompare={handleCompare}
+      />
     </section>
   );
 };
