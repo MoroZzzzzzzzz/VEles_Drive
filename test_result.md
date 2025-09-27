@@ -840,12 +840,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Critical Issues - Authentication and Overlay Problems"
-    - "Vehicle Modal Scrolling Issue"
-    - "Backend Static Files Configuration"
-    - "Mobile Hamburger Menu Implementation"
-  stuck_tasks:
-    - "Critical Issues - Authentication and Overlay Problems"
+    - "Backend API Integration Issues (502 errors)"
+    - "Authentication UI State Updates"
+    - "Reviews API Integration"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
     implemented: true
