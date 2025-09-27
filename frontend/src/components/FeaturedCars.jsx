@@ -280,7 +280,7 @@ export const FeaturedCars = () => {
                       e.stopPropagation();
                       handleContact(car);
                     }}
-                    className="px-4 border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white hover:border-gray-500 disabled:opacity-50"
+                    className="px-4 border border-orange-500/40 text-orange-300 hover:bg-orange-500 hover:text-white hover:border-orange-400 disabled:opacity-50 transition-all duration-300"
                   >
                     {loadingActions[`contact_${car.id}`] ? (
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
