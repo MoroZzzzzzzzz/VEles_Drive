@@ -84,7 +84,14 @@ export const Footer = () => {
                   <MapPin className="h-5 w-5 text-amber-500 flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-white font-medium">Адрес</p>
-                    <p className="text-gray-400">Москва, ул. Тверская, 12</p>
+                    <a 
+                      href="https://yandex.ru/maps/?text=Москва, ул. Тверская, 12" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-white transition-colors duration-200"
+                    >
+                      Москва, ул. Тверская, 12
+                    </a>
                   </div>
                 </div>
                 
@@ -92,7 +99,12 @@ export const Footer = () => {
                   <Phone className="h-5 w-5 text-amber-500 flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-white font-medium">Телефон</p>
-                    <p className="text-gray-400">+7 (495) 123-45-67</p>
+                    <a 
+                      href="tel:+74951234567"
+                      className="text-gray-400 hover:text-white transition-colors duration-200"
+                    >
+                      +7 (495) 123-45-67
+                    </a>
                   </div>
                 </div>
                 
@@ -100,7 +112,12 @@ export const Footer = () => {
                   <Mail className="h-5 w-5 text-amber-500 flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-white font-medium">Email</p>
-                    <p className="text-gray-400">info@velesdrive.ru</p>
+                    <a 
+                      href="mailto:info@velesdrive.ru"
+                      className="text-gray-400 hover:text-white transition-colors duration-200"
+                    >
+                      info@velesdrive.ru
+                    </a>
                   </div>
                 </div>
                 
