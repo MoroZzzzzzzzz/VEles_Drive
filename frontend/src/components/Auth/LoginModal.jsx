@@ -227,8 +227,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     <Input
                       id="first-name"
                       placeholder="Имя"
-                      value={registerForm.first_name}
-                      onChange={(e) => setRegisterForm(prev => ({ ...prev, first_name: e.target.value }))}
+                      value={registerValidation.values.first_name}
+                      onChange={(e) => registerValidation.setFieldValue('first_name', e.target.value)}
                       className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                       required
                     />
