@@ -318,7 +318,7 @@ export const LoginModal = ({ open, onOpenChange }) => {
                 <Label className="text-white">Тип аккаунта</Label>
                 <select
                   value={registerValidation.values.role}
-                  onChange={(e) => registerValidation.setFieldValue('role', e.target.value)}
+                  onChange={(e) => registerValidation.setValue('role', e.target.value)}
                   className="w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white"
                 >
                   <option value="buyer">Покупатель</option>
