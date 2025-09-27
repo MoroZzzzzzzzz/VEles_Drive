@@ -16,18 +16,40 @@ export const Footer = () => {
             <div className="space-y-6">
               <Link to="/" className="flex items-center space-x-3 group">
                 <div className="relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1617098884364-77acd3bf9944?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=48&h=40&fit=crop" 
-                    alt="VELES DRIVE" 
-                    className="h-12 w-14 object-cover rounded-lg border-2 border-amber-500 shadow-lg group-hover:border-white transition-colors"
-                  />
+                  {/* Premium Sports Car Logo SVG */}
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 via-amber-500 to-yellow-400 p-0.5 shadow-2xl shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-all duration-300">
+                    <div className="w-full h-full rounded-full bg-gray-950/90 backdrop-blur-sm flex items-center justify-center border border-orange-400/30 group-hover:border-orange-400/60 transition-all duration-300">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="text-orange-400 group-hover:text-orange-300 transition-colors duration-300"
+                      >
+                        <path
+                          d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5H6.5C5.84 5 5.28 5.42 5.08 6.01L3 12V20C3 20.55 3.45 21 4 21H5C5.55 21 6 20.55 6 20V19H18V20C18 20.55 18.45 21 19 21H20C20.55 21 21 20.55 21 20V12L18.92 6.01ZM6.5 16C5.67 16 5 15.33 5 14.5S5.67 13 6.5 13 8 13.67 8 14.5 7.33 16 6.5 16ZM17.5 16C16.67 16 16 15.33 16 14.5S16.67 13 17.5 13 19 13.67 19 14.5 18.33 16 17.5 16ZM5.81 11L6.87 7H17.13L18.19 11H5.81Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M12 8.5C11.17 8.5 10.5 9.17 10.5 10S11.17 11.5 12 11.5 13.5 10.83 13.5 10 12.83 8.5 12 8.5Z"
+                          fill="currentColor"
+                          className="opacity-80"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <div className="flex flex-col">
-                    <span className="text-2xl font-bold text-white tracking-tight group-hover:text-amber-400 transition-colors">VELES</span>
-                    <span className="text-xs text-amber-400 font-semibold -mt-1 tracking-wider">DRIVE</span>
+                    <span className="text-2xl font-bold bg-gradient-to-r from-white via-orange-100 to-amber-200 bg-clip-text text-transparent tracking-tight group-hover:from-orange-200 group-hover:via-amber-200 group-hover:to-yellow-200 transition-all duration-300">
+                      VELES
+                    </span>
+                    <span className="text-xs text-orange-400 font-semibold -mt-1 tracking-wider group-hover:text-orange-300 transition-colors duration-300">
+                      DRIVE
+                    </span>
                   </div>
-                  <p className="text-sm text-gray-400">Premium Auto</p>
+                  <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">Premium Auto</p>
                 </div>
               </Link>
               <p className="text-gray-400 leading-relaxed">
