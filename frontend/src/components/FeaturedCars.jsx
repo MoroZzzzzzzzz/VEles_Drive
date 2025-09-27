@@ -166,11 +166,11 @@ export const FeaturedCars = () => {
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2">
                   {car.isNew && (
-                    <Badge className="bg-green-600 hover:bg-green-700 text-white">
+                    <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg">
                       Новый
                     </Badge>
                   )}
-                  <Badge className="bg-amber-600 hover:bg-amber-700 text-white">
+                  <Badge className="bg-gradient-to-r from-orange-500 to-amber-600 text-black font-bold shadow-lg">
                     Премиум
                   </Badge>
                 </div>
