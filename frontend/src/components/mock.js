@@ -50,7 +50,17 @@ export const mockCars = [
     dealer: "Автодом Люкс",
     location: "Москва",
     isNew: true,
-    isFeatured: true
+    isFeatured: true,
+    dealerInfo: {
+      name: "Автодом Люкс",
+      rating: 4.8,
+      reviewCount: 95,
+      address: "Москва, ул. Ленинградская, 78",
+      phone: "+7 (495) 234-56-78",
+      email: "info@avtodomluks.ru",
+      workingHours: "Пн-Пт: 9:00-19:00, Сб-Вс: 10:00-18:00"
+    },
+    description: "Lamborghini Huracán EVO - идеальный баланс производительности и комфорта. Естественно аспирируемый V10, полный привод, система векторизации крутящего момента."
   },
   {
     id: 3,
