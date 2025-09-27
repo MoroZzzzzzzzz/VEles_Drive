@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Heart, Share2, Eye, MapPin, Calendar, Fuel, Settings, Gauge, Palette, ArrowLeft, Phone, Mail } from 'lucide-react';
-import { Button } from '../components/ui/button';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { vehiclesAPI, dealersAPI } from '../services/api';
-import { formatPrice } from '../components/mock';
+import { 
+  Heart, Star, MapPin, Calendar, Fuel, Settings, Gauge, Palette, 
+  Phone, MessageCircle, Calculator, CreditCard, ArrowLeft, Share2,
+  CheckCircle, Clock, User, Car, Eye, TrendingUp, ShoppingCart,
+  ArrowRight, AlertCircle
+} from 'lucide-react';
+import { ImageGallery } from '../components/Gallery/ImageGallery';
+import { PaymentModal } from '../components/Payments/PaymentModal';
+import LoanCalculatorCard from '../components/Finance/LoanCalculator';
+import BankOffers from '../components/Finance/BankOffers';
+import { DealerLocationCard } from '../components/Maps/DealersMap';
+import { ReviewsList } from '../components/Reviews/ReviewsSystem';
+import { useAuth } from '../contexts/AuthContext';
+import { useComparison } from '../components/Compare/CompareModal';
+import { vehiclesAPI, favoritesAPI, dealersAPI, leadsAPI } from '../services/api';
+import { cn } from '../lib/utils';
 
 export const VehicleDetailPage = () => {
   const { id } = useParams();
