@@ -11,7 +11,7 @@ from typing import Dict, Any, Optional
 import uuid
 
 # Configuration
-BASE_URL = "https://f8d6fed9-d6ce-4ca6-bdf3-28f66cbc63b0.preview.emergentagent.com/api"
+BASE_URL = "https://vehicle-exchange-13.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 class VelesDriveAPITester:
@@ -1038,8 +1038,8 @@ class VelesDriveAPITester:
         payment_data = {
             "vehicle_id": self.test_vehicle_id,
             "payment_type": "full",
-            "success_url": "https://hello-analyzer.preview.emergentagent.com/payment/success",
-            "cancel_url": "https://hello-analyzer.preview.emergentagent.com/payment/cancel",
+            "success_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/success",
+            "cancel_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/cancel",
             "metadata": {"test": "full_payment"}
         }
         
@@ -1059,8 +1059,8 @@ class VelesDriveAPITester:
         print("  Testing POST /api/payments/booking/checkout")
         booking_data = {
             "vehicle_id": self.test_vehicle_id,
-            "success_url": "https://hello-analyzer.preview.emergentagent.com/payment/success",
-            "cancel_url": "https://hello-analyzer.preview.emergentagent.com/payment/cancel",
+            "success_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/success",
+            "cancel_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/cancel",
             "metadata": {"test": "booking_payment"}
         }
         
@@ -1103,8 +1103,8 @@ class VelesDriveAPITester:
         result = self.make_request("POST", "/payments/packages/checkout", 
                                  params={
                                      "package_id": "test_small",
-                                     "success_url": "https://hello-analyzer.preview.emergentagent.com/payment/success",
-                                     "cancel_url": "https://hello-analyzer.preview.emergentagent.com/payment/cancel"
+                                     "success_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/success",
+                                     "cancel_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/cancel"
                                  })
         results["create_package_payment"] = {
             "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
@@ -1118,8 +1118,8 @@ class VelesDriveAPITester:
         invalid_payment_data = {
             "vehicle_id": str(uuid.uuid4()),
             "payment_type": "full",
-            "success_url": "https://hello-analyzer.preview.emergentagent.com/payment/success",
-            "cancel_url": "https://hello-analyzer.preview.emergentagent.com/payment/cancel"
+            "success_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/success",
+            "cancel_url": "https://vehicle-exchange-13.preview.emergentagent.com/payment/cancel"
         }
         
         result = self.make_request("POST", "/payments/vehicle/checkout", data=invalid_payment_data)

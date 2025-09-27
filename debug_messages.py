@@ -7,7 +7,7 @@ import requests
 import json
 import uuid
 
-BASE_URL = "https://hello-analyzer.preview.emergentagent.com/api"
+BASE_URL = "https://vehicle-exchange-13.preview.emergentagent.com/api"
 
 def debug_message_issue():
     """Debug the message sending issue"""
