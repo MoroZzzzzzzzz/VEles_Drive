@@ -1,9 +1,13 @@
-import React from 'react';
-import { Heart, Eye, MapPin, Fuel, Settings, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Heart, Eye, MapPin, Fuel, Settings, Calendar, MessageCircle, ArrowLeftRight, Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
 import { mockCars, formatPrice } from './mock';
+import { VehicleDetailModal } from './VehicleDetailModal';
+import { useAuth } from '../contexts/AuthContext';
+import { favoritesAPI, messagesAPI, compareAPI } from '../services/api';
+import { useToast } from '../hooks/use-toast';
 
 export const FeaturedCars = () => {
   const featuredCars = mockCars.filter(car => car.isFeatured).slice(0, 6);
