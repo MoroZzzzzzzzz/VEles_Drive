@@ -14,11 +14,21 @@ export const Footer = () => {
             {/* Company Info */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
-                  <Car className="h-7 w-7 text-white" />
+                <div className="relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1640780116262-412da1b923f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxjYXIlMjBkZWFsZXJzaGlwJTIwbG9nb3xlbnwwfHx8YmxhY2tfYW5kX3doaXRlfDE3NTg5Nzk0MDd8MA&ixlib=rb-4.1.0&q=85&w=48&h=48&fit=crop" 
+                    alt="VELES DRIVE" 
+                    className="h-12 w-12 rounded-full border-2 border-amber-500 bg-white p-1"
+                  />
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center">
+                    <Car className="h-2 w-2 text-white" />
+                  </div>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-white">VELES DRIVE</h3>
+                  <div className="flex flex-col">
+                    <span className="text-2xl font-bold text-white tracking-tight">VELES</span>
+                    <span className="text-xs text-amber-400 font-semibold -mt-1">DRIVE</span>
+                  </div>
                   <p className="text-sm text-gray-400">Premium Auto</p>
                 </div>
               </div>
