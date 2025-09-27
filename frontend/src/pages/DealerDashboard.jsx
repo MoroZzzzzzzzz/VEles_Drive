@@ -8,6 +8,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { vehiclesAPI, dealersAPI } from '../services/api';
 import { formatPrice } from '../components/mock';
 import { Link, useNavigate } from 'react-router-dom';
+import { InventoryManagement } from '../components/Dealer/InventoryManagement';
+import { LeadsManagement } from '../components/Dealer/LeadsManagement';
+import { Analytics } from '../components/Dealer/Analytics';
 
 export const DealerDashboard = () => {
   const { user } = useAuth();
