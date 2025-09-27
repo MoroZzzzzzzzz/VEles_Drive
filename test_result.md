@@ -699,10 +699,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Messages API - Send Messages"
-    - "Messages API - Unread Count"
-    - "Reviews API - Create Reviews"
-    - "Reviews API - User Reviews"
+    - "Vehicle Detail Modal UI"
+    - "Improved Form Validation"
+    - "Loading States and UX"
+    - "Mobile Responsiveness Check"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
