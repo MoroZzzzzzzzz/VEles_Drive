@@ -103,7 +103,7 @@ export const HeroSection = () => {
 
             {/* Кузов */}
             <div className="space-y-2">
-              <label className="text-white text-sm font-medium">Кузов</label>
+              <label className="text-orange-200 text-sm font-medium">Кузов</label>
               {isLoadingCategories ? (
                 <div className="bg-white/90 border-0 h-12 rounded-md flex items-center justify-center">
                   <Loader2 className="h-4 w-4 animate-spin text-gray-500" />
