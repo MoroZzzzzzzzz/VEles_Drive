@@ -54,9 +54,9 @@ api_router.include_router(search_router)
 @api_router.get("/")
 async def root():
     return {
-        "message": "VELES DRIVE API", 
+        "message": "VELES DRIVE API",
         "version": "1.0.0",
-        "status": "running"
+        "status": "active"
     }
 
 @api_router.get("/health")
