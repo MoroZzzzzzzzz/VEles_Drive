@@ -264,16 +264,30 @@ export const FeaturedCars = () => {
                 {/* Actions */}
                 <div className="flex gap-3">
                   <Button 
-                    onClick={() => handleCarClick(car.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCarClick(car);
+                    }}
                     className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white border-0"
                   >
+                    <Eye className="h-4 w-4 mr-2" />
                     Подробнее
                   </Button>
                   <Button 
                     variant="outline"
-                    className="px-4 border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white hover:border-gray-500"
+                    disabled={loadingActions[`contact_${car.id}`] || !isAuthenticated}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleContact(car);
+                    }}
+                    className="px-4 border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white hover:border-gray-500 disabled:opacity-50"
                   >
-                    Связаться
+                    {loadingActions[`contact_${car.id}`] ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                    )}
+                    {isAuthenticated ? 'Связаться' : 'Войдите'}
                   </Button>
                 </div>
               </CardContent>
