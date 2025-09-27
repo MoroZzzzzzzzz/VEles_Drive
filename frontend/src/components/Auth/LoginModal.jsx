@@ -286,8 +286,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     id="register-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Минимум 6 символов"
-                    value={registerForm.password}
-                    onChange={(e) => setRegisterForm(prev => ({ ...prev, password: e.target.value }))}
+                    value={registerValidation.values.password}
+                    onChange={(e) => registerValidation.setFieldValue('password', e.target.value)}
                     className="pl-10 pr-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                     required
                   />
