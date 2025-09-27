@@ -169,7 +169,7 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
           </div>
 
           {/* Content Section */}
-          <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-600">
+          <div className="flex-1 min-h-0">
             <div className="p-6">
               {/* Header */}
               <div className="flex items-start justify-between mb-6">
