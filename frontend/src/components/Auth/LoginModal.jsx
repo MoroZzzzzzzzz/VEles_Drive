@@ -123,11 +123,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
   };
 
   const resetForms = () => {
-    setLoginForm({ email: '', password: '' });
-    setRegisterForm({
-      email: '', password: '', confirmPassword: '',
-      first_name: '', last_name: '', phone: '', role: 'buyer'
-    });
+    loginValidation.reset();
+    registerValidation.reset();
   };
 
   const handleClose = () => {
