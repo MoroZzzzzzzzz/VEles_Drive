@@ -69,6 +69,43 @@ async def health_check():
 # Include the router in the main app
 app.include_router(api_router)
 
+# Proxy frontend requests
+@app.get("/{path:path}")
+async def proxy_frontend(path: str):
+    """Proxy requests to the frontend server"""
+    try:
+        async with httpx.AsyncClient() as client:
+            if path == "":
+                # Root path - get the main HTML
+                response = await client.get("http://localhost:3000/")
+            else:
+                # Other paths - proxy to frontend
+                response = await client.get(f"http://localhost:3000/{path}")
+            
+            # Return the response with appropriate content type
+            if path.endswith('.js'):
+                return response.content, {"content-type": "application/javascript"}
+            elif path.endswith('.css'):
+                return response.content, {"content-type": "text/css"}
+            elif path.endswith('.html') or path == "":
+                return HTMLResponse(content=response.text)
+            else:
+                return response.content
+    except Exception as e:
+        # If frontend is not available, return a simple message
+        if path == "":
+            return HTMLResponse(content="""
+                <html>
+                    <head><title>VELES DRIVE</title></head>
+                    <body>
+                        <h1>VELES DRIVE</h1>
+                        <p>Frontend service is starting...</p>
+                        <script>setTimeout(() => location.reload(), 2000);</script>
+                    </body>
+                </html>
+            """)
+        return {"error": "Frontend service unavailable"}
+
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
