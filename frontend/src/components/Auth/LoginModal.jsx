@@ -271,8 +271,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     id="phone"
                     type="tel"
                     placeholder="+7 (999) 123-45-67"
-                    value={registerForm.phone}
-                    onChange={(e) => setRegisterForm(prev => ({ ...prev, phone: e.target.value }))}
+                    value={registerValidation.values.phone}
+                    onChange={(e) => registerValidation.setFieldValue('phone', e.target.value)}
                     className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                   />
                 </div>
