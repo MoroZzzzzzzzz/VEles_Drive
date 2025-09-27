@@ -47,7 +47,7 @@ async def create_vehicle_payment_session(
             raise HTTPException(status_code=404, detail="Vehicle not found")
         
         # Check if vehicle is available
-        if vehicle.get("status") != "active":
+        if not vehicle.get("is_available", False):
             raise HTTPException(status_code=400, detail="Vehicle is not available for purchase")
         
         # Calculate amount based on payment type
