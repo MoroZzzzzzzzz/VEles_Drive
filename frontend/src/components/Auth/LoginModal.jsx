@@ -239,8 +239,8 @@ export const LoginModal = ({ open, onOpenChange }) => {
                   <Input
                     id="last-name"
                     placeholder="Фамилия"
-                    value={registerForm.last_name}
-                    onChange={(e) => setRegisterForm(prev => ({ ...prev, last_name: e.target.value }))}
+                    value={registerValidation.values.last_name}
+                    onChange={(e) => registerValidation.setFieldValue('last_name', e.target.value)}
                     className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                     required
                   />
