@@ -230,19 +230,19 @@ export const FeaturedCars = () => {
                 {/* Specifications */}
                 <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                   <div className="flex items-center text-gray-300">
-                    <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+                    <Calendar className="h-4 w-4 mr-2 text-orange-400" />
                     {car.year} год
                   </div>
                   <div className="flex items-center text-gray-300">
-                    <Fuel className="h-4 w-4 mr-2 text-gray-500" />
+                    <Fuel className="h-4 w-4 mr-2 text-orange-400" />
                     {car.engine}
                   </div>
                   <div className="flex items-center text-gray-300">
-                    <Settings className="h-4 w-4 mr-2 text-gray-500" />
+                    <Settings className="h-4 w-4 mr-2 text-orange-400" />
                     {car.power} л.с.
                   </div>
                   <div className="flex items-center text-gray-300">
-                    <span className="w-4 h-4 mr-2 rounded-full bg-gray-500"></span>
+                    <span className="w-4 h-4 mr-2 rounded-full bg-gradient-to-br from-orange-400 to-amber-500"></span>
                     {car.color}
                   </div>
                 </div>
