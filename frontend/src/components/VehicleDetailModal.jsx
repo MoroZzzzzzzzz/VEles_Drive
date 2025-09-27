@@ -95,7 +95,7 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
           <X className="h-5 w-5" />
         </button>
 
-        <div className="flex flex-col min-h-0">
+        <div className="relative">
           {/* Image Gallery Section */}
           <div className="relative bg-black">
             {images.length > 0 ? (
