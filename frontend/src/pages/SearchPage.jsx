@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Search, Filter, Grid, List, SlidersHorizontal, MapPin,
   Car, DollarSign, Calendar, Gauge, Fuel, Settings,
-  Heart, ArrowLeftRight, Eye, Sort
+  Heart, ArrowLeftRight, Eye, ArrowUpDown
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
