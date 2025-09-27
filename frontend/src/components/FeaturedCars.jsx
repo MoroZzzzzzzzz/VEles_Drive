@@ -137,15 +137,15 @@ export const FeaturedCars = () => {
   };
 
   return (
-    <section className="py-20 bg-gray-950">
+    <section className="py-20 bg-black">
       <div className="container mx-auto px-4 lg:px-6">
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Популярные <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">автомобили</span>
+            Эксклюзивная <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 bg-clip-text text-transparent">коллекция</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Самые востребованные модели премиум класса от ведущих мировых производителей
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Премиальные спорткары и суперкары от легендарных производителей
           </p>
         </div>
 
