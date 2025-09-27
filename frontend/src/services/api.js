@@ -335,4 +335,65 @@ export const leadsAPI = {
   }
 };
 
+// Advanced Search API
+export const advancedSearchAPI = {
+  smartSearch: async (searchQuery) => {
+    const response = await api.post('/search/smart', searchQuery);
+    return response.data;
+  },
+
+  getSuggestions: async (query, limit = 10) => {
+    const response = await api.get(`/search/suggestions?query=${encodeURIComponent(query)}&limit=${limit}`);
+    return response.data;
+  },
+
+  saveSearch: async (savedSearch) => {
+    const response = await api.post('/search/save', savedSearch);
+    return response.data;
+  },
+
+  getSavedSearches: async () => {
+    const response = await api.get('/search/saved');
+    return response.data;
+  },
+
+  getSearchHistory: async (limit = 20) => {
+    const response = await api.get(`/search/history?limit=${limit}`);
+    return response.data;
+  },
+
+  getTrending: async () => {
+    const response = await api.get('/search/trending');
+    return response.data;
+  }
+};
+
+// Verification API
+export const verificationAPI = {
+  checkVIN: async (vin) => {
+    const response = await api.post('/verification/vin-check', { vin });
+    return response.data;
+  },
+
+  requestVerification: async (requestData) => {
+    const response = await api.post('/verification/request', requestData);
+    return response.data;
+  },
+
+  getVehicleVerification: async (vehicleId) => {
+    const response = await api.get(`/verification/vehicle/${vehicleId}`);
+    return response.data;
+  },
+
+  getVerificationPricing: async () => {
+    const response = await api.get('/verification/pricing');
+    return response.data;
+  },
+
+  getVerificationHistory: async () => {
+    const response = await api.get('/verification/history');
+    return response.data;
+  }
+};
+
 export default api;
