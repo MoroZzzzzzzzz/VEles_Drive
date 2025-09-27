@@ -245,6 +245,96 @@ class VelesDriveAPITester:
         }
         
         return results
+
+    def test_veles_drive_auth_detailed(self) -> Dict[str, Any]:
+        """Test VELES DRIVE authentication process with specific test data"""
+        results = {}
+        
+        print("🔐 Testing VELES DRIVE Authentication Process (Detailed)...")
+        
+        # Specific test user data as requested
+        veles_test_user = {
+            "email": "test@velesdrive.ru",
+            "password": "testpass123",
+            "first_name": "Тест",
+            "last_name": "Пользователь",
+            "role": "buyer"
+        }
+        
+        # Test 1: Create test user if needed
+        print("  Step 1: Creating test user if needed...")
+        result = self.make_request("POST", "/auth/register", data=veles_test_user)
+        results["veles_user_registration"] = {
+            "status": "✅ PASS" if result.get("status_code") in [200, 400] else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "note": "200 = new user created, 400 = user already exists"
+        }
+        
+        # Test 2: Login with specific credentials
+        print("  Step 2: Testing login with test@velesdrive.ru / testpass123...")
+        login_data = {
+            "email": "test@velesdrive.ru",
+            "password": "testpass123"
+        }
+        result = self.make_request("POST", "/auth/login", data=login_data)
+        results["veles_login"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Verify response format
+        if result.get("status_code") == 200:
+            response_data = result.get("data", {})
+            has_access_token = "access_token" in response_data
+            has_user_data = "user" in response_data or "id" in response_data
+            
+            results["veles_login_format"] = {
+                "status": "✅ PASS" if has_access_token and has_user_data else "❌ FAIL",
+                "has_access_token": has_access_token,
+                "has_user_data": has_user_data,
+                "response_keys": list(response_data.keys())
+            }
+            
+            # Store token for profile test
+            veles_token = response_data.get("access_token")
+            
+            # Test 3: Profile endpoint with Bearer token
+            print("  Step 3: Testing profile endpoint with Bearer token...")
+            if veles_token:
+                result = self.make_request("GET", "/auth/profile", 
+                                         headers={"Authorization": f"Bearer {veles_token}"})
+                results["veles_profile"] = {
+                    "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                    "status_code": result.get("status_code"),
+                    "response": result.get("data", {}),
+                    "error": result.get("error")
+                }
+                
+                # Verify profile data format
+                if result.get("status_code") == 200:
+                    profile_data = result.get("data", {})
+                    has_email = profile_data.get("email") == "test@velesdrive.ru"
+                    has_name = "first_name" in profile_data and "last_name" in profile_data
+                    has_role = "role" in profile_data
+                    
+                    results["veles_profile_format"] = {
+                        "status": "✅ PASS" if has_email and has_name and has_role else "❌ FAIL",
+                        "correct_email": has_email,
+                        "has_name_fields": has_name,
+                        "has_role": has_role,
+                        "profile_data": profile_data
+                    }
+            else:
+                results["veles_profile"] = {
+                    "status": "❌ FAIL",
+                    "error": "No access token received from login"
+                }
+        
+        return results
     def test_authenticated_vehicle_creation(self) -> Dict[str, Any]:
         """Test vehicle creation with dealer authentication"""
         results = {}
