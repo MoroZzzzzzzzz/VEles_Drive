@@ -510,7 +510,7 @@ export const SearchPage = () => {
         </div>
 
         {/* Vehicle Detail Modal */}
-        <VehicleDetailModal
+        <SimpleVehicleModal
           vehicle={selectedVehicle}
           open={!!selectedVehicle}
           onOpenChange={() => setSelectedVehicle(null)}
