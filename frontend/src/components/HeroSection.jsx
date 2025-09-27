@@ -59,33 +59,53 @@ export const HeroSection = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 z-10" />
-        <img 
-          src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&q=80"
-          alt="Luxury Car"
-          className="w-full h-full object-cover"
-        />
+    <section className="relative min-h-screen flex items-center justify-center">
+      {/* Dynamic background video/image */}
+      <div className="absolute inset-0">
+        <div className="w-full h-full bg-gradient-to-br from-gray-900 via-black to-gray-800">
+          <img 
+            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=1920&h=1080&fit=crop" 
+            alt="Premium luxury cars" 
+            className="w-full h-full object-cover opacity-40"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-transparent to-black/70"></div>
+        
+        {/* Floating elements for premium feel */}
+        <div className="absolute top-1/4 left-10 w-2 h-2 bg-orange-500 rounded-full animate-pulse opacity-70"></div>
+        <div className="absolute top-1/3 right-20 w-1 h-1 bg-amber-400 rounded-full animate-pulse opacity-50"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse opacity-60"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-20 container mx-auto px-4 lg:px-6 text-center">
-        {/* Main Heading */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            БЕЗОПАСНАЯ ПОКУПКА
-            <br />
-            <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              АВТО ПРЕМИУМ КЛАССА
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Только официальные дилеры и проверенные автосалоны.<br />
-            Исключительное качество. Прозрачные условия
-          </p>
-        </div>
+      <div className="relative z-10 container mx-auto px-4 lg:px-6 text-center">
+        <div className="max-w-7xl mx-auto">
+          {/* Premium heading with enhanced typography */}
+          <div className="mb-16 space-y-8">
+            <div className="inline-flex items-center px-6 py-3 rounded-full border border-orange-500/30 bg-black/20 backdrop-blur-sm mb-8">
+              <span className="text-orange-400 text-sm font-medium tracking-wider uppercase">
+                Безопасная покупка премиум авто
+              </span>
+            </div>
+            
+            <h1 className="text-7xl md:text-9xl font-black text-white mb-8 tracking-tighter leading-none">
+              <span className="block bg-gradient-to-r from-orange-400 via-amber-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl">
+                АВТО ПРЕМИУМ
+              </span>
+              <span className="block text-6xl md:text-8xl bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+                КЛАССА
+              </span>
+            </h1>
+            
+            <div className="space-y-4 max-w-4xl mx-auto">
+              <p className="text-2xl md:text-3xl text-gray-200 font-light leading-relaxed">
+                Только официальные дилеры и проверенные автосалоны.
+              </p>
+              <p className="text-xl md:text-2xl text-gray-400 font-light">
+                Исключительное качество. Прозрачные условия
+              </p>
+            </div>
+          </div>
 
         {/* Search Form */}
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 max-w-6xl mx-auto border border-white/20">
