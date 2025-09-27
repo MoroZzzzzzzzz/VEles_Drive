@@ -250,7 +250,7 @@ export const FeaturedCars = () => {
                 {/* Price */}
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <div className="text-3xl font-bold text-white">
+                    <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 bg-clip-text text-transparent">
                       {formatPrice(car.price)}
                     </div>
                     {car.mileage > 0 && (
