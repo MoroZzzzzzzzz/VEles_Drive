@@ -235,9 +235,12 @@ export const LoginModal = ({ open, onOpenChange }) => {
                       placeholder="Имя"
                       value={registerValidation.values.first_name}
                       onChange={(e) => registerValidation.setValue('first_name', e.target.value)}
+                      onBlur={() => registerValidation.setFieldTouched('first_name')}
                       className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
-                      required
                     />
+                    {registerValidation.touched.first_name && registerValidation.errors.first_name && (
+                      <p className="text-red-400 text-sm mt-1">{registerValidation.errors.first_name}</p>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-2">
