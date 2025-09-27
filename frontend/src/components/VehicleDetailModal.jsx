@@ -5,8 +5,11 @@ import { Badge } from './ui/badge';
 import { 
   X, Heart, ArrowLeftRight, MessageCircle, Phone, MapPin, 
   Calendar, Fuel, Settings, Gauge, Eye, ChevronLeft, ChevronRight,
-  Star, Shield, Clock
+  Star, Shield, Clock, FileText, Camera
 } from 'lucide-react';
+import { ReviewsSection } from './Reviews/ReviewsSection';
+import { ChatWindow } from './Messaging/ChatWindow';
+import { VinScanner } from './VIN/VinScanner';
 import { useAuth } from '../contexts/AuthContext';
 import { formatPrice } from './mock';
 
