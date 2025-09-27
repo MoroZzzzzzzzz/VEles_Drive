@@ -429,17 +429,161 @@ backend:
           agent: "testing"
           comment: "✅ Email notification system working in mock mode. SendGrid API key not configured (expected for testing), but email notifications are properly triggered and logged for messages and reviews. Background tasks functioning correctly."
 
-  - task: "Complete System Integration"
+  - task: "Stripe Payment System - Vehicle Checkout"
     implemented: true
     working: true
-    file: "backend/server.py"
+    file: "backend/routes/payments.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
         - working: true
           agent: "testing"
-          comment: "✅ FINAL ASSESSMENT: Complete VELES DRIVE system integration tested successfully. Full workflow: Registration → Dealer Profile → Vehicle Creation → Messaging → Reviews → Comparison → Favorites all working. 95% success rate (19/20 tests passed). System FULLY READY FOR PRODUCTION."
+          comment: "✅ POST /api/payments/vehicle/checkout working correctly. Creates payment sessions for full vehicle purchases and booking fees. Proper validation for vehicle availability and price limits. Fixed vehicle status check to use is_available field."
+
+  - task: "Stripe Payment System - Booking Checkout"
+    implemented: true
+    working: true
+    file: "backend/routes/payments.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/payments/booking/checkout working correctly. Creates booking payment sessions (10% of vehicle price). Proper integration with Stripe API and transaction recording."
+
+  - task: "Stripe Payment System - Status Check"
+    implemented: true
+    working: true
+    file: "backend/routes/payments.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/payments/status/{session_id} working correctly. Retrieves payment status from Stripe and updates local transaction records. Proper access control for user transactions."
+
+  - task: "Stripe Payment System - Transaction History"
+    implemented: true
+    working: true
+    file: "backend/routes/payments.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/payments/transactions working correctly. Returns user's payment history with vehicle details. Proper data aggregation and formatting."
+
+  - task: "Stripe Payment System - Package Payments"
+    implemented: true
+    working: true
+    file: "backend/routes/payments.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/payments/packages and POST /api/payments/packages/checkout working correctly. Fixed parameter handling for package checkout. Supports test packages for demos."
+
+  - task: "Leads System - Test Drive Requests"
+    implemented: true
+    working: true
+    file: "backend/routes/leads.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/leads/test-drive working correctly. Creates test drive requests with proper validation. Email notifications sent to dealers (mock mode). Proper data structure and error handling."
+
+  - task: "Leads System - Price Inquiries"
+    implemented: true
+    working: true
+    file: "backend/routes/leads.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/leads/price-inquiry working correctly. Creates price inquiry requests with dealer notifications. Proper vehicle and dealer validation."
+
+  - task: "Leads System - Callback Requests"
+    implemented: true
+    working: true
+    file: "backend/routes/leads.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/leads/callback working correctly. Creates callback requests with optional vehicle reference. Email notifications and proper data validation working."
+
+  - task: "Leads System - Dealer Management"
+    implemented: true
+    working: true
+    file: "backend/routes/leads.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/leads/dealer/{dealer_id} and PUT /api/leads/{lead_id}/status working correctly. Fixed status update parameter handling. Proper access control and lead management for dealers."
+
+  - task: "Leads System - Statistics"
+    implemented: true
+    working: true
+    file: "backend/routes/leads.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/leads/stats/{dealer_id} working correctly. Provides comprehensive lead statistics including conversion rates, lead types, and status distribution."
+
+  - task: "Leads System - User Interface"
+    implemented: true
+    working: true
+    file: "backend/routes/leads.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ GET /api/leads/user working correctly. Returns user's lead history with proper data structure and filtering."
+
+  - task: "Webhook System - Stripe Integration"
+    implemented: true
+    working: true
+    file: "backend/routes/webhooks.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ POST /api/webhook/stripe working correctly. Proper signature validation (rejects missing signatures). Handles payment success and expiration events. Minor: Invalid signature handling could be improved."
+
+  - task: "Email Notification System - Leads Integration"
+    implemented: true
+    working: true
+    file: "backend/services/email_service.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Email notifications working in mock mode for all lead types. Proper HTML formatting and dealer notification system. Background task processing functional."
 
 frontend:
   - task: "Main Page Loading and UI Components"
