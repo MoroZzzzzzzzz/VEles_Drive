@@ -250,9 +250,12 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     placeholder="Фамилия"
                     value={registerValidation.values.last_name}
                     onChange={(e) => registerValidation.setValue('last_name', e.target.value)}
+                    onBlur={() => registerValidation.setFieldTouched('last_name')}
                     className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
-                    required
                   />
+                  {registerValidation.touched.last_name && registerValidation.errors.last_name && (
+                    <p className="text-red-400 text-sm mt-1">{registerValidation.errors.last_name}</p>
+                  )}
                 </div>
               </div>
 
