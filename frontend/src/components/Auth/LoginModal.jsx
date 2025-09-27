@@ -5,8 +5,9 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Alert, AlertDescription } from '../ui/alert';
-import { Eye, EyeOff, Mail, Lock, User, Phone } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Phone, Loader2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { ValidatedInput, useFormValidation, validationRules } from '../ui/form-validation';
 
 export const LoginModal = ({ open, onOpenChange }) => {
   const { login, register, isLoading } = useAuth();
