@@ -449,7 +449,7 @@ export const SearchPage = () => {
             
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-48 bg-gray-800 border-gray-700 text-white">
-                <Sort className="h-4 w-4 mr-2" />
+                <ArrowUpDown className="h-4 w-4 mr-2" />
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
