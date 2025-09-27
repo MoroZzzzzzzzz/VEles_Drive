@@ -44,6 +44,8 @@ api_router.include_router(compare_router)
 api_router.include_router(payments_router)
 api_router.include_router(webhooks_router)
 api_router.include_router(leads_router)
+api_router.include_router(verification_router)
+api_router.include_router(search_router)
 
 # Health check endpoint
 @api_router.get("/")
