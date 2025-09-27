@@ -28,9 +28,15 @@ const Home = () => {
     <div className="min-h-screen bg-black">
       <main>
         <HeroSection />
-        <FeaturedCars />
-        <TopDealers />
-        <Features />
+        <FadeInUp delay={200}>
+          <FeaturedCars />
+        </FadeInUp>
+        <FadeInUp delay={400}>
+          <TopDealers />
+        </FadeInUp>
+        <FadeInUp delay={600}>
+          <Features />
+        </FadeInUp>
       </main>
     </div>
   );
