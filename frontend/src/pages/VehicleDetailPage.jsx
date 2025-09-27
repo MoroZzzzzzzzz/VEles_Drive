@@ -20,6 +20,15 @@ import { useComparison } from '../components/Compare/CompareModal';
 import { vehiclesAPI, favoritesAPI, dealersAPI, leadsAPI } from '../services/api';
 import { cn } from '../lib/utils';
 
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
+};
+
+const formatMileage = (mileage) => {
+  if (!mileage) return 'Не указан';
+  return new Intl.NumberFormat('ru-RU').format(mileage) + ' км';
+};
+
 export const VehicleDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
