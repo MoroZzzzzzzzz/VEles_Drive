@@ -72,18 +72,62 @@ export const Header = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3">
               <div className="relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1640780116262-412da1b923f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxjYXIlMjBkZWFsZXJzaGlwJTIwbG9nb3xlbnwwfHx8YmxhY2tfYW5kX3doaXRlfDE3NTg5Nzk0MDd8MA&ixlib=rb-4.1.0&q=85&w=60&h=60&fit=crop" 
-                  alt="VELES DRIVE" 
-                  className="h-12 w-12 rounded-full border-2 border-amber-500 bg-white p-1"
-                />
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center">
-                  <Car className="h-2 w-2 text-white" />
-                </div>
+                {/* Cool Sports Car SVG Logo */}
+                <svg 
+                  width="48" 
+                  height="32" 
+                  viewBox="0 0 48 32" 
+                  className="text-orange-500 hover:text-orange-400 transition-colors"
+                >
+                  <defs>
+                    <linearGradient id="carGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#f97316" />
+                      <stop offset="100%" stopColor="#ea580c" />
+                    </linearGradient>
+                  </defs>
+                  {/* Sports Car Body */}
+                  <path 
+                    d="M2 20 L8 14 L12 12 L20 10 L32 10 L40 12 L44 16 L46 20 L44 24 L40 26 L8 26 L2 20 Z" 
+                    fill="url(#carGradient)" 
+                    stroke="#f97316" 
+                    strokeWidth="0.5"
+                  />
+                  {/* Front Wing/Spoiler */}
+                  <path 
+                    d="M42 16 L46 14 L48 16 L46 18 L42 16 Z" 
+                    fill="#f97316"
+                  />
+                  {/* Rear Spoiler */}
+                  <path 
+                    d="M2 16 L0 14 L2 12 L4 14 L2 16 Z" 
+                    fill="#f97316"
+                  />
+                  {/* Windshield */}
+                  <path 
+                    d="M14 12 L18 8 L28 8 L32 12 L28 14 L18 14 L14 12 Z" 
+                    fill="#1f2937" 
+                    opacity="0.8"
+                  />
+                  {/* Wheels */}
+                  <circle cx="12" cy="22" r="3" fill="#1f2937" stroke="#f97316" strokeWidth="1"/>
+                  <circle cx="36" cy="22" r="3" fill="#1f2937" stroke="#f97316" strokeWidth="1"/>
+                  {/* Wheel Details */}
+                  <circle cx="12" cy="22" r="1.5" fill="#f97316"/>
+                  <circle cx="36" cy="22" r="1.5" fill="#f97316"/>
+                  {/* Headlights */}
+                  <circle cx="42" cy="18" r="1.5" fill="#fbbf24" opacity="0.9"/>
+                  <circle cx="42" cy="22" r="1.5" fill="#fbbf24" opacity="0.9"/>
+                  {/* Side Details */}
+                  <path 
+                    d="M10 18 L38 18 L40 20 L38 22 L10 22 L8 20 L10 18 Z" 
+                    fill="#ea580c" 
+                    opacity="0.7"
+                  />
+                </svg>
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl font-bold text-white tracking-tight">VELES</span>
-                <span className="text-xs text-amber-400 font-semibold -mt-1">DRIVE</span>
+                <span className="text-xs text-amber-400 font-semibold -mt-1 tracking-wider">DRIVE</span>
               </div>
             </Link>
 
