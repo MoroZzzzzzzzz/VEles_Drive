@@ -81,7 +81,17 @@ export const mockCars = [
     dealer: "Италия Авто",
     location: "Москва", 
     isNew: true,
-    isFeatured: true
+    isFeatured: true,
+    dealerInfo: {
+      name: "Италия Авто",
+      rating: 4.9,
+      reviewCount: 156,
+      address: "Москва, ул. Тверская, 25",
+      phone: "+7 (495) 345-67-89",
+      email: "moscow@italiaavto.ru",
+      workingHours: "Пн-Сб: 10:00-20:00, Вс: 12:00-18:00"
+    },
+    description: "Ferrari SF90 Stradale - первый гибридный серийный суперкар Ferrari. Мощность 1000 л.с., разгон 0-100 км/ч за 2.5 секунды."
   },
   {
     id: 4,
