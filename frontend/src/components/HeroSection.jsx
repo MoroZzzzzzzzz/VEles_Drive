@@ -171,7 +171,7 @@ export const HeroSection = () => {
             <Button 
               onClick={handleSearch}
               disabled={isSearching}
-              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-12 py-4 text-lg font-semibold h-auto rounded-xl border-0 shadow-2xl transform transition-all duration-200 hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+              className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 hover:from-orange-600 hover:via-amber-600 hover:to-yellow-600 text-black px-12 py-4 text-lg font-bold h-auto rounded-xl border border-orange-400/30 shadow-2xl shadow-orange-500/20 transform transition-all duration-300 hover:scale-105 hover:shadow-orange-500/40 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             >
               {isSearching ? (
                 <Loader2 className="mr-3 h-5 w-5 animate-spin" />
