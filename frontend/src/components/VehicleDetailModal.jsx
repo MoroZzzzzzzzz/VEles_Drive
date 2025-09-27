@@ -246,14 +246,66 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
                 ))}
               </div>
 
-              {/* Dealer Information */}
-              {vehicle.dealerInfo && (
+              {/* Tabs Navigation */}
+              <div className="border-b border-gray-700 mb-6">
+                <nav className="flex space-x-8">
+                  {[
+                    { id: 'overview', label: 'Обзор', icon: Eye },
+                    { id: 'reviews', label: 'Отзывы', icon: Star },
+                    { id: 'vin', label: 'VIN-проверка', icon: FileText },
+                    { id: 'dealer', label: 'О дилере', icon: Shield }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                        activeTab === tab.id
+                          ? 'border-amber-500 text-amber-400'
+                          : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+                      }`}
+                    >
+                      <tab.icon className="h-4 w-4" />
+                      <span>{tab.label}</span>
+                    </button>
+                  ))}
+                </nav>
+              </div>
+
+              {/* Tab Content */}
+              {activeTab === 'overview' && (
+                <div className="space-y-6">
+                  {/* Vehicle Description */}
+                  {vehicle.description && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-white mb-3">Описание</h4>
+                      <p className="text-gray-300 leading-relaxed">{vehicle.description}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'reviews' && (
+                <ReviewsSection vehicleId={vehicle.id} type="vehicle" />
+              )}
+
+              {activeTab === 'vin' && (
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-white">VIN-проверка</h4>
+                  <p className="text-gray-400 mb-4">
+                    Проверьте историю автомобиля по VIN-номеру для получения подробной информации.
+                  </p>
+                  <Button
+                    onClick={() => setShowVinScanner(true)}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                  >
+                    <Camera className="h-4 w-4 mr-2" />
+                    Запустить VIN-сканер
+                  </Button>
+                </div>
+              )}
+
+              {activeTab === 'dealer' && vehicle.dealerInfo && (
                 <div className="bg-gray-800/30 rounded-xl p-6 backdrop-blur-sm">
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <Shield className="h-5 w-5 mr-2 text-amber-500" />
-                    Информация о продавце
-                  </h3>
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <h4 className="text-lg font-semibold text-white mb-2">
@@ -307,17 +359,20 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
                         </Button>
                       )}
                       
-                      {vehicle.dealerInfo.email && (
-                        <Button 
-                          variant="outline"
-                          className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
-                          onClick={() => window.open(`mailto:${vehicle.dealerInfo.email}`)}
-                        >
-                          <MessageCircle className="h-4 w-4 mr-2" />
-                          {vehicle.dealerInfo.email}
-                        </Button>
-                      )}
+                      <Button 
+                        variant="outline"
+                        className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
+                        onClick={() => setShowChat(true)}
+                      >
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        Открыть чат
+                      </Button>
                     </div>
+                  </div>
+
+                  {/* Dealer Reviews Section */}
+                  <div className="mt-8 pt-6 border-t border-gray-700">
+                    <ReviewsSection dealerId={vehicle.dealerId} type="dealer" />
                   </div>
                 </div>
               )}
