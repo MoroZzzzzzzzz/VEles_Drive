@@ -35,18 +35,27 @@ export const HeroSection = () => {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     console.log('Поиск автомобилей с параметрами:', searchParams);
     
-    // Convert to URL params and navigate to catalog
-    const params = new URLSearchParams();
-    if (searchParams.make) params.set('make', searchParams.make);
-    if (searchParams.bodyType) params.set('body_type', searchParams.bodyType);
-    if (searchParams.priceFrom) params.set('price_from', searchParams.priceFrom);
-    if (searchParams.priceTo) params.set('price_to', searchParams.priceTo);
-    if (searchParams.year) params.set('year_from', searchParams.year);
+    setIsSearching(true);
     
-    navigate(`/catalog?${params.toString()}`);
+    try {
+      // Convert to URL params and navigate to catalog
+      const params = new URLSearchParams();
+      if (searchParams.make) params.set('make', searchParams.make);
+      if (searchParams.bodyType) params.set('body_type', searchParams.bodyType);
+      if (searchParams.priceFrom) params.set('price_from', searchParams.priceFrom);
+      if (searchParams.priceTo) params.set('price_to', searchParams.priceTo);
+      if (searchParams.year) params.set('year_from', searchParams.year);
+      
+      // Add a small delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      navigate(`/catalog?${params.toString()}`);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   return (
