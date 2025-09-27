@@ -308,7 +308,7 @@ export const FeaturedCars = () => {
       </div>
       
       {/* Vehicle Detail Modal */}
-      <VehicleDetailModal
+      <SimpleVehicleModal
         vehicle={selectedVehicle}
         open={isDetailModalOpen}
         onOpenChange={setIsDetailModalOpen}
