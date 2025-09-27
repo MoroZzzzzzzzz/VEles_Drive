@@ -25,10 +25,13 @@ export const HeroSection = () => {
 
   const loadCategories = async () => {
     try {
+      setIsLoadingCategories(true);
       const data = await vehiclesAPI.getCategories();
       setCategories(data);
     } catch (error) {
       console.error('Error loading categories:', error);
+    } finally {
+      setIsLoadingCategories(false);
     }
   };
 
