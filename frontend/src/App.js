@@ -148,6 +148,7 @@ function App() {
           <Header />
           <AppRoutes />
           <Footer />
+          <Toaster />
         </BrowserRouter>
       </div>
     </AuthProvider>
