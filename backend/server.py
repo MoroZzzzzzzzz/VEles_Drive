@@ -70,41 +70,48 @@ async def health_check():
 app.include_router(api_router)
 
 # Proxy frontend requests
-@app.get("/{path:path}")
-async def proxy_frontend(path: str):
-    """Proxy requests to the frontend server"""
+@app.get("/")
+async def proxy_frontend_root():
+    """Proxy root requests to the frontend server"""
     try:
         async with httpx.AsyncClient() as client:
-            if path == "":
-                # Root path - get the main HTML
-                response = await client.get("http://localhost:3000/")
-            else:
-                # Other paths - proxy to frontend
-                response = await client.get(f"http://localhost:3000/{path}")
-            
-            # Return the response with appropriate content type
-            if path.endswith('.js'):
-                return response.content, {"content-type": "application/javascript"}
-            elif path.endswith('.css'):
-                return response.content, {"content-type": "text/css"}
-            elif path.endswith('.html') or path == "":
-                return HTMLResponse(content=response.text)
-            else:
-                return response.content
+            response = await client.get("http://localhost:3000/")
+            return HTMLResponse(content=response.text)
     except Exception as e:
-        # If frontend is not available, return a simple message
-        if path == "":
-            return HTMLResponse(content="""
-                <html>
-                    <head><title>VELES DRIVE</title></head>
-                    <body>
-                        <h1>VELES DRIVE</h1>
-                        <p>Frontend service is starting...</p>
-                        <script>setTimeout(() => location.reload(), 2000);</script>
-                    </body>
-                </html>
-            """)
-        return {"error": "Frontend service unavailable"}
+        return HTMLResponse(content="""
+            <html>
+                <head><title>VELES DRIVE</title></head>
+                <body>
+                    <h1>VELES DRIVE</h1>
+                    <p>Frontend service is starting...</p>
+                    <script>setTimeout(() => location.reload(), 2000);</script>
+                </body>
+            </html>
+        """)
+
+@app.get("/static/{path:path}")
+async def proxy_static(path: str):
+    """Proxy static file requests to the frontend server"""
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"http://localhost:3000/static/{path}")
+            
+            # Determine content type
+            if path.endswith('.js'):
+                content_type = "application/javascript"
+            elif path.endswith('.css'):
+                content_type = "text/css"
+            elif path.endswith('.png'):
+                content_type = "image/png"
+            elif path.endswith('.jpg') or path.endswith('.jpeg'):
+                content_type = "image/jpeg"
+            else:
+                content_type = "application/octet-stream"
+            
+            from fastapi import Response
+            return Response(content=response.content, media_type=content_type)
+    except Exception as e:
+        return {"error": "Static file not found"}
 
 # CORS middleware
 app.add_middleware(
