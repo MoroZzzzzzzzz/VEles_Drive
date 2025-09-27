@@ -88,7 +88,7 @@ export const HeroSection = () => {
         </div>
 
         {/* Search Form */}
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 max-w-6xl mx-auto border border-white/20">
+        <div className="bg-black/20 backdrop-blur-xl rounded-2xl p-6 md:p-8 max-w-6xl mx-auto border border-orange-500/30 shadow-2xl shadow-orange-500/10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
             {/* Марка автомобиля */}
             <div className="space-y-2">
