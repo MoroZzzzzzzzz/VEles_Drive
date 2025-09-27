@@ -218,11 +218,11 @@ export const FeaturedCars = () => {
               >
                 {/* Car Info */}
                 <div className="mb-4">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
+                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:bg-gradient-to-r group-hover:from-orange-400 group-hover:to-amber-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                     {car.make} {car.model}
                   </h3>
                   <div className="flex items-center text-gray-400 text-sm mb-3">
-                    <MapPin className="h-4 w-4 mr-1" />
+                    <MapPin className="h-4 w-4 mr-1 text-orange-400" />
                     {car.location} • {car.dealer}
                   </div>
                 </div>
