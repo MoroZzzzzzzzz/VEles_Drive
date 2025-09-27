@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 export const HeroSection = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState(null);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const [searchParams, setSearchParams] = useState({
     make: '',
     bodyType: '',
