@@ -52,7 +52,7 @@ export const HeroSection = () => {
       // Add a small delay to show loading state
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      navigate(`/catalog?${params.toString()}`);
+      navigate(`/search?${params.toString()}`);
     } finally {
       setIsSearching(false);
     }
