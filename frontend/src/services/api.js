@@ -146,6 +146,115 @@ export const dealersAPI = {
   }
 };
 
+// Search API
+export const searchAPI = {
+  searchVehicles: async (filters) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value !== 'all' && value !== '') {
+        if (Array.isArray(value)) {
+          params.set(key, value.join(','));
+        } else {
+          params.set(key, value);
+        }
+      }
+    });
+    const response = await api.get(`/vehicles/search?${params.toString()}`);
+    return response.data;
+  },
+
+  getSuggestions: async (query) => {
+    const response = await api.get(`/vehicles/suggestions?q=${query}`);
+    return response.data;
+  },
+
+  getPopularSearches: async () => {
+    const response = await api.get('/vehicles/popular-searches');
+    return response.data;
+  }
+};
+
+// Leads API
+export const leadsAPI = {
+  getDealerLeads: async (dealerId, filters = {}) => {
+    const params = new URLSearchParams(filters);
+    const response = await api.get(`/dealers/${dealerId}/leads?${params.toString()}`);
+    return response.data;
+  },
+
+  getDealerStats: async (dealerId) => {
+    const response = await api.get(`/dealers/${dealerId}/leads/stats`);
+    return response.data;
+  },
+
+  updateLeadStatus: async (leadId, data) => {
+    const response = await api.put(`/leads/${leadId}/status`, data);
+    return response.data;
+  },
+
+  createLead: async (data) => {
+    const response = await api.post('/leads/', data);
+    return response.data;
+  }
+};
+
+// Analytics API
+export const analyticsAPI = {
+  getDealerAnalytics: async (dealerId, params = {}) => {
+    const queryParams = new URLSearchParams(params);
+    const response = await api.get(`/dealers/${dealerId}/analytics?${queryParams.toString()}`);
+    return response.data;
+  },
+
+  getVehicleAnalytics: async (vehicleId) => {
+    const response = await api.get(`/vehicles/${vehicleId}/analytics`);
+    return response.data;
+  }
+};
+
+// Loan Calculator API
+export const loanAPI = {
+  calculateLoan: async (data) => {
+    const response = await api.post('/loans/calculate', data);
+    return response.data;
+  },
+
+  getBankOffers: async (amount, term) => {
+    const response = await api.get(`/loans/offers?amount=${amount}&term=${term}`);
+    return response.data;
+  },
+
+  submitLoanApplication: async (data) => {
+    const response = await api.post('/loans/apply', data);
+    return response.data;
+  }
+};
+
+// Trade-in API
+export const tradeInAPI = {
+  evaluateVehicle: async (data) => {
+    const response = await api.post('/trade-in/evaluate', data);
+    return response.data;
+  },
+
+  uploadImages: async (vehicleId, images) => {
+    const formData = new FormData();
+    images.forEach((image, index) => {
+      formData.append(`image_${index}`, image.file);
+    });
+    
+    const response = await api.post(`/trade-in/${vehicleId}/images`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  },
+
+  getMarketComparison: async (make, model, year) => {
+    const response = await api.get(`/trade-in/market-comparison?make=${make}&model=${model}&year=${year}`);
+    return response.data;
+  }
+};
+
 // Favorites API
 export const favoritesAPI = {
   getFavorites: async () => {
