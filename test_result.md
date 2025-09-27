@@ -855,9 +855,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Backend API Integration Issues (502 errors)"
-    - "Authentication UI State Updates"
-    - "Reviews API Integration"
+    - "Post-Logo Changes System Verification"
+    - "Docker Deployment Readiness"
+    - "Frontend-Backend Integration after Logo Updates"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
