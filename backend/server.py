@@ -16,6 +16,8 @@ from routes.compare import router as compare_router
 from routes.payments import router as payments_router
 from routes.webhooks import router as webhooks_router
 from routes.leads import router as leads_router
+from routes.verification import router as verification_router
+from routes.advanced_search import router as search_router
 from database import db
 
 ROOT_DIR = Path(__file__).parent
