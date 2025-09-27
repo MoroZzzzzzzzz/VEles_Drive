@@ -727,7 +727,15 @@ metadata:
           agent: "testing"
           comment: "❌ Authenticated user buttons (Favorites, Messages, Compare) not visible in header despite user being authenticated. Vehicle modal authenticated features (В избранное, Написать продавцу) not accessible - vehicle cards don't open modals when clicked. These features may be implemented but not properly displayed or accessible in the current UI state."
 
-  - task: "VELES DRIVE Authentication Process - Detailed Testing"
+test_plan:
+  current_focus:
+    - "Vehicle Detail Modal UI"
+    - "Improved Form Validation"
+    - "Loading States and UX"
+    - "Mobile Responsiveness Check"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
     implemented: true
     working: true
     file: "backend/routes/auth.py"
