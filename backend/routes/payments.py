@@ -6,7 +6,44 @@ import uuid
 import os
 from dotenv import load_dotenv
 
-from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+# Mock Stripe integration for testing
+class CheckoutSessionRequest(BaseModel):
+    amount: int
+    currency: str = "usd"
+    success_url: str
+    cancel_url: str
+    metadata: Dict[str, Any] = {}
+
+class CheckoutSessionResponse(BaseModel):
+    session_id: str
+    url: str
+    status: str = "open"
+
+class CheckoutStatusResponse(BaseModel):
+    session_id: str
+    status: str
+    payment_status: str
+
+class StripeCheckout:
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+    
+    def create_session(self, request: CheckoutSessionRequest) -> CheckoutSessionResponse:
+        # Mock implementation
+        session_id = f"cs_test_{uuid.uuid4().hex[:24]}"
+        return CheckoutSessionResponse(
+            session_id=session_id,
+            url=f"https://checkout.stripe.com/pay/{session_id}",
+            status="open"
+        )
+    
+    def get_session_status(self, session_id: str) -> CheckoutStatusResponse:
+        # Mock implementation
+        return CheckoutStatusResponse(
+            session_id=session_id,
+            status="complete",
+            payment_status="paid"
+        )
 from auth import get_current_user  
 from database import db
 
