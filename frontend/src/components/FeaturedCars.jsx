@@ -212,7 +212,10 @@ export const FeaturedCars = () => {
                 </div>
               </div>
 
-              <CardContent className="p-6">
+              <CardContent 
+                className="p-6 cursor-pointer" 
+                onClick={() => handleCarClick(car)}
+              >
                 {/* Car Info */}
                 <div className="mb-4">
                   <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
