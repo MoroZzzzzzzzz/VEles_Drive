@@ -138,7 +138,7 @@ async def get_payment_status(
     """Get payment status and update transaction"""
     try:
         # Initialize Stripe checkout  
-        webhook_url = f"https://auto-dealership-5.preview.emergentagent.com/api/webhook/stripe"
+        webhook_url = f"https://hello-analyzer.preview.emergentagent.com/api/webhook/stripe"
         stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url=webhook_url)
         
         # Get status from Stripe

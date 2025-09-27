@@ -10,7 +10,7 @@ import uuid
 from typing import Dict, Any
 
 # Configuration
-BASE_URL = "https://auto-dealership-5.preview.emergentagent.com/api"
+BASE_URL = "https://hello-analyzer.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 class FocusedAPITester:
