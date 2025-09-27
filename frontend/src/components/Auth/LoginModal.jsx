@@ -333,6 +333,9 @@ export const LoginModal = ({ open, onOpenChange }) => {
                   onBlur={() => registerValidation.setFieldTouched('confirmPassword')}
                   className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                 />
+                {registerValidation.touched.confirmPassword && registerValidation.errors.confirmPassword && (
+                  <p className="text-red-400 text-sm mt-1">{registerValidation.errors.confirmPassword}</p>
+                )}
               </div>
 
               <div className="space-y-2">
