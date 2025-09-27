@@ -169,8 +169,7 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
           </div>
 
           {/* Content Section */}
-          <div className="flex-1 min-h-0">
-            <div className="p-6">
+          <div className="p-6">
               {/* Header */}
               <div className="flex items-start justify-between mb-6">
                 <div>
