@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: veles_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: velesdrive
+    volumes:
+      - mongodb_data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - veles_network
+
+  # VELES DRIVE Application
+  app:
+    build: .
+    container_name: veles_app
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - MONGO_URL=mongodb://admin:password123@mongodb:27017/velesdrive?authSource=admin
+      - JWT_SECRET=veles-drive-jwt-secret-change-in-production-2025
+      - STRIPE_API_KEY=sk_test_placeholder
+      - STRIPE_SECRET_KEY=sk_test_placeholder
+      - STRIPE_WEBHOOK_SECRET=whsec_placeholder
+      - SENDGRID_API_KEY=placeholder
+      - FROM_EMAIL=noreply@velesdrive.com
+      - PYTHONPATH=/app
+    depends_on:
+      - mongodb
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - veles_network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: veles_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - veles_network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  veles_network:
+    driver: bridge

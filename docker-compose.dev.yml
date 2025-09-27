@@ -1,0 +1,89 @@
+version: '3.8'
+
+# Development version with hot reload
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: veles_mongodb_dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: velesdrive
+    volumes:
+      - mongodb_dev_data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - veles_dev_network
+
+  # Backend with hot reload
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: backend
+    container_name: veles_backend_dev
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - MONGO_URL=mongodb://admin:password123@mongodb:27017/velesdrive?authSource=admin
+      - JWT_SECRET=veles-drive-jwt-secret-development
+      - STRIPE_API_KEY=sk_test_placeholder
+      - STRIPE_SECRET_KEY=sk_test_placeholder
+      - STRIPE_WEBHOOK_SECRET=whsec_placeholder
+      - SENDGRID_API_KEY=placeholder
+      - FROM_EMAIL=noreply@velesdrive.dev
+      - PYTHONPATH=/app
+      - DEVELOPMENT=true
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/app/backend
+      - ./uploads:/app/uploads
+    networks:
+      - veles_dev_network
+
+  # Frontend with hot reload
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: frontend
+    container_name: veles_frontend_dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8001
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+    networks:
+      - veles_dev_network
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: veles_redis_dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - veles_dev_network
+
+volumes:
+  mongodb_dev_data:
+  redis_dev_data:
+
+networks:
+  veles_dev_network:
+    driver: bridge
