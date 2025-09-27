@@ -1,9 +1,9 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-import httpx
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from spa_static import SPAStaticFiles
 import os
 import logging
 from pathlib import Path
