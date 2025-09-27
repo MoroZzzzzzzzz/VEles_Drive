@@ -196,9 +196,12 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     placeholder="Введите пароль"
                     value={loginValidation.values.password}
                     onChange={(e) => loginValidation.setValue('password', e.target.value)}
+                    onBlur={() => loginValidation.setFieldTouched('password')}
                     className="pl-10 pr-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
-                    required
                   />
+                  {loginValidation.touched.password && loginValidation.errors.password && (
+                    <p className="text-red-400 text-sm mt-1">{loginValidation.errors.password}</p>
+                  )}
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
