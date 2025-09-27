@@ -177,9 +177,12 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     placeholder="Введите ваш email"
                     value={loginValidation.values.email}
                     onChange={(e) => loginValidation.setValue('email', e.target.value)}
+                    onBlur={() => loginValidation.setFieldTouched('email')}
                     className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
-                    required
                   />
+                  {loginValidation.touched.email && loginValidation.errors.email && (
+                    <p className="text-red-400 text-sm mt-1">{loginValidation.errors.email}</p>
+                  )}
                 </div>
               </div>
 
