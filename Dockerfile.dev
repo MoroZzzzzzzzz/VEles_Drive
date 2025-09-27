@@ -1,0 +1,48 @@
+# Development Dockerfile with hot reload for VELES DRIVE
+FROM node:18-alpine as frontend
+
+# Set working directory for frontend
+WORKDIR /app/frontend
+
+# Install dependencies
+COPY frontend/package.json frontend/yarn.lock ./
+RUN yarn install
+
+# Copy source code
+COPY frontend/ ./
+
+# Expose port and start dev server
+EXPOSE 3000
+CMD ["yarn", "start"]
+
+# Backend stage
+FROM python:3.11-slim as backend
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy backend requirements and install Python dependencies
+COPY backend/requirements.txt ./backend/
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
+# Install development dependencies
+RUN pip install --no-cache-dir watchdog[watchmedo]
+
+# Copy backend source code
+COPY backend/ ./backend/
+
+# Create non-root user
+RUN useradd -m -u 1001 appuser && chown -R appuser:appuser /app
+USER appuser
+
+# Expose port
+EXPOSE 8001
+
+# Development command with auto-reload
+CMD ["python", "-m", "uvicorn", "backend.server:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
