@@ -1247,6 +1247,370 @@ class VelesDriveAPITester:
         
         return results
 
+    def test_verification_system(self) -> Dict[str, Any]:
+        """Test NEW PREMIUM vehicle verification system"""
+        results = {}
+        
+        print("🔍 Testing NEW PREMIUM Verification System...")
+        
+        # Ensure we have a dealer and vehicle set up
+        if not self.test_dealer_id or not self.test_vehicle_id:
+            results["setup_error"] = {
+                "status": "❌ FAIL",
+                "error": "Dealer and vehicle not properly set up for verification testing"
+            }
+            return results
+        
+        # Login as dealer for verification testing
+        dealer_login_data = {
+            "email": self.test_dealer_data["email"],
+            "password": self.test_dealer_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=dealer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["dealer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as dealer for verification testing"
+            }
+            return results
+        
+        dealer_token = result.get("data", {}).get("access_token")
+        self.auth_token = dealer_token
+        
+        # Test 1: Get verification pricing
+        print("  Testing GET /api/verification/pricing")
+        result = self.make_request("GET", "/verification/pricing")
+        results["get_verification_pricing"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 2: VIN check (as buyer)
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") == 200:
+            buyer_token = result.get("data", {}).get("access_token")
+            self.auth_token = buyer_token
+            
+            print("  Testing POST /api/verification/vin-check")
+            result = self.make_request("POST", "/verification/vin-check", 
+                                     params={"vin": "1HGBH41JXMN109186"})
+            results["vin_check"] = {
+                "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error")
+            }
+            
+            # Test invalid VIN
+            print("  Testing POST /api/verification/vin-check (invalid VIN)")
+            result = self.make_request("POST", "/verification/vin-check", 
+                                     params={"vin": "INVALID"})
+            results["vin_check_invalid"] = {
+                "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+                "status_code": result.get("status_code"),
+                "response": result.get("data", {}),
+                "error": result.get("error"),
+                "expected": "Should return 400 for invalid VIN"
+            }
+        
+        # Switch back to dealer for verification request
+        self.auth_token = dealer_token
+        
+        # Test 3: Request vehicle verification
+        print("  Testing POST /api/verification/request")
+        verification_request = {
+            "vehicle_id": self.test_vehicle_id,
+            "verification_type": "premium",
+            "documents": ["https://example.com/doc1.pdf"],
+            "notes": "Требуется полная проверка для премиум покупателя"
+        }
+        
+        result = self.make_request("POST", "/verification/request", data=verification_request)
+        results["request_verification"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        verification_id = None
+        if result.get("status_code") == 200:
+            verification_id = result.get("data", {}).get("verification_id")
+        
+        # Test 4: Get vehicle verification
+        print("  Testing GET /api/verification/vehicle/{vehicle_id}")
+        result = self.make_request("GET", f"/verification/vehicle/{self.test_vehicle_id}")
+        results["get_vehicle_verification"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 5: Get verification history
+        print("  Testing GET /api/verification/history")
+        result = self.make_request("GET", "/verification/history")
+        results["get_verification_history"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 6: Buyer trying to request verification (should fail)
+        self.auth_token = buyer_token
+        print("  Testing POST /api/verification/request (buyer - should fail)")
+        result = self.make_request("POST", "/verification/request", data=verification_request)
+        results["buyer_verification_request"] = {
+            "status": "✅ PASS" if result.get("status_code") == 403 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 403 - only dealers can request verification"
+        }
+        
+        return results
+
+    def test_advanced_search_system(self) -> Dict[str, Any]:
+        """Test NEW PREMIUM advanced AI search system"""
+        results = {}
+        
+        print("🔍 Testing NEW PREMIUM Advanced AI Search System...")
+        
+        # Login as buyer for search testing
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["buyer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as buyer for search testing"
+            }
+            return results
+        
+        buyer_token = result.get("data", {}).get("access_token")
+        self.auth_token = buyer_token
+        
+        # Test 1: Smart search with natural language
+        print("  Testing POST /api/search/smart (natural language)")
+        smart_search_data = {
+            "query": "BMW седан до 3 миллионов новый",
+            "max_results": 10,
+            "filters": {"condition": "new"},
+            "sort_by": "price",
+            "sort_order": "asc"
+        }
+        
+        result = self.make_request("POST", "/search/smart", data=smart_search_data)
+        results["smart_search_natural"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 2: Get search suggestions
+        print("  Testing GET /api/search/suggestions")
+        result = self.make_request("GET", "/search/suggestions", params={"query": "BMW", "limit": 5})
+        results["search_suggestions"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 3: Save search
+        print("  Testing POST /api/search/save")
+        saved_search_data = {
+            "name": "Мой поиск BMW",
+            "query": smart_search_data,
+            "notifications": True
+        }
+        
+        result = self.make_request("POST", "/search/save", data=saved_search_data)
+        results["save_search"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 4: Get saved searches
+        print("  Testing GET /api/search/saved")
+        result = self.make_request("GET", "/search/saved")
+        results["get_saved_searches"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 5: Get search history
+        print("  Testing GET /api/search/history")
+        result = self.make_request("GET", "/search/history", params={"limit": 10})
+        results["get_search_history"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 6: Get trending searches
+        print("  Testing GET /api/search/trending")
+        result = self.make_request("GET", "/search/trending")
+        results["get_trending_searches"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 7: Search suggestions with short query (should fail)
+        print("  Testing GET /api/search/suggestions (short query)")
+        result = self.make_request("GET", "/search/suggestions", params={"query": "B", "limit": 5})
+        results["search_suggestions_short"] = {
+            "status": "✅ PASS" if result.get("status_code") == 422 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 422 for query too short"
+        }
+        
+        return results
+
+    def test_comparison_system(self) -> Dict[str, Any]:
+        """Test NEW PREMIUM vehicle comparison system"""
+        results = {}
+        
+        print("⚖️ Testing NEW PREMIUM Vehicle Comparison System...")
+        
+        # Ensure we have vehicles for comparison
+        if not self.test_vehicle_id:
+            results["setup_error"] = {
+                "status": "❌ FAIL",
+                "error": "Vehicle not properly set up for comparison testing"
+            }
+            return results
+        
+        # Login as buyer for comparison testing
+        buyer_login_data = {
+            "email": self.test_user_data["email"],
+            "password": self.test_user_data["password"]
+        }
+        result = self.make_request("POST", "/auth/login", data=buyer_login_data)
+        
+        if result.get("status_code") != 200:
+            results["buyer_login_failed"] = {
+                "status": "❌ FAIL",
+                "error": "Could not login as buyer for comparison testing"
+            }
+            return results
+        
+        buyer_token = result.get("data", {}).get("access_token")
+        self.auth_token = buyer_token
+        
+        # Create a second vehicle for comparison (mock ID)
+        second_vehicle_id = str(uuid.uuid4())
+        
+        # Test 1: Get comparison features
+        print("  Testing GET /api/compare/features")
+        result = self.make_request("GET", "/compare/features")
+        results["get_comparison_features"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 2: Create comparison with insufficient vehicles (should fail)
+        print("  Testing POST /api/compare/ (insufficient vehicles)")
+        result = self.make_request("POST", "/compare/", data=[self.test_vehicle_id])
+        results["create_comparison_insufficient"] = {
+            "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 400 - need minimum 2 vehicles"
+        }
+        
+        # Test 3: Create comparison with valid vehicles
+        print("  Testing POST /api/compare/ (valid comparison)")
+        # We'll use the same vehicle twice for testing (in real scenario would be different vehicles)
+        comparison_vehicles = [self.test_vehicle_id, self.test_vehicle_id]
+        result = self.make_request("POST", "/compare/", data=comparison_vehicles)
+        results["create_comparison_valid"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 4: Get current comparison
+        print("  Testing GET /api/compare/")
+        result = self.make_request("GET", "/compare/")
+        results["get_comparison"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 5: Update comparison
+        print("  Testing PUT /api/compare/")
+        updated_vehicles = [self.test_vehicle_id, self.test_vehicle_id, self.test_vehicle_id]
+        result = self.make_request("PUT", "/compare/", data=updated_vehicles)
+        results["update_comparison"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 6: Remove vehicle from comparison
+        print("  Testing DELETE /api/compare/{vehicle_id}")
+        result = self.make_request("DELETE", f"/compare/{self.test_vehicle_id}")
+        results["remove_from_comparison"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 7: Clear comparison
+        print("  Testing DELETE /api/compare/")
+        result = self.make_request("DELETE", "/compare/")
+        results["clear_comparison"] = {
+            "status": "✅ PASS" if result.get("status_code") == 200 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error")
+        }
+        
+        # Test 8: Create comparison with too many vehicles (should fail)
+        print("  Testing POST /api/compare/ (too many vehicles)")
+        too_many_vehicles = [self.test_vehicle_id] * 5  # 5 vehicles, max is 4
+        result = self.make_request("POST", "/compare/", data=too_many_vehicles)
+        results["create_comparison_too_many"] = {
+            "status": "✅ PASS" if result.get("status_code") == 400 else "❌ FAIL",
+            "status_code": result.get("status_code"),
+            "response": result.get("data", {}),
+            "error": result.get("error"),
+            "expected": "Should return 400 - maximum 4 vehicles"
+        }
+        
+        return results
+
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all test suites"""
         print("🚀 Starting VELES DRIVE Backend API Tests - Payments & Leads Edition")
