@@ -11,7 +11,7 @@ import { Badge } from '../components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Checkbox } from '../components/ui/checkbox';
 import { Slider } from '../components/ui/slider';
-import { VehicleDetailModal } from '../components/VehicleDetailModal';
+import { SimpleVehicleModal } from '../components/SimpleVehicleModal';
 import { LoanCalculator } from '../components/Buyer/LoanCalculator';
 import { vehiclesAPI } from '../services/api';
 import { formatPrice } from '../components/mock';
