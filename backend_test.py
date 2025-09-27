@@ -11,7 +11,7 @@ from typing import Dict, Any, Optional
 import uuid
 
 # Configuration
-BASE_URL = "https://hello-analyzer.preview.emergentagent.com/api"
+BASE_URL = "http://localhost:8001/api"
 TIMEOUT = 30
 
 class VelesDriveAPITester:
