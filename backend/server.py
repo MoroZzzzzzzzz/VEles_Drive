@@ -13,6 +13,8 @@ from routes.favorites import router as favorites_router
 from routes.messages import router as messages_router
 from routes.reviews import router as reviews_router
 from routes.compare import router as compare_router
+from routes.payments import router as payments_router
+from routes.webhooks import router as webhooks_router
 from database import db
 
 ROOT_DIR = Path(__file__).parent
