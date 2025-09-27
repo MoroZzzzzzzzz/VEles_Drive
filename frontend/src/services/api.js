@@ -75,6 +75,21 @@ export const vehiclesAPI = {
     return response.data;
   },
 
+  searchVehicles: async (filters) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value !== 'all' && value !== '' && value !== 0) {
+        if (Array.isArray(value)) {
+          params.set(key, value.join(','));
+        } else {
+          params.set(key, value);
+        }
+      }
+    });
+    const response = await api.get(`/vehicles/search?${params.toString()}`);
+    return response.data;
+  },
+
   getVehicle: async (id) => {
     const response = await api.get(`/vehicles/${id}`);
     return response.data;
@@ -85,8 +100,13 @@ export const vehiclesAPI = {
     return response.data;
   },
 
-  updateVehicle: async (id, updateData) => {
-    const response = await api.put(`/vehicles/${id}`, updateData);
+  updateVehicle: async (id, vehicleData) => {
+    const response = await api.put(`/vehicles/${id}`, vehicleData);
+    return response.data;
+  },
+
+  updateVehicleStatus: async (id, statusData) => {
+    const response = await api.put(`/vehicles/${id}/status`, statusData);
     return response.data;
   },
 
@@ -97,6 +117,41 @@ export const vehiclesAPI = {
 
   getCategories: async () => {
     const response = await api.get('/vehicles/categories');
+    return response.data;
+  },
+
+  getDealerVehicles: async (dealerId, filters = {}) => {
+    const params = new URLSearchParams(filters);
+    const response = await api.get(`/dealers/${dealerId}/vehicles?${params.toString()}`);
+    return response.data;
+  },
+
+  getInventoryStats: async (dealerId) => {
+    const response = await api.get(`/dealers/${dealerId}/inventory/stats`);
+    return response.data;
+  },
+
+  uploadImages: async (vehicleId, images) => {
+    const formData = new FormData();
+    images.forEach((image, index) => {
+      formData.append(`image_${index}`, image);
+    });
+    
+    const response = await api.post(`/vehicles/${vehicleId}/images`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  },
+
+  getSimilarVehicles: async (vehicleId) => {
+    const response = await api.get(`/vehicles/${vehicleId}/similar`);
+    return response.data;
+  },
+
+  getMarketPrice: async (make, model, year) => {
+    const response = await api.get(`/vehicles/market-price?make=${make}&model=${model}&year=${year}`);
     return response.data;
   },
 
