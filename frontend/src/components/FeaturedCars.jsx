@@ -152,7 +152,7 @@ export const FeaturedCars = () => {
         {/* Cars Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredCars.map((car) => (
-            <Card key={car.id} className="group bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 overflow-hidden backdrop-blur-sm">
+            <Card key={car.id} className="group bg-gray-900/30 border border-gray-800/50 hover:border-orange-500/50 transition-all duration-500 overflow-hidden backdrop-blur-md shadow-2xl shadow-black/50 hover:shadow-orange-500/20">
               <div className="relative">
                 {/* Car Image */}
                 <div className="aspect-[4/3] overflow-hidden">
