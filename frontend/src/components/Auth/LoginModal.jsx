@@ -316,6 +316,9 @@ export const LoginModal = ({ open, onOpenChange }) => {
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
+                  {registerValidation.touched.password && registerValidation.errors.password && (
+                    <p className="text-red-400 text-sm mt-1">{registerValidation.errors.password}</p>
+                  )}
                 </div>
               </div>
 
