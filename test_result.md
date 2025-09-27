@@ -825,11 +825,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Modal Overlay Issues Resolution"
-    - "Vehicle Data Integration Testing"
-    - "Dealer Authentication Flow"
-    - "Complete End-to-End Testing"
-  stuck_tasks: []
+    - "Critical Issues - Authentication and Overlay Problems"
+    - "Vehicle Modal Scrolling Issue"
+    - "Backend Static Files Configuration"
+    - "Mobile Hamburger Menu Implementation"
+  stuck_tasks:
+    - "Critical Issues - Authentication and Overlay Problems"
   test_all: false
   test_priority: "high_first"
     implemented: true
