@@ -201,8 +201,94 @@ export const DealerDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Vehicles Management */}
-          <TabsContent value="vehicles">
+          {/* Overview */}
+          <TabsContent value="overview">
+            <Card className="bg-gray-900/50 border-gray-800">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-white">Управление автомобилями</CardTitle>
+                <Button 
+                  onClick={handleCreateVehicle}
+                  className="bg-gradient-to-r from-amber-500 to-orange-600"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Добавить автомобиль
+                </Button>
+              </CardHeader>
+              <CardContent>
+                {vehicles.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Car className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      У вас еще нет автомобилей
+                    </h3>
+                    <p className="text-gray-400 mb-6">
+                      Начните с добавления вашего первого автомобиля в каталог
+                    </p>
+                    <Button 
+                      onClick={handleCreateVehicle}
+                      className="bg-gradient-to-r from-amber-500 to-orange-600"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Добавить автомобиль
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {vehicles.slice(0, 5).map((vehicle) => (
+                      <div key={vehicle.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                        <div className="flex items-center space-x-4">
+                          <div className="w-16 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+                            <Car className="h-6 w-6 text-gray-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-white font-semibold">
+                              {vehicle.make} {vehicle.model}
+                            </h4>
+                            <p className="text-gray-400 text-sm">
+                              {vehicle.year} • {formatPrice(vehicle.price)}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Button variant="outline" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {vehicles.length > 5 && (
+                      <div className="text-center pt-4">
+                        <p className="text-gray-400">
+                          И еще {vehicles.length - 5} автомобилей...
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Inventory Management */}
+          <TabsContent value="inventory">
+            <InventoryManagement dealerId={dealerProfile?.id} />
+          </TabsContent>
+
+          {/* Leads Management */}
+          <TabsContent value="leads">
+            <LeadsManagement dealerId={dealerProfile?.id} />
+          </TabsContent>
+
+          {/* Analytics */}
+          <TabsContent value="analytics">
+            <Analytics dealerId={dealerProfile?.id} />
+          </TabsContent>
+
+          {/* Old Vehicles Management */}
+          <TabsContent value="old_vehicles">
             <Card className="bg-gray-900/50 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-white">Управление автомобилями</CardTitle>
