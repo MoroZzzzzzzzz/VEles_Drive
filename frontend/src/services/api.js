@@ -296,4 +296,43 @@ export const paymentsAPI = {
   }
 };
 
+// Leads API
+export const leadsAPI = {
+  requestTestDrive: async (requestData) => {
+    const response = await api.post('/leads/test-drive', requestData);
+    return response.data;
+  },
+
+  requestPriceInquiry: async (requestData) => {
+    const response = await api.post('/leads/price-inquiry', requestData);
+    return response.data;
+  },
+
+  requestCallback: async (requestData) => {
+    const response = await api.post('/leads/callback', requestData);
+    return response.data;
+  },
+
+  getDealerLeads: async (dealerId, status = null) => {
+    const params = status ? `?status=${status}` : '';
+    const response = await api.get(`/leads/dealer/${dealerId}${params}`);
+    return response.data;
+  },
+
+  getUserLeads: async () => {
+    const response = await api.get('/leads/user');
+    return response.data;
+  },
+
+  updateLeadStatus: async (leadId, status) => {
+    const response = await api.put(`/leads/${leadId}/status`, { status });
+    return response.data;
+  },
+
+  getDealerLeadStats: async (dealerId) => {
+    const response = await api.get(`/leads/stats/${dealerId}`);
+    return response.data;
+  }
+};
+
 export default api;
