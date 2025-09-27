@@ -92,12 +92,12 @@ export const HeroSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
             {/* Марка автомобиля */}
             <div className="space-y-2">
-              <label className="text-white text-sm font-medium">Марка автомобиля</label>
+              <label className="text-orange-200 text-sm font-medium">Марка автомобиля</label>
               <Input
                 placeholder="Введите марку"
                 value={searchParams.make}
                 onChange={(e) => setSearchParams(prev => ({ ...prev, make: e.target.value }))}
-                className="bg-white/90 border-0 h-12 text-gray-900 placeholder:text-gray-500"
+                className="bg-white/95 border border-orange-300/20 h-12 text-gray-900 placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400/20"
               />
             </div>
 
