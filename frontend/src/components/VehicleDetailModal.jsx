@@ -90,7 +90,7 @@ export const VehicleDetailModal = ({ vehicle, open, onOpenChange, onContact, onF
         {/* Close button */}
         <button 
           onClick={() => onOpenChange(false)}
-          className="absolute top-4 right-4 z-20 p-2 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-colors"
+          className="fixed top-4 right-4 z-50 p-2 bg-black/70 backdrop-blur-sm rounded-full text-white hover:bg-black/90 transition-colors shadow-lg"
         >
           <X className="h-5 w-5" />
         </button>
