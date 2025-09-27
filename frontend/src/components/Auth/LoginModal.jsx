@@ -272,6 +272,9 @@ export const LoginModal = ({ open, onOpenChange }) => {
                     onBlur={() => registerValidation.setFieldTouched('email')}
                     className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
                   />
+                  {registerValidation.touched.email && registerValidation.errors.email && (
+                    <p className="text-red-400 text-sm mt-1">{registerValidation.errors.email}</p>
+                  )}
                 </div>
               </div>
 
