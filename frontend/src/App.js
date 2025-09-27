@@ -9,6 +9,8 @@ import { TopDealers } from "./components/TopDealers";
 import { Features } from "./components/Features";
 import { Footer } from "./components/Footer";
 import { FadeInUp } from "./components/Animations/FadeInUp";
+import { StatsSection } from "./components/Stats/StatsSection";
+import { CTASection } from "./components/CTA/CTASection";
 import { Toaster } from "./components/ui/toaster";
 
 // Import pages
