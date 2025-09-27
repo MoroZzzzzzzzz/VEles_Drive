@@ -19,7 +19,17 @@ export const mockCars = [
     dealer: "Премиум Авто Москва",
     location: "Москва",
     isNew: true,
-    isFeatured: true
+    isFeatured: true,
+    dealerInfo: {
+      name: "Премиум Авто Москва",
+      rating: 4.9,
+      reviewCount: 127,
+      address: "Москва, ул. Автомобильная, 15",
+      phone: "+7 (495) 123-45-67",
+      email: "info@premiumavto.ru",
+      workingHours: "Пн-Пт: 9:00-20:00, Сб-Вс: 10:00-18:00"
+    },
+    description: "Эксклюзивный гиперкар Bugatti Chiron 2024 года. Двигатель 8.0 W16 мощностью 1500 л.с. Максимальная скорость 420 км/ч. Полный привод, углеволоконный кузов."
   },
   {
     id: 2,
