@@ -239,6 +239,6 @@ export const HeroSection = () => {
           <ChevronDown className="h-8 w-8 text-white/70" />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
