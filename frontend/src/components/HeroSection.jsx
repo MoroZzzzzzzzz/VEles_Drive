@@ -161,10 +161,15 @@ export const HeroSection = () => {
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               onClick={handleSearch}
-              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-12 py-4 text-lg font-semibold h-auto rounded-xl border-0 shadow-2xl transform transition-all duration-200 hover:scale-105"
+              disabled={isSearching}
+              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-12 py-4 text-lg font-semibold h-auto rounded-xl border-0 shadow-2xl transform transition-all duration-200 hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             >
-              <Search className="mr-3 h-5 w-5" />
-              Подобрать авто
+              {isSearching ? (
+                <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+              ) : (
+                <Search className="mr-3 h-5 w-5" />
+              )}
+              {isSearching ? 'Поиск...' : 'Подобрать авто'}
             </Button>
             
             <Button 
